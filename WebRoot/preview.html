@@ -1209,6 +1209,41 @@
     				var texttype=sele.options[index].value;
     				var divnew=document.createElement("p");
     				divnew.className=texttype;
+    				
+    				if(texttype=="texttitle1"){
+    					divnew.style.textAlign="center";
+    					divnew.style.fontFamily="SimHei";
+    					divnew.style.fontSize="18pt";
+    				}
+    				if(texttype=="texttitle2"){
+    					divnew.style.textAlign="left";
+    					divnew.style.fontFamily="SimHei";
+    					divnew.style.fontSize="16pt";
+    				}
+    				if(texttype=="texttitle3"){
+    					divnew.style.fontFamily="SimHei";
+    					divnew.style.fontSize="14pt";
+    				}
+    				if(texttype=="texttitle4"){
+    					divnew.style.fontFamily="SimHei";
+    					divnew.style.fontSize="12pt";
+    				}
+    				if(texttype=="textbody"){
+    					divnew.style.textIndent="24pt";
+    					divnew.style.fontFamily="FangSong";
+    					divnew.style.fontSize="12pt";
+    				}
+    				if(texttype=="textnote"){
+    					divnew.style.fontFamily="KaiTi";
+    					divnew.style.fontSize="10.5pt";
+    				}
+    				if(texttype=="imagetitle"){
+    					divnew.style.textAlign="center";
+    					divnew.style.fontFamily="STXinwei";
+    					divnew.style.fontSize="12pt";
+    				}
+    				
+    				
     				//divnew.id=new Date().getTime();
     				divnew.innerHTML=textcontent;
     				faza.appendChild(divnew);
@@ -1219,6 +1254,7 @@
     				divnew.className="preimage";
     				//divnew.id=new Date().getTime();
     				divnew.innerHTML=imghtml;
+    				divnew.style.textAlign="center";
     				
     				faza.appendChild(divnew);
     			}
