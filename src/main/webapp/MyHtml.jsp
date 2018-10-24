@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/common/taglibs.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
 <head>
@@ -1313,16 +1316,15 @@
     	
     	function getgraphbymark(mark){
     		//return "http://files.57gif.com/webgif/0/4/84/bcd4b2814bbf8341e94a71ef35593.gif";
-    		var path;
+    		var path = "";
     		$.ajax({
-	            type:"get",
-	            url:"servlet/DrawGraph",
+	            type:"post",
+	            url:"${ctx}/draw-graph.action",
 	            data:{"data":mark},
-	            dataType:"text",
 	            async: false,
-	            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-	            success:function(data) {
-	                path="files/graph/"+data.replace(/\s/g,"")+".png";
+	            success:function(msg) {
+	                data=msg.split('&');
+	                path="files/graph/"+data[0]+".png";
 	            },
 	            error:function(msg) {
 	                console.log(msg);
