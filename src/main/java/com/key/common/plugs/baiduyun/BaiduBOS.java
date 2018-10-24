@@ -16,7 +16,7 @@ import com.baidubce.services.bos.model.ListObjectsRequest;
 import com.baidubce.services.bos.model.ListObjectsResponse;
 import com.baidubce.services.bos.model.ObjectMetadata;
 import com.baidubce.services.bos.model.PutObjectResponse;
-import com.key.common.utils.DiaowenProperty;
+import com.key.common.utils.Property;
 
 /**
  *
@@ -40,8 +40,8 @@ public class BaiduBOS {
 	    BosClientConfiguration config = new BosClientConfiguration();
 //	    config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID,SECRET_ACCESS_KEY));
 //	    config.setEndpoint(ENDPOINT);
-	    config.setCredentials(new DefaultBceCredentials(DiaowenProperty.ACCESS_KEY_ID,DiaowenProperty.SECRET_ACCESS_KEY));
-	    config.setEndpoint(DiaowenProperty.ENDPOINT);
+	    config.setCredentials(new DefaultBceCredentials(Property.ACCESS_KEY_ID,Property.SECRET_ACCESS_KEY));
+	    config.setEndpoint(Property.ENDPOINT);
 	    BosClient client = new BosClient(config);
 	    return client;
 	}
@@ -145,7 +145,7 @@ public class BaiduBOS {
 		
 //		 BaiduBOS.getObjectList(BaiduBOS.UPLOADFILE_BACKET, "ueditor/jsp/upload/image/",4,2);
 		 
-		BaiduBOS.getObject(DiaowenProperty.WENJUANHTML_BACKET, "index.html");
+		BaiduBOS.getObject(Property.WENJUANHTML_BACKET, "index.html");
 	}
 }
 

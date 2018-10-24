@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.key.common.plugs.aliyun.AliyunOSS;
 import com.key.common.plugs.baiduyun.BaiduBOS;
-import com.key.common.utils.DiaowenProperty;
+import com.key.common.utils.Property;
 import com.key.common.utils.web.Struts2Utils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.AllowedMethods;
@@ -51,7 +51,7 @@ public class UploadAction extends ActionSupport{
 
 				String[] newNames = null;
 
-				if("aliyunOSS".equals(DiaowenProperty.DWSTORAGETYPE) || "baiduBOS".equals(DiaowenProperty.DWSTORAGETYPE)){
+				if("aliyunOSS".equals(Property.DWSTORAGETYPE) || "baiduBOS".equals(Property.DWSTORAGETYPE)){
 					newNames = saveFileToYun(savePath, files, fileNames, false);
 				}else {
 					newNames = FileUtils.transferFile2(rootPath+File.separator+savePath, files, fileNames);
@@ -104,7 +104,7 @@ public class UploadAction extends ActionSupport{
 //				String[] newNames = FileUtils.transferFile2(savePath, files,fileNames);
 				String[] newNames = null;
 				
-				if("aliyunOSS".equals(DiaowenProperty.DWSTORAGETYPE) || "baiduBOS".equals(DiaowenProperty.DWSTORAGETYPE)){
+				if("aliyunOSS".equals(Property.DWSTORAGETYPE) || "baiduBOS".equals(Property.DWSTORAGETYPE)){
 					newNames = saveFileToYun(savePath, files, fileNames, false);
 				}else {
 					newNames = FileUtils.transferFile2( rootPath+File.separator+savePath, files, fileNames);
@@ -156,7 +156,7 @@ public class UploadAction extends ActionSupport{
 
 //				String[] newNames = FileUtils.transferFile2(savePath, files,fileNames);
 				String[] newNames = null;
-				if("aliyunOSS".equals(DiaowenProperty.DWSTORAGETYPE) || "baiduBOS".equals(DiaowenProperty.DWSTORAGETYPE)){
+				if("aliyunOSS".equals(Property.DWSTORAGETYPE) || "baiduBOS".equals(Property.DWSTORAGETYPE)){
 					newNames = saveFileToYun(savePath, files, fileNames, true);
 				}else {
 					newNames = FileUtils.transferFile2(rootPath+savePath, files, fileNames);
@@ -208,19 +208,19 @@ public class UploadAction extends ActionSupport{
 					}
 					fileName.append(filenames[i].substring(filenames[i].lastIndexOf(".")));
 					
-					if("aliyunOSS".equals(DiaowenProperty.DWSTORAGETYPE)){
+					if("aliyunOSS".equals(Property.DWSTORAGETYPE)){
 						//保存到aliyun
 						if(isJm){
-							AliyunOSS.putObject(DiaowenProperty.UPLOADFILE_JM_BACKET, files[i], path + fileName.toString());
+							AliyunOSS.putObject(Property.UPLOADFILE_JM_BACKET, files[i], path + fileName.toString());
 						}else{
-							AliyunOSS.putObject(DiaowenProperty.UPLOADFILE_BACKET, files[i], path + fileName.toString());
+							AliyunOSS.putObject(Property.UPLOADFILE_BACKET, files[i], path + fileName.toString());
 						}
-					}else if("baiduBOS".equals(DiaowenProperty.DWSTORAGETYPE)){
+					}else if("baiduBOS".equals(Property.DWSTORAGETYPE)){
 						//保存到aliyun
 						if(isJm){
-							BaiduBOS.putObject(DiaowenProperty.UPLOADFILE_JM_BACKET, files[i], path + fileName.toString());
+							BaiduBOS.putObject(Property.UPLOADFILE_JM_BACKET, files[i], path + fileName.toString());
 						}else{
-							BaiduBOS.putObject(DiaowenProperty.UPLOADFILE_BACKET, files[i], path + fileName.toString());
+							BaiduBOS.putObject(Property.UPLOADFILE_BACKET, files[i], path + fileName.toString());
 						}
 					}
 					temp[i]=fileName.toString();

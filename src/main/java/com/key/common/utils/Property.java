@@ -23,7 +23,7 @@ import javax.servlet.ServletContext;
  *
  *
  */
-public class DiaowenProperty extends
+public class Property extends
 		PropertyPlaceholderConfigurer {
 
 	public static String DWSTORAGETYPE = null;
@@ -68,7 +68,7 @@ public class DiaowenProperty extends
 	    return ctxPropertiesMap.get(name);
 	}
 */
-	public void diaowenInit(){
+	public void Init(){
 		System.out.println("系统初始化方法。。。");
 		System.out.println(ServletActionContext.getContext());
 	}

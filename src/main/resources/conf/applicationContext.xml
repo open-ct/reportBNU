@@ -13,7 +13,7 @@
 	<description>Spring公共配置</description>
 
 	<!-- 定义受环境影响易变的变量 -->
-	<bean class="com.key.common.utils.DiaowenProperty" init-method="diaowenInit" >
+	<bean class="com.key.common.utils.Property" init-method="Init" >
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="locations">
@@ -30,7 +30,7 @@
 
 	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
 	<!-- 扫描并自动装配 -->
-	<context:component-scan base-package="com.key.dwsurvey" />
+	<context:component-scan base-package="com.key.report" />
 	<context:component-scan base-package="com.key.common" />
 
 	<!-- 以静态变量保存ApplicationContext -->

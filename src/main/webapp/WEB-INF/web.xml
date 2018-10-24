@@ -8,13 +8,18 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 					classpath:conf/applicationContext.xml
-					classpath:conf/applicationContext-dwsurvey.xml
+					classpath:conf/applicationContext-report.xml
 		</param-value>
 	</context-param>
 	
 	<context-param>
 		   <param-name>log4jConfigLocation</param-name>
 		   <param-value>/WEB-INF/classes/conf/log4j.properties</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>report.root</param-value>
 	</context-param>
 	
 	<!-- Filter 定义 -->

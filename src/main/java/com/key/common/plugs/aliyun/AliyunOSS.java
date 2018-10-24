@@ -14,7 +14,7 @@ import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
-import com.key.common.utils.DiaowenProperty;
+import com.key.common.utils.Property;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 /**
@@ -39,8 +39,8 @@ public class AliyunOSS {
 	
 	private static OSSClient getOSSClient() {
 //		OSSClient client = new OSSClient(ENDPOINT, ACCESS_KEY_ID,SECRET_ACCESS_KEY);
-		OSSClient client = new OSSClient(DiaowenProperty.ENDPOINT, DiaowenProperty.ACCESS_KEY_ID,
-				DiaowenProperty.SECRET_ACCESS_KEY);
+		OSSClient client = new OSSClient(Property.ENDPOINT, Property.ACCESS_KEY_ID,
+				Property.SECRET_ACCESS_KEY);
 		return client;
 	}
 
@@ -143,7 +143,7 @@ public class AliyunOSS {
 	public static void main(String[] args) {
 
 		List<OSSObjectSummary> objectSummaries = AliyunOSS.getObjectList(
-				DiaowenProperty.UPLOADFILE_BACKET, "ueditor/jsp/upload/image/", 4, 2);
+				Property.UPLOADFILE_BACKET, "ueditor/jsp/upload/image/", 4, 2);
 		System.out.println(objectSummaries.size());
 		for (OSSObjectSummary ossObjectSummary : objectSummaries) {
 			System.out.println(ossObjectSummary.getKey() + ":"

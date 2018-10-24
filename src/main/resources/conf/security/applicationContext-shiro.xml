@@ -30,7 +30,10 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login.jsp" />
+		<property name="successUrl" value="/MyHtml.html" />
+		<!--
 		<property name="successUrl" value="/design/my-survey.action" />
+		-->
 		<property name="unauthorizedUrl" value="/login.jsp?una=0" />
 		<property name="filters">
 			<util:map>

@@ -9,7 +9,7 @@
 	</appender>
 
 	<appender name="rollingFile" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="logs/diaowen.log" />
+		<param name="File" value="logs/log.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d [%t] %-5p %-40.40c -%m%n" />
 		</layout>
