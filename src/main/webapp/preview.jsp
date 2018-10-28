@@ -1203,7 +1203,6 @@
     		var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
     		jsonData=JSON.parse(jsonData);
-    		console.log(jsonData);
     		var faza=document.getElementById("father");
     		for(i in jsonData){
     			if(jsonData[i]["type"].slice(0,-1)=="texttitle"){

@@ -17,7 +17,7 @@
 <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> -->
 <link href="${ctx }/js/plugs/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 
-<title>我的问卷</title>
+<title>我的报告</title>
 <style type="text/css">
 .reportLeftBtnGroup a{
 	color: #5A9ECD;
@@ -86,8 +86,8 @@ button {
 				<div class="reportCollectMiddleContent">
 					<div style="padding: 25px 45px;overflow: auto;padding-top: 20px;">
 							<div style="padding: 5px;color: #666565;letter-spacing: 2px;">
-							所有问卷&nbsp;&nbsp;|&nbsp;&nbsp;
-								<a href="${ctx }/design/my-report-create!save.action" id="reportAdd-a" style="outline: none;text-decoration: none;" ><i class="fa fa-plus " aria-hidden="true"></i>&nbsp;新建问卷</a>
+							所有报告&nbsp;&nbsp;|&nbsp;&nbsp;
+								<a href="${ctx }/design/my-report-create!save.action" id="reportAdd-a" style="outline: none;text-decoration: none;" ><i class="fa fa-plus " aria-hidden="true"></i>&nbsp;新建报告</a>
 							</div>
 
 							<form action="${ctx}/design/my-report.action" method="post" >
@@ -113,10 +113,10 @@ button {
 								<table class="contacts-table" width="100%" cellpadding="0" cellspacing="0">
 									<tr>
 										<th style="text-align: center;" width="30"><!-- <input type="checkbox">  --></th>
-										<th align="left" >问卷</th>
+										<th align="left" >报告</th>
 										<th align="left" width="100">创建者</th>
 										<th align="left" width="200">创建时间</th>
-										<th align="left" width="60">答卷</th>
+										<th align="left" width="60">类型</th>
 										<th align="left" width="80">状态</th>
 										<th align="center" width="260" style="padding-left: 10px;">操作</th>
 									</tr>
@@ -141,11 +141,11 @@ button {
 										<td align="left">
 											<div class="btn-group reportLeftBtnGroup">
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/design/my-collect.action?reportId=${en.id}" title="收集答卷" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/da/report-report!defaultReport.action?reportId=${en.id}" title="分析报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
+											  <a class="btn btn-default" href="${ctx }/design/my-collect.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
+											  <a class="btn btn-default" href="${ctx }/da/report-report!defaultReport.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
 											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属生设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
 											  <a class="btn btn-default copySurvey" href="#${en.id}" title="复制一份" data-toggle="tooltip" data-placement="top" ><i class="fa fa-files-o"></i></a>
-											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除问卷" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
+											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
 											</div>&nbsp;
 											<div class="btn-group" style="display: none;">
 												<!-- <a class="btn btn-default" href="#"><i class="fa fa-eye"></i></a> -->
@@ -262,7 +262,7 @@ $(".copySurvey").click(function(){
 		autoOpen: true,
 		modal:true,
 		position:["center","center"],
-		title:"复制问卷、表单",
+		title:"复制报告、表单",
 		resizable:false,
 		draggable:false,
 		closeOnEscape:false,
@@ -308,7 +308,7 @@ $("#reportAdd-a").click(function(){
 
 	
 	$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
-			"<div>问卷标题：<input id='surTitleTemp' type='text' style='padding:5px;width:320px;color:rgb(14, 136, 158);' value=''></div></div></div>");
+			"<div>报告标题：<input id='surTitleTemp' type='text' style='padding:5px;width:320px;color:rgb(14, 136, 158);' value=''></div></div></div>");
 
 	var myDialog=$( "#myDialogRoot" ).dialog({
 		width:500,
@@ -316,7 +316,7 @@ $("#reportAdd-a").click(function(){
 		autoOpen: true,
 		modal:true,
 		position:["center","center"],
-		title:"新建问卷、表单",
+		title:"新建报告、表单",
 		resizable:false,
 		draggable:false,
 		closeOnEscape:false,
@@ -368,19 +368,14 @@ $("#reportAdd-a").click(function(){
 		var orderbyNumValue = orderbyNum.val();
 
 		$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
-				"<div>问卷标题：<input id='surTitleTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
+				"<div>报告标题：<input id='surTitleTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
 				"<div style='margin-top: 12px;'>排序编号：<input id='orderbyNumTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
-				"<div style='margin-top: 12px;'>问卷分类：<select id='reportTypeTemp'> <option>-请选择属属分类-</option>" +
-				"<option value='11'>小学生问卷</option>" +
-				"<option value='12'>小学家长问卷</option>" +
-				"<option value='13'>小学教师问卷</option>" +
-				"<option value='14'>小学校长问卷</option>" +
-				"<option value='21'>中学生问卷</option>" +
-				"<option value='25'>中学生选答问卷</option>" +
-				"<option value='22'>中学家长问卷</option>" +
-				"<option value='23'>中学教师问卷</option>" +
-				"<option value='24'>中学校长问卷</option>" +
-				"<option value='90'>测试问卷</option>" +
+				"<div style='margin-top: 12px;'>报告分类：<select id='reportTypeTemp'> <option>-请选择属属分类-</option>" +
+				"<option value='1'>基础数据报告</option>" +
+				"<option value='2'>学科报告</option>" +
+				"<option value='3'>专题研究报告</option>" +
+				"<option value='4'>综合评估报告</option>" +
+				"<option value='5'>影响因素报告</option>" +
 				"</select></div></div></div>");
 
 		var myDialog=$( "#myDialogRoot" ).dialog({
@@ -389,7 +384,7 @@ $("#reportAdd-a").click(function(){
 			autoOpen: true,
 			modal:true,
 			position:["center","center"],
-			title:"问卷分类设置",
+			title:"报告分类设置",
 			resizable:false,
 			draggable:false,
 			closeOnEscape:false,

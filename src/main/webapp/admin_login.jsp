@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>区域教育质量健康体检项目网络测评系统</title>
-<meta name="description" content="调问问卷表单－开源且专业的调研系统" />
+<title>区域教育质量健康体检项目在线报告系统</title>
+<meta name="description" content="报告系统" />
 
 <script type="text/javascript" src="${ctx }/js/plugs/jquery-ui-1.10.3.custom/js/jquery-1.10.1.js"></script>
 <script type="text/javascript" src="${ctx }/js/dw/responsive-width.js"></script>
@@ -91,9 +91,9 @@ label.error{
 		<div id="dwBodyContent" class="bodyCenter" style="background: none;">
 				
 					<div class="dw_login_logo">
-						<h1 class="f1">DIAOWEN</h1>
+						<h1 class="f1"></h1>
 						<%--<h2 class="f2" style="width: 460px;">调问专业<span class="f3">、</span>开源<span class="f3">、</span>实用的调研方式</h2>--%>
-						<h2 class="f2" style="width: 560px;">基础教育质量综合评价网络问卷系统</h2>
+						<h2 class="f2" style="width: 560px;">基础教育质量综合评价在线报告系统</h2>
 					</div>
 					
 					

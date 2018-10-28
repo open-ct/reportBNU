@@ -1208,7 +1208,25 @@
 
     <script src="${ctx }/js/dashboard2.js"></script>
     <script src="${ctx }/js/main.js"></script>
-    <script>
+    <script type="text/javascript">
+    	window.onload=function(){
+    		<% String data = request.getParameter("data");%>
+    		var data="<%=data%>".split(',');
+    		var jsonData="";
+    		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
+    		jsonData=JSON.parse(jsonData);
+    		for(i in jsonData){
+    			if(jsonData[i]["type"].slice(0,-1)=="texttitle"){
+    				var textcontent=jsonData[i]["text"];
+    				var texttype=jsonData[i]["type"];
+    			}
+    			else if(jsonData[i]["type"]=="graph"){
+    				var imghtml=jsonData[i]["text"];
+    				
+    			}
+    		}
+    	}
+    	
     	function addtext(obj){
     		var divnew = document.createElement("div");
     		divnew.className = "ui equal width left aligned padded grid stackable";
