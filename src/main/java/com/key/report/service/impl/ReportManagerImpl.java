@@ -277,8 +277,6 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 		criterions.add(Restrictions.eq("visibility", 1));
 		criterions.add(Restrictions.eq("reportState", 1));
 		
-		criterions.add(Restrictions.eq("dirType", 2));
-		criterions.add(Restrictions.eq("reportModel", 1));
 		
 		Page<Report> reportPage = ReportDao.findPageList(page, criterions);
 		
@@ -325,8 +323,6 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 
 			criterions.add(Restrictions.eq("userId", user.getId()));
 			criterions.add(Restrictions.eq("visibility", 1));
-			criterions.add(Restrictions.eq("dirType", 2));
-			criterions.add(Restrictions.eq("reportModel", 1));
 
 			if(entity!=null){
 				Integer reportState = entity.getReportState();

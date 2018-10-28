@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/common/taglibs.jsp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 
 <head>
@@ -1192,24 +1195,22 @@
 
     <script src="js/dashboard2.js"></script>
     <script src="js/main.js"></script>
+    
     <script type="text/javascript">
     	window.onload=function(){
-    		var doccontent="";
-    		var parts=window.opener.document.getElementById("father").children;
+    		<% String data = request.getParameter("data");%>
+    		var data="<%=data%>".split(',');
+    		var jsonData="";
+    		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
+    		jsonData=JSON.parse(jsonData);
+    		console.log(jsonData);
     		var faza=document.getElementById("father");
-    		for(var i=1,len=parts.length;i<len;i++){
-    			var segs=parts[i].children[0].children[0].children[0];
-    			var configseg=segs.children[1];
-    			var contentseg=segs.children[2];
-    			var mark=contentseg.children[0];
-    			if(mark.className=="mktext"){
-    				var textcontent=contentseg.children[1].children[0].children[0].value;
-    				var sele=configseg.children[0];
-    				var index=sele.selectedIndex;
-    				var texttype=sele.options[index].value;
+    		for(i in jsonData){
+    			if(jsonData[i]["type"].slice(0,-1)=="texttitle"){
+    				var textcontent=jsonData[i]["text"];
+    				var texttype=jsonData[i]["type"];
     				var divnew=document.createElement("p");
     				divnew.className=texttype;
-    				
     				if(texttype=="texttitle1"){
     					divnew.style.textAlign="center";
     					divnew.style.fontFamily="SimHei";
@@ -1243,17 +1244,16 @@
     					divnew.style.fontSize="12pt";
     				}
     				
-    				
     				//divnew.id=new Date().getTime();
     				divnew.innerHTML=textcontent;
     				faza.appendChild(divnew);
     			}
-    			else if(mark.className=="mkgraph"){
-    				var imghtml=contentseg.children[1].outerHTML;
+    			else if(jsonData[i]["type"]=="graph"){
+    				var imghtml=jsonData[i]["text"];
     				var divnew=document.createElement("p");
     				divnew.className="preimage";
     				//divnew.id=new Date().getTime();
-    				divnew.innerHTML=imghtml;
+    				divnew.innerHTML='<img src='+imghtml+'>';
     				divnew.style.textAlign="center";
     				
     				faza.appendChild(divnew);

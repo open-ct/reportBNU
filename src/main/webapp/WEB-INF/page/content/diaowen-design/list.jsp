@@ -19,7 +19,7 @@
 
 <title>我的问卷</title>
 <style type="text/css">
-.surveyLeftBtnGroup a{
+.reportLeftBtnGroup a{
 	color: #5A9ECD;
 }
 .btn-group{
@@ -77,27 +77,27 @@ button {
 </style>
 </head>
 <body>
-	<input type="hidden" id="id" name="id" value="${survey.id }">
+	<input type="hidden" id="id" name="id" value="${report.id }">
 	<div style="clear: both;"></div>
 	<div id="dwBody" style="margin-top: 15px;">
 		<div id="dwBodyContent" class="bodyCenter" style="">
 		<div id="dwBodyUser">
-			<div class="surveyCollectMiddle">
-				<div class="surveyCollectMiddleContent">
+			<div class="reportCollectMiddle">
+				<div class="reportCollectMiddleContent">
 					<div style="padding: 25px 45px;overflow: auto;padding-top: 20px;">
 							<div style="padding: 5px;color: #666565;letter-spacing: 2px;">
 							所有问卷&nbsp;&nbsp;|&nbsp;&nbsp;
-								<a href="${ctx }/design/my-survey-create!save.action" id="surveyAdd-a" style="outline: none;text-decoration: none;" ><i class="fa fa-plus " aria-hidden="true"></i>&nbsp;新建问卷</a>
+								<a href="${ctx }/design/my-report-create!save.action" id="reportAdd-a" style="outline: none;text-decoration: none;" ><i class="fa fa-plus " aria-hidden="true"></i>&nbsp;新建问卷</a>
 							</div>
 
-							<form action="${ctx}/design/my-survey.action" method="post" >
+							<form action="${ctx}/design/my-report.action" method="post" >
 							<div class="contacts_search" style="padding: 5px;color:#666565;" >
 								<div style="padding-left: 20px;padding-top: 8px;padding-bottom: 8px;">
 									<span style="font-size: 14px;vertical-align: middle;">状态&nbsp;</span>
-									<select name="surveyState" style="vertical-align: middle;">  <option value="">不限</option><option value="0">设计</option><option value="1">发布</option><option value="2">结束</option> </select>
+									<select name="reportState" style="vertical-align: middle;">  <option value="">不限</option><option value="0">设计</option><option value="1">发布</option><option value="2">结束</option> </select>
 									&nbsp;&nbsp;
 									<span style="font-size: 14px;vertical-align: middle;">名称&nbsp;</span>
-									<input type="text" class="inputS1" name="surveyName" value="${surveyName}">
+									<input type="text" class="inputS1" name="reportName" value="${reportName}">
 									&nbsp;&nbsp;&nbsp;
 									<input type="submit" value="查询" class="sbtn25 sbtn25_1" style="font-size: 16px;"/>
 								</div>
@@ -125,27 +125,27 @@ button {
 									<c:forEach items="${page.result }" var="en">
 									<tr>
 										<td align="center">
-											<input type="hidden" name='surveyId' value="${en.id }">
-											<input type="hidden" name='surveyType' value="${en.surveyType }">
+											<input type="hidden" name='reportId' value="${en.id }">
+											<input type="hidden" name='reportType' value="${en.reportType }">
 											<input type="hidden" name='orderbyNum' value="${en.orderbyNum }">
 										</td>
-										<td align="left"><a target="_blank" href="${ctx }/wenjuan/${en.sid }.html" class="titleTag">${en.surveyName }</a></td>
+										<td align="left"><a target="_blank" href="${ctx }/wenjuan/${en.sid }.html" class="titleTag">${en.reportName }</a></td>
 										<td align="left" width="100" >${en.userName }</td>
 										<td align="left">
 											<fmt:formatDate value="${en.createDate }" pattern="yyyy年MM月dd日 HH:mm"/>
 										</td>
-										<td align="left">${empty(en.answerNum) ? '0':en.answerNum  }&nbsp;</td>
+										<td align="left">0&nbsp;</td>
 										<td align="left" >
-											${en.surveyState eq 0 ? '设计':en.surveyState eq 1?'收集':en.surveyState eq 2?'收集完成':'' }
+											${en.reportState eq 0 ? '设计':en.reportState eq 1?'收集':en.reportState eq 2?'收集完成':'' }
 										</td>
 										<td align="left">
-											<div class="btn-group surveyLeftBtnGroup">
-											  <a class="btn btn-default" href="${ctx }/design/my-survey-design.action?surveyId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/design/my-collect.action?surveyId=${en.id}" title="收集答卷" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/da/survey-report!defaultReport.action?surveyId=${en.id}" title="分析报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
+											<div class="btn-group reportLeftBtnGroup">
+											  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
+											  <a class="btn btn-default" href="${ctx }/design/my-collect.action?reportId=${en.id}" title="收集答卷" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
+											  <a class="btn btn-default" href="${ctx }/da/report-report!defaultReport.action?reportId=${en.id}" title="分析报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
 											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属生设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
 											  <a class="btn btn-default copySurvey" href="#${en.id}" title="复制一份" data-toggle="tooltip" data-placement="top" ><i class="fa fa-files-o"></i></a>
-											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-survey!delete.action?id=${en.id}" title="删除问卷" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
+											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除问卷" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
 											</div>&nbsp;
 											<div class="btn-group" style="display: none;">
 												<!-- <a class="btn btn-default" href="#"><i class="fa fa-eye"></i></a> -->
@@ -169,28 +169,28 @@ button {
 								<div style="padding-top: 15px;text-align: center;">
 									<div class="btn-group">
 										<c:if test="${page.pageNo > 1}">
-											<a href="${ctx }/design/my-survey.action?page.pageNo=${page.pageNo-1}" class="btn btn-default">&lt;</a>
+											<a href="${ctx }/design/my-report.action?page.pageNo=${page.pageNo-1}" class="btn btn-default">&lt;</a>
 										</c:if>
 										<c:if test="${page.startpage > 1}">
-											<a href="${ctx }/design/my-survey.action?page.pageNo=1" class="btn btn-default">1</a>
+											<a href="${ctx }/design/my-report.action?page.pageNo=1" class="btn btn-default">1</a>
 											<c:if test="${page.startpage > 2 }">
 												<span>...</span>
 											</c:if>
 										</c:if>
 										<c:forEach begin="${page.startpage }" end="${page.endpage }" var="en">
 											<c:choose>
-												<c:when test="${page.pageNo eq en }"><a href="${ctx }/design/my-survey.action?page.pageNo=${en }" class="btn btn-default" style="background: #D3DEED;">${en }</a></c:when>
-												<c:otherwise><a href="${ctx }/design/my-survey.action?page.pageNo=${en}" class="btn btn-default">${en }</a></c:otherwise>
+												<c:when test="${page.pageNo eq en }"><a href="${ctx }/design/my-report.action?page.pageNo=${en }" class="btn btn-default" style="background: #D3DEED;">${en }</a></c:when>
+												<c:otherwise><a href="${ctx }/design/my-report.action?page.pageNo=${en}" class="btn btn-default">${en }</a></c:otherwise>
 											</c:choose>
 										</c:forEach>
 										<c:if test="${page.totalPage > (page.endpage)}">
 											<c:if test="${page.totalPage > (page.endpage+1)}">
 												<span>...</span>
 											</c:if>
-											<a href="${ctx }/design/my-survey.action?page.pageNo=${page.totalPage}" class="btn btn-default">${page.totalPage }</a>
+											<a href="${ctx }/design/my-report.action?page.pageNo=${page.totalPage}" class="btn btn-default">${page.totalPage }</a>
 										</c:if>
 										<c:if test="${page.totalPage > page.pageNo}">
-											<a href="${ctx }/design/my-survey.action?page.pageNo=${page.pageNo+1}" class="btn btn-default">&gt;</a>
+											<a href="${ctx }/design/my-report.action?page.pageNo=${page.pageNo+1}" class="btn btn-default">&gt;</a>
 										</c:if>
 										
 									</div>
@@ -211,9 +211,9 @@ button {
 
 <script type="text/javascript">
 
-	currentMenu("mysurvey");
+	currentMenu("myreport");
 
-	$("select[name='surveyState']").val("${surveyState}");
+	$("select[name='reportState']").val("${reportState}");
 
 var options={
 		animation:true,
@@ -248,7 +248,7 @@ $(".deleteSurvey").click(function(){
 
 $(".copySurvey").click(function(){
 
-	var surveyId=$(this).parents("tr").find("input[name='surveyId']").val();
+	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
 	var titleValue=$(this).parents("tr").find(".titleTag").text();
 	var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
 	var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
@@ -274,12 +274,12 @@ $(".copySurvey").click(function(){
 				addClass:'dialogMessageButton dialogBtn1',
 				click: function() {
 					//执行发布
-					var surveyName=$("#surTitleTemp").val();
-					surveyName=optionValue=escape(encodeURIComponent(surveyName));
+					var reportName=$("#surTitleTemp").val();
+					reportName=optionValue=escape(encodeURIComponent(reportName));
 
-					var params="surveyName="+surveyName;
-					params+="&fromBankId="+surveyId;
-					window.location.href="${ctx}/design/my-survey-design!copySurvey.action?"+params;
+					var params="reportName="+reportName;
+					params+="&fromBankId="+reportId;
+					window.location.href="${ctx}/design/my-report-design!copySurvey.action?"+params;
 				}
 			},
 			"CENCEL":{
@@ -300,9 +300,9 @@ $(".copySurvey").click(function(){
 	});
 });
 
-$("#surveyAdd-a").click(function(){
+$("#reportAdd-a").click(function(){
 	
-	var surveyId=$(this).parents("tr").find("input[name='surveyId']").val();
+	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
 	var titleValue=$(this).parents("tr").find(".titleTag").text();
 	
 
@@ -328,11 +328,11 @@ $("#surveyAdd-a").click(function(){
 	            addClass:'dialogMessageButton dialogBtn1',
 	            click: function() {
 	                //执行发布
-	                var surveyName=$("#surTitleTemp").val();
-	                surveyName=optionValue=escape(encodeURIComponent(surveyName));
+	                var reportName=$("#surTitleTemp").val();
+	                reportName=optionValue=escape(encodeURIComponent(reportName));
 
-	                var params="surveyName="+surveyName;
-	            	window.location.href="${ctx}/design/my-survey-create!save.action?"+params;
+	                var params="reportName="+reportName;
+	            	window.location.href="${ctx}/design/my-report-create!save.action?"+params;
 	            }
 			},
 			"CENCEL":{
@@ -357,9 +357,9 @@ $("#surveyAdd-a").click(function(){
 
 	$(".attrSurvey").click(function(){
 
-		var surveyId=$(this).parents("tr").find("input[name='surveyId']").val();
-		var surveyType = $(this).parents("tr").find("input[name='surveyType']");
-		var surveyTypeValue=$(this).parents("tr").find("input[name='surveyType']").val();
+		var reportId=$(this).parents("tr").find("input[name='reportId']").val();
+		var reportType = $(this).parents("tr").find("input[name='reportType']");
+		var reportTypeValue=$(this).parents("tr").find("input[name='reportType']").val();
 		var titleValue=$(this).parents("tr").find(".titleTag").text();
 		var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
 		var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
@@ -370,7 +370,7 @@ $("#surveyAdd-a").click(function(){
 		$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
 				"<div>问卷标题：<input id='surTitleTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
 				"<div style='margin-top: 12px;'>排序编号：<input id='orderbyNumTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
-				"<div style='margin-top: 12px;'>问卷分类：<select id='surveyTypeTemp'> <option>-请选择属属分类-</option>" +
+				"<div style='margin-top: 12px;'>问卷分类：<select id='reportTypeTemp'> <option>-请选择属属分类-</option>" +
 				"<option value='11'>小学生问卷</option>" +
 				"<option value='12'>小学家长问卷</option>" +
 				"<option value='13'>小学教师问卷</option>" +
@@ -401,24 +401,24 @@ $("#surveyAdd-a").click(function(){
 					addClass:'dialogMessageButton dialogBtn1',
 					click: function() {
 						//执行发布
-						var surveyName=$("#surTitleTemp").val();
-						surveyName=optionValue=escape(encodeURIComponent(surveyName));
-						var surveyTypeTemp = $("#surveyTypeTemp").val();
+						var reportName=$("#surTitleTemp").val();
+						reportName=optionValue=escape(encodeURIComponent(reportName));
+						var reportTypeTemp = $("#reportTypeTemp").val();
 						var orderbyNumTemp = $("#orderbyNumTemp").val();
-						if(surveyTypeTemp!=null && surveyTypeTemp!=""){
-							var params="surveyName="+surveyName;
-							params+="&surveyType="+surveyTypeTemp;
+						if(reportTypeTemp!=null && reportTypeTemp!=""){
+							var params="reportName="+reportName;
+							params+="&reportType="+reportTypeTemp;
 							params+="&orderbyNum="+orderbyNumTemp;
-							params+="&id="+surveyId;
-							//window.location.href="${ctx}/c/survey!save.action?"+params;
-							var url = "${ctx}/c/survey!save.action";
+							params+="&id="+reportId;
+							//window.location.href="${ctx}/c/report!save.action?"+params;
+							var url = "${ctx}/c/report!save.action";
 							$.ajax({
 								url:url,
 								data:params,
 								type:"post",
 								success:function(msg){
 									if(msg=="true"){
-										surveyType.val(surveyTypeTemp);
+										reportType.val(reportTypeTemp);
 										orderbyNum.val(orderbyNumTemp);
 										$( "#myDialogRoot" ).dialog( "close" );
 									}else{
@@ -442,7 +442,7 @@ $("#surveyAdd-a").click(function(){
 			open:function(event,ui){
 				$(".ui-dialog-titlebar-close").hide();
 				$("#surTitleTemp").val(titleValue);
-				$("#surveyTypeTemp").val(surveyTypeValue);
+				$("#reportTypeTemp").val(reportTypeValue);
 				$("#orderbyNumTemp").val(orderbyNumValue);
 			},
 			close:function(event,ui){

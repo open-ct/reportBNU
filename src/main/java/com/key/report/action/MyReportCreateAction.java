@@ -25,7 +25,7 @@ import com.opensymphony.xwork2.ActionSupport;
 })
 public class MyReportCreateAction extends ActionSupport{
 	@Autowired
-	private ReportManager directoryManager;
+	private ReportManager reportManager;
 
 	private String reportId;
 
@@ -44,7 +44,7 @@ public class MyReportCreateAction extends ActionSupport{
 	    		reportName=URLDecoder.decode(reportName,"utf-8");
 	    	}
 	 	    report.setReportName(reportName);
-	 	    directoryManager.save(report);
+	 	   reportManager.save(report);
 	 	    reportId = report.getId();
 	    }catch(Exception e){
 	    	e.printStackTrace();

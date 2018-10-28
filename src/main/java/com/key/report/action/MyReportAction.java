@@ -31,7 +31,7 @@ import com.key.report.entity.Report;
 public class MyReportAction extends CrudActionSupport<Report, String>{
 	
 	@Autowired
-	private ReportManager reportDirectoryManager;
+	private ReportManager reportManager;
 	@Autowired
 	private AccountManager accountManager;
 
@@ -42,7 +42,7 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 		if(reportState==null||"".equals(reportState)){
 			entity.setReportState(null);
 		}
-	    page=reportDirectoryManager.findByUser(page,entity);
+	    page=reportManager.findByUser(page,entity);
 	    return SUCCESS;
 	}
 	
@@ -53,9 +53,9 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 		User user = accountManager.getCurUser();
 		if(user!=null){
 		    String userId=user.getId();
-		    Report reportDirectory=reportDirectoryManager.getReportByUser(id,userId);
-		    if(reportDirectory!=null){
-		    	reportDirectoryManager.delete(id);
+		    Report report=reportManager.getReportByUser(id,userId);
+		    if(report!=null){
+		    	reportManager.delete(id);
 		    	result="true";
 		    }
 		}
@@ -74,10 +74,10 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 			User user= accountManager.getCurUser();
 			if(user!=null){
 				String userId=user.getId();
-				Report reportDirectory=reportDirectoryManager.getReportByUser(id, userId);
-				if(reportDirectory!=null){
+				Report report=reportManager.getReportByUser(id, userId);
+				if(report!=null){
 					int reportState=entity.getReportState();
-					reportDirectory.setReportState(reportState);
+					report.setReportState(reportState);
 				}
 			}
 			result="true";
@@ -95,7 +95,7 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 		HttpServletRequest request=Struts2Utils.getRequest();
 		HttpServletResponse response=Struts2Utils.getResponse();
 		try{
-			Report report=reportDirectoryManager.getReport(id);
+			Report report=reportManager.getReport(id);
 			JsonConfig cfg = new JsonConfig();
 			cfg.setExcludes(new String[]{"handler","hibernateLazyInitializer"});
 			JSONObject jsonObject=JSONObject.fromObject(report,cfg);
@@ -109,7 +109,7 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 	
 	@Override
 	protected void prepareModel() throws Exception {
-		entity=reportDirectoryManager.getModel(id);
+		entity=reportManager.getModel(id);
 	}
 	
 	public void prepareReportState() throws Exception {

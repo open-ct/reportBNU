@@ -74,7 +74,7 @@
 		<property name="packagesToScan">	
 				<list>
 					<value>com.key.common.base.entity</value>
-					<value>com.key.dwsurvey.entity</value>
+					<value>com.key.report.entity</value>
 				</list>
 		</property>
 	</bean>

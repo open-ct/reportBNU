@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.key.common.utils.RandomUtils;
 import com.key.common.utils.excel.XLSExportUtil;
-import com.key.report.entity.CityAnswerStat;
 import com.key.report.service.UserManager;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;

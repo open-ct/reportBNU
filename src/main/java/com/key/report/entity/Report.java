@@ -12,10 +12,6 @@ import org.hibernate.annotations.Formula;
 import com.key.common.base.entity.IdEntity;
 
 /**
- * 问卷目录及问卷
- * @author keyuan
- *
- * 
  * 
  */
 @Entity

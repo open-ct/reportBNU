@@ -10,14 +10,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name=viewport content="width=device-width, initial-scale=1" />
-    <link href="semantic/dist/semantic.min.css" rel="stylesheet" />
-    <link href="plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
-    <link href="css/main.css" rel="stylesheet" />
-    <link href="plugins/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="plugins/weather-icons/css/weather-icons-wind.min.css" rel="stylesheet" />
-    <link href="plugins/weather-icons/css/weather-icons.min.css" rel="stylesheet" />
-    <link href="plugins/chartist/chartist.min.css" rel="stylesheet" />
-    <link href="css/chat-page.css" rel="stylesheet" />
+    <link href="${ctx }/semantic/dist/semantic.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="${ctx }/css/main.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/weather-icons/css/weather-icons-wind.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/weather-icons/css/weather-icons.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/chartist/chartist.min.css" rel="stylesheet" />
+    <link href="${ctx }/css/chat-page.css" rel="stylesheet" />
     <link rel="shortcut icon" href="img/favicon.ico" />
 
 </head>
@@ -1180,34 +1180,34 @@
         </div>
     </div>
     <!--jquery-->
-    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="${ctx }/js/jquery-2.1.4.min.js"></script>
     <!--jquery-->
     <!--semantic-->
-    <script src="semantic/dist/semantic.min.js"></script>
+    <script src="${ctx }/semantic/dist/semantic.min.js"></script>
     <!--semantic-->
     <!--counter number-->
-    <script src="plugins/counterup/jquery.counterup.min.js"></script>
-    <script src="plugins/counterup/waypoints.min.js"></script>
+    <script src="${ctx }/plugins/counterup/jquery.counterup.min.js"></script>
+    <script src="${ctx }/plugins/counterup/waypoints.min.js"></script>
     <!--counter number-->
     <!--flot chart-->
-    <script src="plugins/flot/jquery.flot.js"></script>
-    <script src="plugins/flot/jquery.flot.resize.min.js"></script>
-    <script src="plugins/flot/jquery.flot.tooltip.min.js"></script>
-    <script src="plugins/flot/curvedLines.js"></script>
-    <script src="plugins/cookie/js.cookie.js"></script>
+    <script src="${ctx }/plugins/flot/jquery.flot.js"></script>
+    <script src="${ctx }/plugins/flot/jquery.flot.resize.min.js"></script>
+    <script src="${ctx }/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="${ctx }/plugins/flot/curvedLines.js"></script>
+    <script src="${ctx }/plugins/cookie/js.cookie.js"></script>
     <!--flot chart-->
     <!--chartjs chart-->
-    <script src="plugins/chartjs/chart.min.js"></script>
+    <script src="${ctx }/plugins/chartjs/chart.min.js"></script>
     <!--chartjs chart-->
 
-    <script src="plugins/nicescrool/jquery.nicescroll.min.js"></script>
+    <script src="${ctx }/plugins/nicescrool/jquery.nicescroll.min.js"></script>
 
-    <script data-pace-options='{ "ajax": false }' src="plugins/pacejs/pace.js"></script>
+    <script data-pace-options='{ "ajax": false }' src="${ctx }/plugins/pacejs/pace.js"></script>
 
-    <script src="plugins/chartist/chartist.min.js"></script>
+    <script src="${ctx }/plugins/chartist/chartist.min.js"></script>
 
-    <script src="js/dashboard2.js"></script>
-    <script src="js/main.js"></script>
+    <script src="${ctx }/js/dashboard2.js"></script>
+    <script src="${ctx }/js/main.js"></script>
     <script>
     	function addtext(obj){
     		var divnew = document.createElement("div");
@@ -1490,7 +1490,44 @@
     			}
     		}
     		alert(doccontent);*/
-    		window.open('preview.html');
+    		var _list = {};
+    		var len = 0;
+    		var parts=document.getElementById("father").children;
+    		for(var i=1;i<parts.length;i++){
+    			var segs=parts[i].children[0].children[0].children[0];
+    			var configseg=segs.children[1];
+    			var contentseg=segs.children[2];
+    			var mark=contentseg.children[0];
+    			if(mark.className=="mktext"){
+    				var sele=configseg.children[0];
+    				var index=sele.selectedIndex;
+    				_list[len]=new Object();
+    				_list[len].text=contentseg.children[1].children[0].children[0].value;
+    				_list[len].type=sele.options[index].value
+    				len++;
+    			}
+    			else if(mark.className=="mkgraph"){
+    				_list[len]=new Object();
+    				_list[len].type="graph";
+    				_list[len].text=contentseg.children[1].getAttribute("src");
+    				len++;
+    			}
+    		}
+    		var tmp=JSON.stringify(_list);
+    		var res="";
+    		for(var i=0;i<tmp.length;i++)
+    			res+=tmp.charCodeAt(i)+",";
+    		var temp = document.createElement("form");
+		    temp.action = "${ctx}/save-html.action?reportId=${report.id}";
+		    temp.method = "post";
+		    temp.style.display = "none";
+		    var opt = document.createElement("textarea");
+		    opt.name = "data";
+		    opt.value = res;
+		    temp.appendChild(opt);
+		    document.body.appendChild(temp);
+		    temp.submit();
+		    return temp;
     	}
     	
     </script>
