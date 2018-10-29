@@ -26,7 +26,6 @@
 <body>
     <div id="contextWrap">
             <!--maincontent-->
-            <div class="mainWrap navslide">
             	<!--Site Content-->
             	<div class="ui equal width left aligned padded grid stackable" >
                 	<div class="row">
@@ -43,7 +42,6 @@
                 	</div>
                 </div>
                 <!--Site Content-->
-            </div>
             <!--maincontent-->
     </div>
     <!--jquery-->
@@ -81,6 +79,7 @@
     		var data="${data}".split(',');
     		var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
+    		console.log(jsonData);
     		jsonData=JSON.parse(jsonData);
     		var faza=document.getElementById("father");
     		for(i in jsonData){
@@ -93,6 +92,9 @@
     				divnew.style.textAlign="center";
     				
     				faza.appendChild(divnew);
+    			}
+    			else if(jsonData[i]["type"]=="paging"){
+    				;
     			}
     			else{
     				var textcontent=jsonData[i]["text"];

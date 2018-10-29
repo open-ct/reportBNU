@@ -25,7 +25,8 @@
 <body>
 
             <!--maincontent-->
-            <div class="mainWrap navslide" id="father">
+            <div class="mainWrap navslide">
+            <div id="father">
             <div class="ui equal width left aligned padded grid stackable">
                 <!--Site Content-->
 
@@ -42,18 +43,22 @@
                         		添加表
                                             <i class="add icon"></i>
                         </div>
+                        <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        		分页
+                                            <i class="add icon"></i>
+                        </div>
                         </div>
             </div>
                 <!--Site Content-->
         	</div>
-        	<div class="mainWrap navslide">
+        	<div>
         	<div class="ui equal width left aligned padded grid stackable">
         		<div>
         			<button class="ui primary button saving" onclick="savereport()" >保存</button>
         		</div>
         	</div>
         	</div>
-        
+        	</div>
         
            
 
@@ -137,10 +142,59 @@
 		                        		添加表
 		                                            <i class="add icon"></i>
 		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        				分页
+                                            		<i class="add icon"></i>
+                        		</div>
 		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
 		                        </div>
 		    		`;
 		    		fa.appendChild(divnew);
+    			}
+    			else if(jsonData[i]["type"]=="paging"){
+    				var divnew = document.createElement("div");
+		    		divnew.className = "ui equal width left aligned padded grid stackable";
+		    		divnew.id = new Date().getTime();
+		    		divnew.innerHTML = `
+		                            <div class="row">
+		                            <div class="sixteen wide column">
+		                                <div class="ui segments">
+		                                	<div class="ui segment">
+		                                        <h5 class="ui header">
+		                                            我是分页标记^_^
+		                                        </h5>
+		                                    </div>
+		                                	<div display='none'></div>
+		                                	<div display='none'>
+		                                		<div class="pageBreak" display='none'></div>
+		                                	</div>
+		                            	</div>
+		                            </div>
+		                        </div>
+		                        <div>
+		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
+		                        		添加文字
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
+		                        		添加图
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
+		                        		添加表
+		                                            <i class="add icon"></i>
+		                        </div>
+				                <div class="ui teal labeled icon button" onclick="paging(this)" >
+		                        		分页
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
+		                        </div>
+		                        
+    				`;
+    				var ff=obj.parentNode;
+    				var fff=ff.parentNode;
+    				fff.after(divnew);
     			}
     			else{
     				var textcontent=jsonData[i]["text"];
@@ -193,6 +247,10 @@
 		                        		添加表
 		                                            <i class="add icon"></i>
 		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        				分页
+                                            		<i class="add icon"></i>
+                        		</div>
 		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
 		                        </div>
 		                        
@@ -256,6 +314,10 @@
                         		添加表
                                             <i class="add icon"></i>
                         </div>
+		                <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        		分页
+                                            <i class="add icon"></i>
+                        </div>
                         <button class="negative ui button" onclick="deleteseg(this)">删除</button>
                         </div>
                         
@@ -302,6 +364,10 @@
                         </div>
                         <div class="ui teal labeled icon button" onclick="addtable(this)" >
                         		添加表
+                                            <i class="add icon"></i>
+                        </div>
+		                <div class="ui teal labeled icon button" onclick="paging(this)" >
+                   				分页
                                             <i class="add icon"></i>
                         </div>
                         <button class="negative ui button" onclick="deleteseg(this)">删除</button>
@@ -419,8 +485,59 @@
                         		添加表
                                             <i class="add icon"></i>
                         </div>
+		                <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        		分页
+                                            <i class="add icon"></i>
+                        </div>
                         <button class="negative ui button" onclick="deleteseg(this)">删除</button>
                         </div>
+    		`;
+    		var ff=obj.parentNode;
+    		var fff=ff.parentNode;
+    		fff.after(divnew);
+    	}
+    	
+    	
+    	function paging(obj){
+    		var divnew = document.createElement("div");
+    		divnew.className = "ui equal width left aligned padded grid stackable";
+    		divnew.id = new Date().getTime();
+    		divnew.innerHTML = `
+                            <div class="row">
+                            <div class="sixteen wide column">
+                                <div class="ui segments">
+                                	<div class="ui segment">
+                                        <h5 class="ui header">
+                                            我是分页标记^_^
+                                        </h5>
+                                    </div>
+                                	<div display='none'></div>
+                                	<div display='none'>
+                                		<div class="pageBreak" display='none'></div>
+                                	</div>
+                            	</div>
+                            </div>
+                        </div>
+                        <div>
+                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
+                        		添加文字
+                                            <i class="add icon"></i>
+                        </div>
+                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
+                        		添加图
+                                            <i class="add icon"></i>
+                        </div>
+                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
+                        		添加表
+                                            <i class="add icon"></i>
+                        </div>
+		                <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        		分页
+                                            <i class="add icon"></i>
+                        </div>
+                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
+                        </div>
+                        
     		`;
     		var ff=obj.parentNode;
     		var fff=ff.parentNode;
@@ -508,6 +625,12 @@
     				_list[len]=new Object();
     				_list[len].type="graph";
     				_list[len].text=contentseg.children[1].getAttribute("src");
+    				len++;
+    			}
+    			else if(mark.className=="pageBreak"){
+    				_list[len]=new Object();
+    				_list[len].type="paging";
+    				_list[len].text="This is a paging mark.";
     				len++;
     			}
     		}

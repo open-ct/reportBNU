@@ -199,7 +199,7 @@ label.error{
 								<div style="margin: 80px auto;">
 									<div style="padding-left: 100px;font-size: 20px;">
 										亲爱的&nbsp;<span style="color:#497289;"><shiro:principal></shiro:principal></span>&nbsp;您已经登陆
-										<span style="margin-left: 10px;"><a href="${ctx }/design/my-survey.action">问卷</a>&nbsp;&nbsp;</span>
+										<span style="margin-left: 10px;"><a href="${ctx }/design/my-report.action">报告</a>&nbsp;&nbsp;</span>
 										<a href="${ctx }/login!logout.action">退出登录</a>
 									</div>
 								 </div>
