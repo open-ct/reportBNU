@@ -1,9 +1,14 @@
 package com.key.report.action;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
@@ -106,6 +111,13 @@ public class MyReportDesignAction extends ActionSupport{
 			Report Report=ReportManager.getReportByUser(reportId, userId);
 			if(Report!=null){
 				ReportManager.save(Report);
+				String data = null;
+				try {
+					data = readData(reportId);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Struts2Utils.setReqAttribute("data", data);
 				Struts2Utils.setReqAttribute("report", Report);
 				Struts2Utils.setReqAttribute("prevHost", Property.STORAGE_URL_PREFIX);
 			}else{
@@ -115,7 +127,23 @@ public class MyReportDesignAction extends ActionSupport{
 			Struts2Utils.setReqAttribute("msg", "未登录或没有相应数据权限");
 		}
 	}
-
+	
+	private String readData(String reportId) throws IOException {
+		String filePath = "files/reportHtml/";
+		filePath = filePath.replace("/", File.separator);
+		filePath = filePath.replace("\\", File.separator);
+		String fileName = reportId + ".data";
+		ServletContext sc = ServletActionContext.getServletContext();
+		filePath = sc.getRealPath("/") + filePath;
+		File file2 = new File(filePath);
+		if (!file2.exists() || !file2.isDirectory()) return null;
+		File file = new File(filePath + fileName);
+		if (!file.exists()) return null;
+		BufferedReader in=new BufferedReader(new FileReader(file));
+		String data = in.readLine();
+		in.close();
+		return data;
+	}
 
 	public String ajaxSave() throws Exception {
 		HttpServletRequest request=Struts2Utils.getRequest();

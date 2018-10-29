@@ -45,7 +45,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
-@Namespace("/")
+@Namespace("/design")
 @InterceptorRefs({ @InterceptorRef("paramsPrepareParamsStack")})
 @Results({
 	@Result(name=ActionSupport.SUCCESS,location="/preview.jsp",type=Struts2Utils.DISPATCHER)
@@ -76,12 +76,12 @@ public class SaveHtmlAction extends ActionSupport {
 		}
 		String data = request.getParameter("data");
 		String filePath = "files/reportHtml/";
-		String fileName = reportId + ".html";
 		filePath = filePath.replace("/", File.separator);
 		filePath = filePath.replace("\\", File.separator);
 		ServletContext sc = ServletActionContext.getServletContext();
 		String fileRealPath = sc.getRealPath("/") + filePath;
-		saveHtml(data, fileName, fileRealPath);
+		saveFile(data, reportId + ".data", fileRealPath);
+		saveHtml(data, reportId + ".html", fileRealPath);
 		return SUCCESS;
 	}
 	
@@ -109,7 +109,11 @@ public class SaveHtmlAction extends ActionSupport {
 		    String type = value.getString("type");
 		    String text = value.getString("text");
 		    System.out.println(type);
-		    if(type.substring(0, type.length()-1).equals("texttitle")){
+		    if(type.equals("graph")){
+		    	htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
+		    	htmlData +=	"<img src=\"../" + text + "\">\n</p>\n";
+		    }
+		    else{
 		    	String style = "";
 		    	if(type.equals("texttitle1")) style="text-align: center; font-family: SimHei; font-size: 18pt;";
 		    	else if(type.equals("title2")) style="text-align: left; font-family: SimHei; font-size: 16pt;";
@@ -119,10 +123,6 @@ public class SaveHtmlAction extends ActionSupport {
 		    	else if(type.equals("note")) style="text-align: left; font-family: KaiTi; font-size: 10.5pt;";
 		    	else if(type.equals("imagetitle")) style="text-align: center; font-family: STXinwei; font-size: 12pt;";
 		    	htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + text + "</p>\n";
-		    }
-		    else if(type.equals("graph")){
-		    	htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
-		    	htmlData +=	"<img src=\"../../" + text + "\">\n</p>\n";
 		    }
 		}
 		htmlData += "</div>\n</body>\n</html>\n";

@@ -10,16 +10,16 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name=viewport content="width=device-width, initial-scale=1" />
-    <link href="semantic/dist/semantic.min.css" rel="stylesheet" />
-    <link href="plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
-    <link href="css/main.css" rel="stylesheet" />
-    <link href="plugins/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="plugins/weather-icons/css/weather-icons-wind.min.css" rel="stylesheet" />
-    <link href="plugins/weather-icons/css/weather-icons.min.css" rel="stylesheet" />
-    <link href="plugins/chartist/chartist.min.css" rel="stylesheet" />
-    <link href="css/chat-page.css" rel="stylesheet" />
-    <link href="css/predisplay.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link href="${ctx }/semantic/dist/semantic.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="${ctx }/css/main.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/weather-icons/css/weather-icons-wind.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/weather-icons/css/weather-icons.min.css" rel="stylesheet" />
+    <link href="${ctx }/plugins/chartist/chartist.min.css" rel="stylesheet" />
+    <link href="${ctx }/css/chat-page.css" rel="stylesheet" />
+    <link href="${ctx }/css/predisplay.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="${ctx }/img/favicon.ico" />
 
 </head>
 
@@ -1167,34 +1167,34 @@
         </div>
     </div>
     <!--jquery-->
-    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="${ctx }/js/jquery-2.1.4.min.js"></script>
     <!--jquery-->
     <!--semantic-->
-    <script src="semantic/dist/semantic.min.js"></script>
+    <script src="${ctx }/semantic/dist/semantic.min.js"></script>
     <!--semantic-->
     <!--counter number-->
-    <script src="plugins/counterup/jquery.counterup.min.js"></script>
-    <script src="plugins/counterup/waypoints.min.js"></script>
+    <script src="${ctx }/plugins/counterup/jquery.counterup.min.js"></script>
+    <script src="${ctx }/plugins/counterup/waypoints.min.js"></script>
     <!--counter number-->
     <!--flot chart-->
-    <script src="plugins/flot/jquery.flot.js"></script>
-    <script src="plugins/flot/jquery.flot.resize.min.js"></script>
-    <script src="plugins/flot/jquery.flot.tooltip.min.js"></script>
-    <script src="plugins/flot/curvedLines.js"></script>
-    <script src="plugins/cookie/js.cookie.js"></script>
+    <script src="${ctx }/plugins/flot/jquery.flot.js"></script>
+    <script src="${ctx }/plugins/flot/jquery.flot.resize.min.js"></script>
+    <script src="${ctx }/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="${ctx }/plugins/flot/curvedLines.js"></script>
+    <script src="${ctx }/plugins/cookie/js.cookie.js"></script>
     <!--flot chart-->
     <!--chartjs chart-->
-    <script src="plugins/chartjs/chart.min.js"></script>
+    <script src="${ctx }/plugins/chartjs/chart.min.js"></script>
     <!--chartjs chart-->
 
-    <script src="plugins/nicescrool/jquery.nicescroll.min.js"></script>
+    <script src="${ctx }/plugins/nicescrool/jquery.nicescroll.min.js"></script>
 
-    <script data-pace-options='{ "ajax": false }' src="plugins/pacejs/pace.js"></script>
+    <script data-pace-options='{ "ajax": false }' src="${ctx }/plugins/pacejs/pace.js"></script>
 
-    <script src="plugins/chartist/chartist.min.js"></script>
+    <script src="${ctx }/plugins/chartist/chartist.min.js"></script>
 
-    <script src="js/dashboard2.js"></script>
-    <script src="js/main.js"></script>
+    <script src="${ctx }/js/dashboard2.js"></script>
+    <script src="${ctx }/js/main.js"></script>
     
     <script type="text/javascript">
     	window.onload=function(){
@@ -1205,7 +1205,17 @@
     		jsonData=JSON.parse(jsonData);
     		var faza=document.getElementById("father");
     		for(i in jsonData){
-    			if(jsonData[i]["type"].slice(0,-1)=="texttitle"){
+    			if(jsonData[i]["type"]=="graph"){
+    				var imghtml=jsonData[i]["text"];
+    				var divnew=document.createElement("p");
+    				divnew.className="preimage";
+    				//divnew.id=new Date().getTime();
+    				divnew.innerHTML='<img src='+imghtml+'>';
+    				divnew.style.textAlign="center";
+    				
+    				faza.appendChild(divnew);
+    			}
+    			else{
     				var textcontent=jsonData[i]["text"];
     				var texttype=jsonData[i]["type"];
     				var divnew=document.createElement("p");
@@ -1246,19 +1256,6 @@
     				//divnew.id=new Date().getTime();
     				divnew.innerHTML=textcontent;
     				faza.appendChild(divnew);
-    			}
-    			else if(jsonData[i]["type"]=="graph"){
-    				var imghtml=jsonData[i]["text"];
-    				var divnew=document.createElement("p");
-    				divnew.className="preimage";
-    				//divnew.id=new Date().getTime();
-    				divnew.innerHTML='<img src='+imghtml+'>';
-    				divnew.style.textAlign="center";
-    				
-    				faza.appendChild(divnew);
-    			}
-    			else{
-    				;
     			}
     		}
     		

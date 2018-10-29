@@ -1210,19 +1210,120 @@
     <script src="${ctx }/js/main.js"></script>
     <script type="text/javascript">
     	window.onload=function(){
-    		<% String data = request.getParameter("data");%>
-    		var data="<%=data%>".split(',');
+    		var data="${data}".split(',');
     		var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
     		jsonData=JSON.parse(jsonData);
+    		var fa = document.getElementById("father");
     		for(i in jsonData){
-    			if(jsonData[i]["type"].slice(0,-1)=="texttitle"){
+    			if(jsonData[i]["type"]=="graph"){
+    				var imghtml=jsonData[i]["text"];
+    				var divnew = document.createElement("div");
+		    		divnew.className = "ui equal width left aligned padded grid stackable";
+		    		divnew.id = new Date().getTime();
+		    		divnew.innerHTML = `
+		                            <div class="row">
+		                            <div class="sixteen wide column">
+		                                <div class="ui segments">
+		                                	<div class="ui segment">
+		                                        <h5 class="ui header">
+		                                            添加图
+		                                        </h5>
+		                                    </div>
+		                                    <div class="ui segment">
+		                                    	书签名称（格式：地区代码_书签）：
+		                                    	<div class="ui fluid action input">
+		                                    		<input type="text" placeholder="输入书签" />
+		                                    		<div class="positive ui button" onclick="getgraph(this)">确定</div>
+		                                    	</div>
+		                               			
+		                                    </div>
+		                                    <div class="ui segment">
+		                                    	<div class="mkgraph" display='none'></div>
+		                                    	<img src="`+imghtml+`">
+                                    		</div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div>
+		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
+		                        		添加文字
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
+		                        		添加图
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
+		                        		添加表
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
+		                        </div>
+		    		`;
+		    		fa.appendChild(divnew);
+    			}
+    			else{
     				var textcontent=jsonData[i]["text"];
     				var texttype=jsonData[i]["type"];
-    			}
-    			else if(jsonData[i]["type"]=="graph"){
-    				var imghtml=jsonData[i]["text"];
-    				
+    				var divnew = document.createElement("div");
+		    		divnew.className = "ui equal width left aligned padded grid stackable";
+		    		divnew.id = new Date().getTime();
+		    		divnew.innerHTML = `
+		                            <div class="row">
+		                            <div class="sixteen wide column">
+		                                <div class="ui segments">
+		                                	<div class="ui segment">
+		                                        <h5 class="ui header">
+		                                            添加文字
+		                                        </h5>
+		                                    </div>
+		                                	<div class="ui segment">
+		                                    	文字级别：
+		                                    	<select name = "texttype">
+		                                    		<option value="texttitle1">一级标题</option>
+													<option value="texttitle2">二级标题</option>
+													<option value="texttitle3">三级标题</option>
+													<option value="texttitle4">四级标题</option>
+													<option value="textbody">正文</option>
+													<option value="imagetitle">图表标题</option>
+													<option value="textnote">注释</option>
+		                                    	</select>
+		                                	</div>
+		                                	<div class="ui segment">
+		                                		<div class="mktext" display='none'></div>
+		                                        <div class="ui form">
+		                                            <div class="field">
+		                                                <textarea class="tinymceeditor"></textarea>
+		                                            </div>
+		                                        </div>
+		                                	</div>
+		                            	</div>
+		                            </div>
+		                        </div>
+		                        <div>
+		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
+		                        		添加文字
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
+		                        		添加图
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
+		                        		添加表
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
+		                        </div>
+		                        
+		    		`;
+		    		var segs=divnew.children[0].children[0].children[0];
+    				var configseg=segs.children[1];
+    				var contentseg=segs.children[2];
+    				contentseg.children[1].children[0].children[0].value=textcontent;
+    				configseg.children[0].value=texttype;
+    				fa.appendChild(divnew);
     			}
     		}
     	}
@@ -1355,7 +1456,7 @@
     		var bro=obj.previousElementSibling;
     		var tt=bro.value;
     		var imlink=getgraphbymark(tt);
-    		var imghtml="<img src="+imlink+">";
+    		var imghtml="<img src=../"+imlink+">";
     		var divnew=document.createElement("div");
     		divnew.className="ui segment";
     		divnew.innerHTML=`
@@ -1536,7 +1637,7 @@
     		for(var i=0;i<tmp.length;i++)
     			res+=tmp.charCodeAt(i)+",";
     		var temp = document.createElement("form");
-		    temp.action = "${ctx}/save-html.action?reportId=${report.id}";
+		    temp.action = "${ctx}/design/save-html.action?reportId=${report.id}";
 		    temp.method = "post";
 		    temp.style.display = "none";
 		    var opt = document.createElement("textarea");
