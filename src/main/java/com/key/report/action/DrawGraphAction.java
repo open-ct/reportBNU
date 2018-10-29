@@ -1,4 +1,4 @@
-﻿package com.key.report.action.nologin;
+﻿package com.key.report.action;
 
 import java.io.BufferedReader;
 import java.io.IOException;

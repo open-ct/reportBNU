@@ -44,7 +44,7 @@ public class MyReportCreateAction extends ActionSupport{
 	    		reportName=URLDecoder.decode(reportName,"utf-8");
 	    	}
 	 	    report.setReportName(reportName);
-	 	   reportManager.save(report);
+	 	    reportManager.save(report);
 	 	    reportId = report.getId();
 	    }catch(Exception e){
 	    	e.printStackTrace();

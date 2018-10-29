@@ -141,7 +141,7 @@ button {
 											<div class="btn-group reportLeftBtnGroup">
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design!previewDev.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/da/report-report!defaultReport.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
+											  <a class="btn btn-default" href="${ctx }/export!exportPDF.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
 											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属生设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
 											  <!-- 
 											  <a class="btn btn-default copySurvey" href="#${en.id}" title="复制一份" data-toggle="tooltip" data-placement="top" ><i class="fa fa-files-o"></i></a>
