@@ -24,14 +24,13 @@
 </head>
 
 <body>
-    <div id="contextWrap">
             <!--maincontent-->
             	<!--Site Content-->
             	<div class="ui equal width left aligned padded grid stackable" >
                 	<div class="row">
                     	<div class="sixteen wide column">
                 			<div class="ui segments"  id="paper">
-                				<div class="ui segment" id="father">
+                				<div class="ui segment" id="father" style="word-wrap:break-word">
                 				</div>
                 				<div class="ui teal labeled icon button" onclick="getHtml()">
                         				生成HTML
@@ -43,7 +42,6 @@
                 </div>
                 <!--Site Content-->
             <!--maincontent-->
-    </div>
     <!--jquery-->
     <script src="${ctx }/js/jquery-2.1.4.min.js"></script>
     <!--jquery-->
@@ -97,6 +95,8 @@
     				var divnew=document.createElement("p");
     				divnew.className="pageBreak";
     				divnew.style.pageBreakBefore="left";
+    				divnew.innerHTML='----分页符----';
+    				faza.appendChild(divnew);
     			}
     			else{
     				var textcontent=jsonData[i]["text"];
