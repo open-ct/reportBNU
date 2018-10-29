@@ -123,6 +123,9 @@ public class SaveHtmlAction extends ActionSupport {
 		    	htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
 		    	htmlData +=	"<img src=\"../" + text + "\">\n</p>\n";
 		    }
+		    else if(type.equals("paging")){
+		    	htmlData += "<div style=\"page-break-before:left\"></div>";
+		    }
 		    else{
 		    	String style = "";
 		    	if(type.equals("texttitle1")) style="text-align: center; font-family: SimHei; font-size: 18pt;";
