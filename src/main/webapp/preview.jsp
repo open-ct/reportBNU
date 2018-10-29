@@ -96,6 +96,7 @@
     				divnew.className="pageBreak";
     				divnew.style.pageBreakBefore="left";
     				divnew.innerHTML='----分页符----';
+    				divnew.style.textAlign="center";
     				faza.appendChild(divnew);
     			}
     			else{
