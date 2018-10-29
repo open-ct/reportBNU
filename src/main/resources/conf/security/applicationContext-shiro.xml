@@ -50,7 +50,7 @@
 				<!--/admin_login.jsp = authc-->
 				/login.jsp = authc
 				/ic/** = roles[admin]
-				/design/** = anyRoles["admin,editer,reviewer"]
+				/design/** = anyRoles["admin,editor,reviewer"]
 				/da/** = roles[admin]
 				/sy/** = roles[admin]
 				/ans/** = roles[xxans]

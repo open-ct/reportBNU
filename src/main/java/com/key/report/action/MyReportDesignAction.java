@@ -49,7 +49,7 @@ import com.opensymphony.xwork2.ActionSupport;
 @InterceptorRefs({ @InterceptorRef("paramsPrepareParamsStack")})
 @Results({
 	@Result(name=ActionSupport.SUCCESS,location="/MyHtml.jsp",type=Struts2Utils.DISPATCHER),
-	@Result(name=MyReportDesignAction.PREVIEWDEV,location="/WEB-INF/page/content/diaowen-design/report_preview_dev.jsp",type=Struts2Utils.DISPATCHER),
+	@Result(name=MyReportDesignAction.PREVIEWDEV,location="/preview.jsp",type=Struts2Utils.DISPATCHER),
 	@Result(name=MyReportDesignAction.COLLECTSURVEY,location="my-collect.action?reportId=${reportId}",type=Struts2Utils.REDIRECT),
 	@Result(name=MyReportDesignAction.RELOADDESIGN,location="/design/my-report-design.action?reportId=${reportId}",type=Struts2Utils.REDIRECT)
 })
@@ -75,7 +75,6 @@ public class MyReportDesignAction extends ActionSupport{
 	
 	public String previewDev() throws Exception {
 		buildReport();
-		
 		return PREVIEWDEV;
 	}
 	

@@ -75,6 +75,14 @@ public class SaveHtmlAction extends ActionSupport {
 			}
 		}
 		String data = request.getParameter("data");
+		Struts2Utils.setReqAttribute("data", data);
+		Struts2Utils.setReqAttribute("report", report);
+		Struts2Utils.setReqAttribute("prevHost", Property.STORAGE_URL_PREFIX);
+		saveData(data, reportId);
+		return SUCCESS;
+	}
+	
+	private void saveData(String data, String reportId) throws IOException{
 		String filePath = "files/reportHtml/";
 		filePath = filePath.replace("/", File.separator);
 		filePath = filePath.replace("\\", File.separator);
@@ -82,7 +90,6 @@ public class SaveHtmlAction extends ActionSupport {
 		String fileRealPath = sc.getRealPath("/") + filePath;
 		saveFile(data, reportId + ".data", fileRealPath);
 		saveHtml(data, reportId + ".html", fileRealPath);
-		return SUCCESS;
 	}
 	
 	private void saveFile(String data, String fileName, String filePath) throws IOException {

@@ -116,7 +116,6 @@ button {
 										<th align="left" >报告</th>
 										<th align="left" width="100">创建者</th>
 										<th align="left" width="200">创建时间</th>
-										<th align="left" width="60">类型</th>
 										<th align="left" width="80">状态</th>
 										<th align="center" width="260" style="padding-left: 10px;">操作</th>
 									</tr>
@@ -126,7 +125,7 @@ button {
 									<tr>
 										<td align="center">
 											<input type="hidden" name='reportId' value="${en.id }">
-											<input type="hidden" name='reportType' value="${en.reportType }">
+											<input type="hidden" name='reportLevel' value="${en.reportLevel }">
 											<input type="hidden" name='orderbyNum' value="${en.orderbyNum }">
 										</td>
 										<td align="left"><a target="_blank" href="${ctx }/wenjuan/${en.sid }.html" class="titleTag">${en.reportName }</a></td>
@@ -134,17 +133,19 @@ button {
 										<td align="left">
 											<fmt:formatDate value="${en.createDate }" pattern="yyyy年MM月dd日 HH:mm"/>
 										</td>
-										<td align="left">0&nbsp;</td>
 										<td align="left" >
-											${en.reportState eq 0 ? '设计':en.reportState eq 1?'收集':en.reportState eq 2?'收集完成':'' }
+											${en.reportState eq 0 ? '设计':en.reportState eq 1?'待审核':en.reportState eq 2?'完成':'' }
 										</td>
 										<td align="left">
+											&nbsp;
 											<div class="btn-group reportLeftBtnGroup">
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/design/my-collect.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
+											  <a class="btn btn-default" href="${ctx }/design/my-report-design!previewDev.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
 											  <a class="btn btn-default" href="${ctx }/da/report-report!defaultReport.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
 											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属生设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
+											  <!-- 
 											  <a class="btn btn-default copySurvey" href="#${en.id}" title="复制一份" data-toggle="tooltip" data-placement="top" ><i class="fa fa-files-o"></i></a>
+											  -->
 											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
 											</div>&nbsp;
 											<div class="btn-group" style="display: none;">
@@ -358,8 +359,8 @@ $("#reportAdd-a").click(function(){
 	$(".attrSurvey").click(function(){
 
 		var reportId=$(this).parents("tr").find("input[name='reportId']").val();
-		var reportType = $(this).parents("tr").find("input[name='reportType']");
-		var reportTypeValue=$(this).parents("tr").find("input[name='reportType']").val();
+		var reportLevel = $(this).parents("tr").find("input[name='reportLevel']");
+		var reportLevelValue=$(this).parents("tr").find("input[name='reportLevel']").val();
 		var titleValue=$(this).parents("tr").find(".titleTag").text();
 		var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
 		var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
@@ -370,12 +371,11 @@ $("#reportAdd-a").click(function(){
 		$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
 				"<div>报告标题：<input id='surTitleTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
 				"<div style='margin-top: 12px;'>排序编号：<input id='orderbyNumTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
-				"<div style='margin-top: 12px;'>报告分类：<select id='reportTypeTemp'> <option>-请选择属属分类-</option>" +
-				"<option value='1'>基础数据报告</option>" +
-				"<option value='2'>学科报告</option>" +
-				"<option value='3'>专题研究报告</option>" +
-				"<option value='4'>综合评估报告</option>" +
-				"<option value='5'>影响因素报告</option>" +
+				"<div style='margin-top: 12px;'>报告分类：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
+				"<option value='1'>省报告</option>" +
+				"<option value='2'>市报告</option>" +
+				"<option value='3'>区报告</option>" +
+				"<option value='4'>校报告</option>" +
 				"</select></div></div></div>");
 
 		var myDialog=$( "#myDialogRoot" ).dialog({
@@ -398,11 +398,11 @@ $("#reportAdd-a").click(function(){
 						//执行发布
 						var reportName=$("#surTitleTemp").val();
 						reportName=optionValue=escape(encodeURIComponent(reportName));
-						var reportTypeTemp = $("#reportTypeTemp").val();
+						var reportLevelTemp = $("#reportLevelTemp").val();
 						var orderbyNumTemp = $("#orderbyNumTemp").val();
-						if(reportTypeTemp!=null && reportTypeTemp!=""){
+						if(reportLevelTemp!=null && reportLevelTemp!=""){
 							var params="reportName="+reportName;
-							params+="&reportType="+reportTypeTemp;
+							params+="&reportLevel="+reportLevelTemp;
 							params+="&orderbyNum="+orderbyNumTemp;
 							params+="&id="+reportId;
 							//window.location.href="${ctx}/c/report!save.action?"+params;
@@ -413,7 +413,7 @@ $("#reportAdd-a").click(function(){
 								type:"post",
 								success:function(msg){
 									if(msg=="true"){
-										reportType.val(reportTypeTemp);
+										reportLevel.val(reportLevelTemp);
 										orderbyNum.val(orderbyNumTemp);
 										$( "#myDialogRoot" ).dialog( "close" );
 									}else{
@@ -437,7 +437,7 @@ $("#reportAdd-a").click(function(){
 			open:function(event,ui){
 				$(".ui-dialog-titlebar-close").hide();
 				$("#surTitleTemp").val(titleValue);
-				$("#reportTypeTemp").val(reportTypeValue);
+				$("#reportLevelTemp").val(reportLevelValue);
 				$("#orderbyNumTemp").val(orderbyNumValue);
 			},
 			close:function(event,ui){

@@ -89,7 +89,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			return info;
 		} else if(user !=null && 2 == user.getRoleType().intValue()) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			info.addRole("editer");
+			info.addRole("editor");
 			System.out.println("info:info_editer");
 			return info;
 		}else{

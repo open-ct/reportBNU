@@ -78,8 +78,7 @@
     
     <script type="text/javascript">
     	window.onload=function(){
-    		<% String data = request.getParameter("data");%>
-    		var data="<%=data%>".split(',');
+    		var data="${data}".split(',');
     		var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
     		jsonData=JSON.parse(jsonData);
