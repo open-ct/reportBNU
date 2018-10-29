@@ -94,7 +94,9 @@
     				faza.appendChild(divnew);
     			}
     			else if(jsonData[i]["type"]=="paging"){
-    				;
+    				var divnew=document.createElement("p");
+    				divnew.className="pageBreak";
+    				divnew.style.pageBreakBefore="left";
     			}
     			else{
     				var textcontent=jsonData[i]["text"];
