@@ -108,7 +108,6 @@ public class SaveHtmlAction extends ActionSupport {
 		    JSONObject value = jsonData.getJSONObject(key);
 		    String type = value.getString("type");
 		    String text = value.getString("text");
-		    System.out.println(type);
 		    if(type.equals("graph")){
 		    	htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
 		    	htmlData +=	"<img src=\"../" + text + "\">\n</p>\n";

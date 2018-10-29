@@ -19,30 +19,7 @@
 			display: none;
 		}
 	</style>
-<script type="text/javascript">
-	
-$(document).ready(function(){
-	var inputFormValidate=$("#input_form").validate({
-		rules: {
-			email: {required: true, email: true, maxlength: 60},
-		},
-		messages: {
-			email: {
-				email: "格式不正确！",
-				remote: "邮箱已存在"
-			}
-		},
-		errorPlacement: function(error, element) {
-			//error.appendTo(element.parent().parent());
-			element.parent().append(error);
-			//	$(element).css("borderColor","#C40000");
-		}
-	});
 
-});
-
-	
-</script>
 </head>
 <body>
 	<input type="hidden" id="id" name="id" value="${survey.id }">
@@ -76,14 +53,6 @@ $(document).ready(function(){
 									<tr>
 										<td width="80" align="right">账号</td>
 										<td class="ac-input-td"><input type="text" name="loginName" value="${user.loginName }" readonly="readonly"  style="background: rgb(240, 240, 240);" > </td>
-									</tr>
-									<tr>
-										<td width="80" align="right">邮箱</td>
-										<td class="ac-input-td"><input type="text" id="email" name="email" value="${user.email }"> </td>
-									</tr>
-									<tr>
-										<td width="80" align="right">手机号</td>
-										<td class="ac-input-td"><input type="text" name="cellphone" value="${user.cellphone }"> </td>
 									</tr>
 									<tr>
 										<td width="80" align="right">姓名</td>

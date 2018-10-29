@@ -82,10 +82,15 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			info.addRole("admin");
 			return info;
-		} else if(user !=null && ( user.getRoleType().intValue() == 14 || user.getRoleType().intValue() == 24 || user.getRoleType().intValue() == 81 || user.getRoleType().intValue() == 82 || user.getRoleType().intValue() == 83)) {
+		} else if(user !=null && 1 == user.getRoleType().intValue()) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			info.addRole("xxans");
-			System.out.println("info:info_xxans");
+			info.addRole("reviewer");
+			System.out.println("info:info_reviewer");
+			return info;
+		} else if(user !=null && 2 == user.getRoleType().intValue()) {
+			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+			info.addRole("editer");
+			System.out.println("info:info_editer");
 			return info;
 		}else{
 			return null;
