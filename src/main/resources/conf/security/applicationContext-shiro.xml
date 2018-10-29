@@ -19,13 +19,15 @@
 		<property name="realm" ref="shiroDbRealm" />
 		<property name="rememberMeManager" ref="rememberMeManager"/>  
 	</bean>
-	 
+
 	<bean id="formAuthFilter" class="com.key.common.plugs.security.FormAuthenticationWithLockFilter">
 		<property name="maxLoginAttempts" value="100"/>
 		<property name="successAdminUrl" value="/main.action?menu=3"/>
 		<property name="successAdminRole" value="admin"/>
 		<property name="rememberMeParam" value="rememberMe"/>
 	</bean>
+	
+	<bean id="anyRoles" class="com.key.common.plugs.security.CustomRolesAuthorizationFilter" />
 	
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
@@ -39,6 +41,8 @@
 			<util:map>
 				<entry key="authc" value-ref="formAuthFilter">
 				</entry>
+				<entry key="anyRoles" value-ref="anyRoles">
+				</entry>
 			</util:map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -46,7 +50,7 @@
 				<!--/admin_login.jsp = authc-->
 				/login.jsp = authc
 				/ic/** = roles[admin]
-				/design/** = roles[admin]
+				/design/** = anyRoles["admin,editer,reviewer"]
 				/da/** = roles[admin]
 				/sy/** = roles[admin]
 				/ans/** = roles[xxans]

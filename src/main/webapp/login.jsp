@@ -85,7 +85,7 @@ label.error{
 
 <div id="wrap" class="wrapLogin">
 
-	<input type="hidden" id="id" name="id" value="${survey.id }">
+	<input type="hidden" id="id" name="id" value="${report.id }">
 	<input type="hidden" id="ctx" name="ctx" value="${ctx }">
 
 	<div id="header" style="display: none;" >
@@ -235,9 +235,15 @@ label.error{
 								<div style="margin: 80px auto;">
 									<div style="padding-left: 100px;font-size: 20px;">
 										亲爱的&nbsp;<span style="color:#497289;"><shiro:principal></shiro:principal></span>&nbsp;您已经登陆
-										<%--<span style="margin-left: 10px;"><a href="${ctx }/c/survey.action" >问卷列表</a>&nbsp;&nbsp;--%>
-											   <shiro:hasRole name="admin">
-										<span style="margin-left: 10px;"><a href="${ctx }/design/my-survey.action">管理</a>&nbsp;&nbsp;</span>
+										<%--<span style="margin-left: 10px;"><a href="${ctx }/c/report.action" >问卷列表</a>&nbsp;&nbsp;--%>
+											<shiro:hasRole name="admin">
+										<span style="margin-left: 10px;"><a href="${ctx }/design/my-report.action">管理</a>&nbsp;&nbsp;</span>
+											</shiro:hasRole>
+											<shiro:hasRole name="editer">
+										<span style="margin-left: 10px;"><a href="${ctx }/design/my-report.action">编写报告</a>&nbsp;&nbsp;</span>
+											</shiro:hasRole>
+											<shiro:hasRole name="reviewer">
+										<span style="margin-left: 10px;"><a href="${ctx }/design/my-report.action">审核报告</a>&nbsp;&nbsp;</span>
 											</shiro:hasRole>
 											<shiro:hasRole name="xxans">
 										<%--<span style="margin-left: 10px;"><a href="${ctx}/ans/answer-stat!nojoin.action" id="nojoin_yangben">未填写用户</a>&nbsp;&nbsp;</span>--%>
