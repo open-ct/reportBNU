@@ -132,7 +132,7 @@ public class SaveHtmlAction extends ActionSupport {
 		    	else if(type.equals("texttitle2")) style="text-align: left; font-family: SimHei; font-size: 16pt;";
 		    	else if(type.equals("texttitle3")) style="text-align: left; font-family: SimHei; font-size: 14pt;";
 		    	else if(type.equals("texttitle4")) style="text-align: left; font-family: SimHei; font-size: 12pt;";
-		    	else if(type.equals("textbody")) style="text-indent: 24pt; text-align: left; font-family: FangSong; font-size: 12pt;";
+		    	else if(type.equals("textbody")) style="text-indent: 24pt; text-align: left; font-family: 华文仿宋; font-size: 12pt;";
 		    	else if(type.equals("textnote")) style="text-align: left; font-family: KaiTi; font-size: 10.5pt;";
 		    	else if(type.equals("imagetitle")) style="text-align: center; font-family: STXinwei; font-size: 12pt;";
 		    	htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + text + "</p>\n";
