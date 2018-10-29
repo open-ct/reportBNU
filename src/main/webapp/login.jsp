@@ -239,7 +239,7 @@ label.error{
 											<shiro:hasRole name="admin">
 										<span style="margin-left: 10px;"><a href="${ctx }/design/my-report.action">管理</a>&nbsp;&nbsp;</span>
 											</shiro:hasRole>
-											<shiro:hasRole name="editer">
+											<shiro:hasRole name="editor">
 										<span style="margin-left: 10px;"><a href="${ctx }/design/my-report.action">编写报告</a>&nbsp;&nbsp;</span>
 											</shiro:hasRole>
 											<shiro:hasRole name="reviewer">
