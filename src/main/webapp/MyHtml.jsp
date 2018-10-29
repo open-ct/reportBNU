@@ -192,9 +192,7 @@
 		                        </div>
 		                        
     				`;
-    				var ff=obj.parentNode;
-    				var fff=ff.parentNode;
-    				fff.after(divnew);
+    				fa.appendChild(divnew);
     			}
     			else{
     				var textcontent=jsonData[i]["text"];
