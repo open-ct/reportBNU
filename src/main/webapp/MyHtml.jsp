@@ -19,6 +19,14 @@
     <link href="${ctx }/plugins/chartist/chartist.min.css" rel="stylesheet" />
     <link href="${ctx }/css/chat-page.css" rel="stylesheet" />
     <link rel="shortcut icon" href="img/favicon.ico" />
+    
+    
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8" src="${ctx }/js/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${ctx }/js/ueditor.all.min.js"> </script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="${ctx }/lang/zh-cn/zh-cn.js"></script>
 
 </head>
 
@@ -89,9 +97,11 @@
     <script data-pace-options='{ "ajax": false }' src="${ctx }/plugins/pacejs/pace.js"></script>
 
     <script src="${ctx }/plugins/chartist/chartist.min.js"></script>
-
+	
     <script src="${ctx }/js/dashboard2.js"></script>
     <script src="${ctx }/js/main.js"></script>
+    
+    
     <script type="text/javascript">
     	window.onload=function(){
     		var data="${data}".split(',');
@@ -428,44 +438,56 @@
                                     <div class="ui segment">
                                     	输入行数：
                                     	<select name = "rownumber">
-                                    		<option value="1">表类型一</option>
-											<option value="2">表类型二</option>
-											<option value="3">表类型三</option>
-											<option value="4">表类型四</option>
-											<option value="5">表类型五</option>
-											<option value="6">表类型六</option>
+                                    		<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
                                     	</select>
                                     	输入列数：
-                                    	<select name = "dbusing">
-                                    		<option value="1">一年级</option>
-											<option value="2">二年级</option>
-											<option value="3">三年级</option>
-											<option value="4">四年级</option>
-											<option value="5">五年级</option>
-											<option value="6">六年级</option>
-											<option value="7">初一</option>
-											<option value="8">初二</option>
-											<option value="9">初三</option>
+                                    	<select name = "colnumber">
+                                    		<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+											<option value="16">16</option>
+											<option value="17">17</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
                                     	</select>
-                                    	变量名：
-                                    	<select name = "parameter">
-                                    		<option value="1">变量名一</option>
-											<option value="2">变量名二</option>
-											<option value="3">变量名三</option>
-											<option value="4">变量名四</option>
-											<option value="5">变量名五</option>
-											<option value="6">变量名六</option>
-                                    	</select>
-                                    	运算类型：
-                                    	<select name = "opertype">
-                                    		<option value="1">运算一</option>
-											<option value="2">运算二</option>
-											<option value="3">运算三</option>
-											<option value="4">运算四</option>
-											<option value="5">运算五</option>
-											<option value="6">运算六</option>
-                                    	</select>
-                                    	<button class="positive ui button" onclick="gettable()">确定</button>
+                                    	<button class="positive ui button" onclick="gettable(this)">生成表格</button>
+                                    	书签名称（格式：地区代码_书签）：
+                                    	<div class="ui fluid action input">
+                                    		<input type="text" placeholder="输入书签" />
+                                    		<div class="positive ui button" onclick="filltable(this)">填入数据</div>
+                                    	</div>
                                     </div>
                                 </div>
                             </div>
@@ -495,6 +517,45 @@
     		fff.after(divnew);
     	}
     	
+    	function createtablebysize(sizerow,sizecol){
+    		var rowhtml="<tr>";
+    		for(var i=0;i<sizecol;i++)rowhtml+="<td></td>";
+    		rowhtml+="</tr>";
+    		var tbhtml="<table><tbody>";
+    		for(var i=0;i<sizerow;i++)tbhtml+=rowhtml;
+    		tbhtml+="</tbody></table>";
+    		return tbhtml;
+    	}
+    	
+    	function gettable(obj){
+    		var divnew = document.createElement("script");
+    		//divnew.className = "ui segment";
+    		var newid = new Date().getTime();
+    		divnew.id = 'container'+newid;
+    		divnew.type = "text/plain";
+    		var bro = obj.previousElementSibling;
+    		var bbro = bro.previousElementSibling;
+    		var r = bbro.value;
+    		var c = bro.value;
+    		var tablehtml = createtablebysize(r,c);
+    		//divnew.innerHTML = `
+    		//	<div class="mktable" display='none'></div>
+    		//`+tablehtml;
+    		var parent=obj.parentNode;
+    		parent.after(divnew);
+    		var ue = UE.getEditor('container'+newid,{
+    			toolbars:[
+    			['mergecells','source']
+    			]
+    		});
+    		ue.addListener("ready", function () {
+				ue.setContent(tablehtml,false);
+			});
+    	}
+    	
+    	function filltable(obj){
+    		
+    	}
     	
     	function paging(obj){
     		var divnew = document.createElement("div");
