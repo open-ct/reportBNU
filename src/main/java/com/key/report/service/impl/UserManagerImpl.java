@@ -1,23 +1,19 @@
 package com.key.report.service.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.key.common.utils.RandomUtils;
-import com.key.common.utils.excel.XLSExportUtil;
-import com.key.report.service.UserManager;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.key.common.base.dao.UserDao;
 import com.key.common.base.entity.User;
 import com.key.common.plugs.page.Page;
 import com.key.common.service.BaseServiceImpl;
 import com.key.common.utils.security.DigestUtils;
+import com.key.report.service.UserManager;
 
 
 /**

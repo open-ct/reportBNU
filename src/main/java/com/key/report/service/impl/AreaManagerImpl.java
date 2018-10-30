@@ -1,28 +1,21 @@
 package com.key.report.service.impl;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import com.key.report.dao.AreaDao;
-import com.key.report.service.AreaManager;
-import com.key.report.service.UserManager;
-import com.key.report.entity.Area;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.key.common.base.entity.User;
 import com.key.common.base.service.AccountManager;
 import com.key.common.plugs.page.Page;
 import com.key.common.plugs.page.PropertyFilter;
 import com.key.common.service.BaseServiceImpl;
-import com.key.common.utils.RandomUtils;
+import com.key.report.dao.AreaDao;
+import com.key.report.entity.Area;
+import com.key.report.service.AreaManager;
+import com.key.report.service.UserManager;
 
 
 /**
