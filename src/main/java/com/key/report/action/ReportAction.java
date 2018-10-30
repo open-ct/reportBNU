@@ -1,23 +1,26 @@
 package com.key.report.action;
 
+import java.net.URLDecoder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.struts2.convention.annotation.AllowedMethods;
+import org.apache.struts2.convention.annotation.InterceptorRef;
+import org.apache.struts2.convention.annotation.InterceptorRefs;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.key.common.base.action.CrudActionSupport;
 import com.key.common.base.entity.User;
 import com.key.common.base.service.AccountManager;
 import com.key.common.utils.web.Struts2Utils;
 import com.key.report.entity.Report;
 import com.key.report.service.ReportManager;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.apache.struts2.convention.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 我的问卷 action
@@ -80,6 +83,7 @@ public class ReportAction extends CrudActionSupport<Report, String>{
 		if(report!=null){
 			report.setReportName(URLDecoder.decode(entity.getReportName(),"utf-8"));
 			report.setReportState(entity.getReportState());
+			report.setReportLevel(entity.getReportLevel());
 			report.setOrderbyNum(entity.getOrderbyNum());
 			reportManager.save(report);
 			s=true;

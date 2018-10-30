@@ -94,7 +94,7 @@ button {
 							<div class="contacts_search" style="padding: 5px;color:#666565;" >
 								<div style="padding-left: 20px;padding-top: 8px;padding-bottom: 8px;">
 									<span style="font-size: 14px;vertical-align: middle;">状态&nbsp;</span>
-									<select name="reportState" style="vertical-align: middle;">  <option value="">不限</option><option value="0">设计</option><option value="1">发布</option><option value="2">结束</option> </select>
+									<select name="reportState" style="vertical-align: middle;">  <option value="">不限</option><c:if test="${roleType == 0 or roleType == 2}"><option value="0">设计</option></c:if><option value="1">待审核</option><c:if test="${roleType == 0 or roleType == 2}"><option value="2">审核未通过，需修改</option></c:if><option value="3">审核通过</option> </select>
 									&nbsp;&nbsp;
 									<span style="font-size: 14px;vertical-align: middle;">名称&nbsp;</span>
 									<input type="text" class="inputS1" name="reportName" value="${reportName}">
@@ -116,8 +116,8 @@ button {
 										<th align="left" >报告</th>
 										<th align="left" width="100">创建者</th>
 										<th align="left" width="200">创建时间</th>
-										<th align="left" width="80">状态</th>
-										<th align="center" width="260" style="padding-left: 10px;">操作</th>
+										<th align="left" width="200">状态</th>
+										<th align="center" width="350" style="padding-left: 10px;">操作</th>
 									</tr>
 									<c:choose>
 									<c:when test="${page.totalItems > 0}">
@@ -133,8 +133,8 @@ button {
 										<td align="left">
 											<fmt:formatDate value="${en.createDate }" pattern="yyyy年MM月dd日 HH:mm"/>
 										</td>
-										<td align="left" >
-											${en.reportState eq 0 ? '设计':en.reportState eq 1?'待审核':en.reportState eq 2?'完成':'' }
+										<td align="left" name='reportState'>
+											${en.reportState eq 0 ? '设计':en.reportState eq 1?'待审核':en.reportState eq 2?'审核未通过，需修改':en.reportState eq 3?'审核通过':'' }
 										</td>
 										<td align="left">
 											&nbsp;
@@ -143,10 +143,16 @@ button {
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design!previewDev.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
 											  <a class="btn btn-default" href="${ctx }/export!exportPDF.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
 											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属生设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
-											  <!-- 
-											  <a class="btn btn-default copySurvey" href="#${en.id}" title="复制一份" data-toggle="tooltip" data-placement="top" ><i class="fa fa-files-o"></i></a>
-											  -->
+											  <c:if test="${roleType == 0 or roleType == 2}">
+											  <a class="btn btn-default updateState" href="#${en.id}" title="提交审核" data-toggle="tooltip" data-placement="top" value="1"><i class="fa fa-upload" aria-hidden="true"></i></a>
+											　</c:if>
+											  <c:if test="${roleType == 0 or roleType == 1}">
+											  <a class="btn btn-default updateState" href="#${en.id}" title="审核不通过" data-toggle="tooltip" data-placement="top" value="2"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+											  <a class="btn btn-default updateState" href="#${en.id}" title="审核通过" data-toggle="tooltip" data-placement="top" value="3"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+											  </c:if>
+											  <c:if test="${roleType == 0 or roleType == 2}">
 											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
+											  </c:if>
 											</div>&nbsp;
 											<div class="btn-group" style="display: none;">
 												<!-- <a class="btn btn-default" href="#"><i class="fa fa-eye"></i></a> -->
@@ -356,95 +362,135 @@ $("#reportAdd-a").click(function(){
 });
 
 
-	$(".attrSurvey").click(function(){
+$(".attrSurvey").click(function(){
 
-		var reportId=$(this).parents("tr").find("input[name='reportId']").val();
-		var reportLevel = $(this).parents("tr").find("input[name='reportLevel']");
-		var reportLevelValue=$(this).parents("tr").find("input[name='reportLevel']").val();
-		var titleValue=$(this).parents("tr").find(".titleTag").text();
-		var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
-		var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
+	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
+	var reportLevel = $(this).parents("tr").find("input[name='reportLevel']");
+	var reportLevelValue=$(this).parents("tr").find("input[name='reportLevel']").val();
+	var title=$(this).parents("tr").find(".titleTag");
+	var titleValue=$(this).parents("tr").find(".titleTag").text();
+	var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
+	var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
 
-		var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
-		var orderbyNumValue = orderbyNum.val();
+	var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
+	var orderbyNumValue = orderbyNum.val();
 
-		$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
-				"<div>报告标题：<input id='surTitleTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
-				"<div style='margin-top: 12px;'>排序编号：<input id='orderbyNumTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
-				"<div style='margin-top: 12px;'>报告分类：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
-				"<option value='1'>省报告</option>" +
-				"<option value='2'>市报告</option>" +
-				"<option value='3'>区报告</option>" +
-				"<option value='4'>校报告</option>" +
-				"</select></div></div></div>");
+	$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
+			"<div>报告标题：<input id='surTitleTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
+			"<div style='margin-top: 12px;'>排序编号：<input id='orderbyNumTemp' type='text' style='padding:3px;width:320px;color:rgb(14, 136, 158);' value=''></div>" +
+			"<div style='margin-top: 12px;'>报告分类：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
+			"<option value='1'>省报告</option>" +
+			"<option value='2'>市报告</option>" +
+			"<option value='3'>区报告</option>" +
+			"<option value='4'>校报告</option>" +
+			"</select></div></div></div>");
 
-		var myDialog=$( "#myDialogRoot" ).dialog({
-			width:500,
-			height:260,
-			autoOpen: true,
-			modal:true,
-			position:["center","center"],
-			title:"报告分类设置",
-			resizable:false,
-			draggable:false,
-			closeOnEscape:false,
-			show: {effect:"blind",direction:"up",duration: 500},
-			hide: {effect:"blind",direction:"left",duration: 200},
-			buttons: {
-				"OK":{
-					text: "确认",
-					addClass:'dialogMessageButton dialogBtn1',
-					click: function() {
-						//执行发布
-						var reportName=$("#surTitleTemp").val();
-						reportName=optionValue=escape(encodeURIComponent(reportName));
-						var reportLevelTemp = $("#reportLevelTemp").val();
-						var orderbyNumTemp = $("#orderbyNumTemp").val();
-						if(reportLevelTemp!=null && reportLevelTemp!=""){
-							var params="reportName="+reportName;
-							params+="&reportLevel="+reportLevelTemp;
-							params+="&orderbyNum="+orderbyNumTemp;
-							params+="&id="+reportId;
-							//window.location.href="${ctx}/c/report!save.action?"+params;
-							var url = "${ctx}/c/report!save.action";
-							$.ajax({
-								url:url,
-								data:params,
-								type:"post",
-								success:function(msg){
-									if(msg=="true"){
-										reportLevel.val(reportLevelTemp);
-										orderbyNum.val(orderbyNumTemp);
-										$( "#myDialogRoot" ).dialog( "close" );
-									}else{
-										alert("保存失败！");
-									}
+	var myDialog=$( "#myDialogRoot" ).dialog({
+		width:500,
+		height:260,
+		autoOpen: true,
+		modal:true,
+		position:["center","center"],
+		title:"报告分类设置",
+		resizable:false,
+		draggable:false,
+		closeOnEscape:false,
+		show: {effect:"blind",direction:"up",duration: 500},
+		hide: {effect:"blind",direction:"left",duration: 200},
+		buttons: {
+			"OK":{
+				text: "确认",
+				addClass:'dialogMessageButton dialogBtn1',
+				click: function() {
+					//执行发布
+					var reportName=$("#surTitleTemp").val();
+					reportName=optionValue=escape(encodeURIComponent(reportName));
+					var reportLevelTemp = $("#reportLevelTemp").val();
+					var orderbyNumTemp = $("#orderbyNumTemp").val();
+					if(reportLevelTemp!=null && reportLevelTemp!=""){
+						var params="reportName="+reportName;
+						params+="&reportLevel="+reportLevelTemp;
+						params+="&orderbyNum="+orderbyNumTemp;
+						params+="&id="+reportId;
+						//window.location.href="${ctx}/c/report!save.action?"+params;
+						var url = "${ctx}/c/report!save.action";
+						$.ajax({
+							url:url,
+							data:params,
+							type:"post",
+							success:function(msg){
+								if(msg=="true"){
+									reportLevel.val(reportLevelTemp);
+									orderbyNum.val(orderbyNumTemp);
+									title.text($("#surTitleTemp").val());
+									$( "#myDialogRoot" ).dialog( "close" );
+								}else{
+									alert("保存失败！");
 								}
-							});
-						}else{
-							alert("请选择分类");
-						}
-					}
-				},
-				"CENCEL":{
-					text: "取消",
-					addClass:"dialogBtn1 dialogBtn1Cencel",
-					click: function() {
-						$( this ).dialog( "close" );
+							}
+						});
+					}else{
+						alert("请选择分类");
 					}
 				}
 			},
-			open:function(event,ui){
-				$(".ui-dialog-titlebar-close").hide();
-				$("#surTitleTemp").val(titleValue);
-				$("#reportLevelTemp").val(reportLevelValue);
-				$("#orderbyNumTemp").val(orderbyNumValue);
-			},
-			close:function(event,ui){
-				$("#myDialogRoot").remove();
+			"CENCEL":{
+				text: "取消",
+				addClass:"dialogBtn1 dialogBtn1Cencel",
+				click: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		},
+		open:function(event,ui){
+			$(".ui-dialog-titlebar-close").hide();
+			$("#surTitleTemp").val(titleValue);
+			$("#reportLevelTemp").val(reportLevelValue);
+			$("#orderbyNumTemp").val(orderbyNumValue);
+		},
+		close:function(event,ui){
+			$("#myDialogRoot").remove();
+		}
+	});
+});
+
+$(".updateState").click(function(){
+	var reportState = $(this).parents("tr").find("td[name='reportState']");
+	var reportStateTemp = parseInt($(this).attr("value"));
+	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
+	var msg, newState;
+	if(reportStateTemp==1){
+		msg="确认提交吗？";
+		newState = "待审核";
+	}
+	else if(reportStateTemp==2){
+		msg="确认不通过吗？";
+		newState = "未通过审核，需修改";
+	}
+	else if(reportStateTemp==3){
+		msg="确认通过吗？";
+		newState = "已通过审核";
+	}
+	if(confirm(msg)){
+		var url = "${ctx}/c/report!save.action";;
+		var params="reportState="+reportStateTemp;
+		params+="&id="+reportId;
+		$.ajax({
+			url:url,
+			data:params,
+			type:"post",
+			success:function(msg){
+				if(msg=="true"){
+					reportState.html(newState);
+				}else{
+					alert("保存失败！");
+				}
 			}
 		});
-	});
+	}
+	return false;
+		
+});
 
 function setSelectText(el) {
     try {

@@ -3,11 +3,12 @@ package com.key.report.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.key.report.service.ReportManager;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
-
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.AllowedMethods;
+import org.apache.struts2.convention.annotation.InterceptorRef;
+import org.apache.struts2.convention.annotation.InterceptorRefs;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.key.common.base.action.CrudActionSupport;
@@ -15,6 +16,10 @@ import com.key.common.base.entity.User;
 import com.key.common.base.service.AccountManager;
 import com.key.common.utils.web.Struts2Utils;
 import com.key.report.entity.Report;
+import com.key.report.service.ReportManager;
+
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 /**
  * 我的问卷 action
@@ -42,7 +47,11 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 		if(reportState==null||"".equals(reportState)){
 			entity.setReportState(null);
 		}
-	    page=reportManager.findByUser(page,entity);
+		User user= accountManager.getCurUser();
+		if(user != null){
+			page=reportManager.findByUser(page,entity);
+			Struts2Utils.setReqAttribute("roleType", user.getRoleType());
+		}
 	    return SUCCESS;
 	}
 	
@@ -50,15 +59,15 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 	    HttpServletResponse response=Struts2Utils.getResponse();
 	    String result="false";
 	    try{
-		User user = accountManager.getCurUser();
-		if(user!=null){
-		    String userId=user.getId();
-		    Report report=reportManager.getReportByUser(id,userId);
-		    if(report!=null){
-		    	reportManager.delete(id);
-		    	result="true";
-		    }
-		}
+			User user = accountManager.getCurUser();
+			if(user!=null){
+			    String userId=user.getId();
+			    Report report=reportManager.getReportByUser(id,userId);
+			    if(report!=null){
+			    	reportManager.delete(id);
+			    	result="true";
+			    }
+			}
 	    }catch (Exception e) {
 			result="false";
 	    }

@@ -55,7 +55,6 @@ public class SaveHtmlAction extends ActionSupport {
 			String userId=user.getId();
 			if(userId.equals(report.getUserId())){
 				System.out.println("OK");
-				report.setReportState(1);
 				report.setVisibility(1);
 				reportManager.save(report);
 			}else{

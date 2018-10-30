@@ -1,18 +1,11 @@
 package com.key.report.service.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.key.report.dao.ReportDao;
-import com.key.report.service.ReportManager;
-import com.key.report.service.UserManager;
-import com.key.report.entity.Report;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +15,10 @@ import com.key.common.base.service.AccountManager;
 import com.key.common.plugs.page.Page;
 import com.key.common.service.BaseServiceImpl;
 import com.key.common.utils.RandomUtils;
+import com.key.report.dao.ReportDao;
+import com.key.report.entity.Report;
+import com.key.report.service.ReportManager;
+import com.key.report.service.UserManager;
 
 
 /**
@@ -319,19 +316,25 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 											Report entity) {
 	    User user=accountManager.getCurUser();
 	    if(user!=null){
-			List<Criterion> criterions=new ArrayList<Criterion>();
-
-			criterions.add(Restrictions.eq("userId", user.getId()));
+	    	List<Criterion> criterions=new ArrayList<Criterion>();
+	    	if(user.getRoleType() == 2){
+	    		criterions.add(Restrictions.eq("userId", user.getId()));
+	    	}
 			criterions.add(Restrictions.eq("visibility", 1));
-
+			Integer reportState = null;
 			if(entity!=null){
-				Integer reportState = entity.getReportState();
+				reportState = entity.getReportState();
 				if(reportState!=null && !"".equals(reportState)){
 					criterions.add(Restrictions.eq("reportState", reportState));
 				}
 				String reportName = entity.getReportName();
 				if(reportName!=null && !"".equals(reportName)){
 					criterions.add(Restrictions.like("reportName", "%"+reportName+"%"));
+				}
+			}
+			if(reportState == null){
+				if(user.getRoleType() == 1){
+					criterions.add(Restrictions.or(Restrictions.eq("reportState", 1), Restrictions.eq("reportState", 3)));
 				}
 			}
 
