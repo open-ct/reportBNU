@@ -21,6 +21,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 
 import com.key.common.utils.web.Struts2Utils;
+import com.key.report.utils.ExcutePython;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/")
@@ -36,23 +37,11 @@ public class DrawGraphAction extends ActionSupport {
 		PrintWriter out = response.getWriter();
 		//String bookmark = "13102_区依附各区单科得分盒式图_01_4";
 		String bookmark = request.getParameter("data");
-		String s = "--bookmark=" + bookmark;
-		Process process = Runtime.getRuntime().exec("C:/Workspace/PythonProject/report/report/Scripts/python C:/Workspace/PythonProject/report/process.py " + s);
-		try {
-			process.waitFor();
-			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), Charset.forName("GBK")));
-	        String line = br.readLine();
-	        if(line != null){
-	        	out.write(line);
-	        	out.flush();
-	        	out.close();
-	            System.out.println(line);
-	        }
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("return");
+		String line = ExcutePython.drawGraph(bookmark);
+	    out.write(line);
+    	out.flush();
+    	out.close();
+        System.out.println(line);
 		return NONE;
 	}
 

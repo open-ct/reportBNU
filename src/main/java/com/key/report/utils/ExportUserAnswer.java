@@ -1,4 +1,4 @@
-package com.key.report.stat;
+package com.key.report.utils;
 
 import com.key.common.base.dao.UserDao;
 import com.key.common.base.entity.User;

@@ -39,6 +39,7 @@ import com.key.common.utils.Property;
 import com.key.common.utils.web.Struts2Utils;
 import com.key.report.entity.Report;
 import com.key.report.service.ReportManager;
+import com.key.report.utils.ExcutePython;
 import com.opensymphony.xwork2.ActionSupport;
 
 import net.sf.json.JSONArray;
@@ -63,24 +64,12 @@ public class ExportAction extends ActionSupport {
 		Report report=reportManager.getReport(reportId);
 		User user= accountManager.getCurUser();
 		if(user!=null && report!=null){
-			String fileName = htmlToPDF(reportId);
+			String fileName = ExcutePython.htmlToPDF(reportId);
 			response.sendRedirect(request.getContextPath() + "/files/reportPDF/" + fileName);
 		}else{
 			Struts2Utils.setReqAttribute("msg", "未登录或没有相应数据权限");
 		}
 		return null;
-	}
-	
-	private String htmlToPDF(String reportId) throws IOException, InterruptedException{
-		String url = "http://localhost:8080/report/files/reportHtml/" + reportId + ".html";
-		String filePath = "C:/Users/H/Workspaces/MyEclipse 2017/.metadata/.me_tcat85/webapps/report/files/reportPDF/";
-		File file2 = new File(filePath);
-		if (!file2.exists() || !file2.isDirectory()) file2.mkdirs();
-		String filename = "\"" + filePath + reportId + ".pdf\"";
-		String cmd = "C:/Workspace/PythonProject/report/wkhtmltopdf/bin/wkhtmltopdf " + url + " " + filename;
-		Process process = Runtime.getRuntime().exec(cmd);
-		process.waitFor();
-		return reportId + ".pdf";
 	}
 	
 	public String getReportId() {
