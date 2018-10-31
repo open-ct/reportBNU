@@ -161,6 +161,114 @@
 		    		`;
 		    		fa.appendChild(divnew);
     			}
+    			else if(jsonData[i]["type"]=="table"){
+   					var divnew = document.createElement("div");
+		    		divnew.className = "ui equal width left aligned padded grid stackable";
+		    		divnew.id = new Date().getTime();
+		    		divnew.innerHTML = `
+		                            <div class="row">
+		                            <div class="sixteen wide column">
+		                                <div class="ui segments">
+		                                	<div class="ui segment">
+		                                        <h5 class="ui header">
+		                                            添加表
+		                                        </h5>
+		                                    </div>
+		                                    <div class="ui segment">
+		                                    	输入行数：
+		                                    	<select name = "rownumber">
+		                                    		<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+													<option value="13">13</option>
+													<option value="14">14</option>
+													<option value="15">15</option>
+													<option value="16">16</option>
+													<option value="17">17</option>
+													<option value="18">18</option>
+													<option value="19">19</option>
+													<option value="20">20</option>
+		                                    	</select>
+		                                    	输入列数：
+		                                    	<select name = "colnumber">
+		                                    		<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+													<option value="13">13</option>
+													<option value="14">14</option>
+													<option value="15">15</option>
+													<option value="16">16</option>
+													<option value="17">17</option>
+													<option value="18">18</option>
+													<option value="19">19</option>
+													<option value="20">20</option>
+		                                    	</select>
+		                                    	<button class="positive ui button" onclick="gettable(this)">生成表格</button>
+		                                    	书签名称（格式：地区代码_书签）：
+		                                    	<div class="ui fluid action input">
+		                                    		<input type="text" placeholder="输入书签" />
+		                                    		<div class="positive ui button" onclick="filltable(this)">填入数据</div>
+		                                    	</div>
+		                                    </div>
+		                                    <div class="ui segment">
+		                                    	<div class="mktable" display="none"></div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div>
+		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
+		                        		添加文字
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
+		                        		添加图
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
+		                        		添加表
+		                                            <i class="add icon"></i>
+		                        </div>
+				                <div class="ui teal labeled icon button" onclick="paging(this)" >
+		                        		分页
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
+		                        </div>
+		    		`;
+		    		fa.appendChild(divnew);
+		    		var divscript = document.createElement("script");
+		    		divscript.id='container'+divnew.id;
+		    		divscript.type="text/plain";
+		    		fa.lastElementChild.children[0].children[0].children[0].children[2].appendChild(divscript);
+		    		var ue = UE.getEditor('container'+divnew.id,{
+		    			toolbars:[
+		    			['mergecells','source']
+		    			]
+		    		});
+		    		console.log(jsonData[i]["text"]);
+		    		ue.addListener("ready", function () {
+						ue.setContent(jsonData[i]["text"],false);
+					});
+    			}
     			else if(jsonData[i]["type"]=="paging"){
     				var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
@@ -519,7 +627,7 @@
     	
     	function createtablebysize(sizerow,sizecol){
     		var rowhtml="<tr>";
-    		for(var i=0;i<sizecol;i++)rowhtml+="<td></td>";
+    		for(var i=0;i<sizecol;i++)rowhtml+=`<td style="border: 1px solid windowtext;"></td>`;
     		rowhtml+="</tr>";
     		var tbhtml="<table><tbody>";
     		for(var i=0;i<sizerow;i++)tbhtml+=rowhtml;
@@ -528,21 +636,25 @@
     	}
     	
     	function gettable(obj){
-    		var divnew = document.createElement("script");
-    		//divnew.className = "ui segment";
+    		var divnew = document.createElement("div");
+    		divnew.className = "ui segment";
+    		divnew.id = new Date().getTime();
+    		var divnow = document.createElement("div");
+    		divnow.className = "mktable";
+    		divnow.display = "none";
+    		divnew.appendChild(divnow);
+    		var contain = document.createElement("script");
     		var newid = new Date().getTime();
-    		divnew.id = 'container'+newid;
-    		divnew.type = "text/plain";
+    		contain.id = 'container'+newid;
+    		contain.type = "text/plain";
+    		divnew.appendChild(contain);
+    		var fa = obj.parentNode;
+    		fa.after(divnew);
     		var bro = obj.previousElementSibling;
     		var bbro = bro.previousElementSibling;
     		var r = bbro.value;
     		var c = bro.value;
     		var tablehtml = createtablebysize(r,c);
-    		//divnew.innerHTML = `
-    		//	<div class="mktable" display='none'></div>
-    		//`+tablehtml;
-    		var parent=obj.parentNode;
-    		parent.after(divnew);
     		var ue = UE.getEditor('container'+newid,{
     			toolbars:[
     			['mergecells','source']
@@ -684,6 +796,13 @@
     				_list[len]=new Object();
     				_list[len].type="graph";
     				_list[len].text=contentseg.children[1].getAttribute("src");
+    				len++;
+    			}
+    			else if(mark.className=="mktable"){
+    				_list[len]=new Object();
+    				_list[len].type="table";
+    				var inhtml = contentseg.children[1].children[0].children[1].children[0];
+    				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
     				len++;
     			}
     			else if(mark.className=="pageBreak"){

@@ -20,7 +20,10 @@
     <link href="${ctx }/css/chat-page.css" rel="stylesheet" />
     <link href="${ctx }/css/predisplay.css" rel="stylesheet" />
     <link rel="shortcut icon" href="${ctx }/img/favicon.ico" />
-
+    
+    <style id="tablesort">table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;   background-image:url(https://ueditor.baidu.com/ueditor/themes/default/images/sortable.png);}</style>
+	<style id="table">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{padding: 5px 10px;border: 1px solid #DDD;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>
+	
 </head>
 
 <body>
@@ -97,6 +100,13 @@
     				divnew.style.pageBreakBefore="left";
     				divnew.innerHTML='----分页符----';
     				divnew.style.textAlign="center";
+    				faza.appendChild(divnew);
+    			}
+    			else if(jsonData[i]["type"]=="table"){
+    				var divnew=document.createElement("table");
+    				divnew.className="table";
+    				divnew.style.margin="0 auto";
+    				divnew.innerHTML=jsonData[i]["text"];
     				faza.appendChild(divnew);
     			}
     			else{
