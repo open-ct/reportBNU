@@ -106,9 +106,6 @@ button {
 							</form>
 							
 							<div style="margin-top: 15px;">
-							<div style="padding: 5px;color: #666565;text-align: right;">
-								<a href="" class="export-contacts active"><span>&nbsp;</span>导出联系人</a>
-							</div>
 							<div style="padding: 5px;color:#666565; ">
 								<table class="contacts-table" width="100%" cellpadding="0" cellspacing="0">
 									<tr>

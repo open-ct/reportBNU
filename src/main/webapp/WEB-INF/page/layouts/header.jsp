@@ -31,8 +31,7 @@
 				<div class="header_Item header_menu">
 					<ul>
 							<%-- <li><a href="${ctx }/" >首页</a></li> --%>
-						<li><a href="${ctx }/design/my-survey.action" id="mysurvey">问卷</a></li>
-						<li><a href="http://support.diaowen.net/">帮助</a></li>
+						<li><a href="${ctx }/design/my-report.action" id="mysurvey">报告</a></li>
 					</ul>
 				</div>
 				<div class="header_Item header_user" style="float: right;margin-top: 12px;position: relative;zoom: 1;z-index: 165;">
@@ -58,8 +57,7 @@
 				<div class="header_Item header_menu">
 					<ul>
 					<%-- <li><a href="${ctx }/" >首页</a></li> --%>
-					<li><a href="${ctx }/design/my-survey.action" id="mysurvey">问卷</a></li>
-					<li><a href="http://support.diaowen.net/">帮助</a></li>
+					<li><a href="${ctx }/design/my-report.action" id="mysurvey">报告</a></li>
 					</ul>
 				</div>
 				<div class="header_Item header_user" style="float: right;margin-top: 12px;position: relative;zoom: 1;z-index: 165;">
@@ -86,10 +84,10 @@
 				<div class="header_Item header_menu">
 					<ul>
 							<%-- <li><a href="${ctx }/" >首页</a></li> --%>
-						<li><a href="${ctx }/design/my-survey.action" id="mysurvey">问卷</a></li>
-						<%--<li><a href="${ctx }/sy/user/user-admin.action" id="usermanager">用户</a></li>--%>
+						<li><a href="${ctx }/design/my-report.action" id="mysurvey">报告</a></li>
+						<%--<li><a href="${ctx }/sy/user/user-admin.action" id="usermanager">用户</a></li>
 						<li><a href="${ctx}/sy/user/yang-ben.action" id="yangben">样本</a></li>
-						<li><a href="${ctx }/sy/system/sys-property!input.action" id="systemset">设置</a></li>
+						<li><a href="${ctx }/sy/system/sys-property!input.action" id="systemset">设置</a></li>--%>
 					</ul>
 				</div>
 				<div class="header_Item header_user" style="float: right;margin-top: 12px;position: relative;zoom: 1;z-index: 165;">

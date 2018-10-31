@@ -33,9 +33,6 @@
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login.jsp" />
 		<property name="successUrl" value="/design/my-report.action" />
-		<!--
-		<property name="successUrl" value="/design/my-survey.action" />
-		-->
 		<property name="unauthorizedUrl" value="/admin_login.jsp?una=0" />
 		<property name="filters">
 			<util:map>
