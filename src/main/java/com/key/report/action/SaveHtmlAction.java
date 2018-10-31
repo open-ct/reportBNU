@@ -53,7 +53,7 @@ public class SaveHtmlAction extends ActionSupport {
 		User user= accountManager.getCurUser();
 		if(user!=null && report!=null){
 			String userId=user.getId();
-			if(userId.equals(report.getUserId())){
+			if(user.getRoleType() != 2 || userId.equals(report.getUserId())){
 				System.out.println("OK");
 				report.setVisibility(1);
 				reportManager.save(report);
@@ -92,7 +92,10 @@ public class SaveHtmlAction extends ActionSupport {
 	}
 	
 	private void saveHtml(String data, String fileName, String filePath) throws IOException {
-		String htmlData = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n</head>\n<body>\n<div style=\"width:596pt; margin:auto;\">\n";
+		String htmlData = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+				+ "<style id=\"tablesort\">table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;   background-image:url(https://ueditor.baidu.com/ueditor/themes/default/images/sortable.png);}</style>"
+	            + "<style id=\"table\">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{padding: 5px 10px;border: 1px solid #DDD;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>"
+				+ "</head>\n<body>\n<div style=\"width:596pt; margin:auto; word-wrap:break-word;\">\n";
 	    StringBuilder sb=new StringBuilder();
 		for(String s:data.split(","))
 			sb.append((char)Integer.parseInt(s));
@@ -107,6 +110,10 @@ public class SaveHtmlAction extends ActionSupport {
 		    if(type.equals("graph")){
 		    	htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
 		    	htmlData +=	"<img src=\"../" + text + "\">\n</p>\n";
+		    }
+		    else if(type.equals("table")){
+		    	htmlData += "<table class=\"" + type + "\" style=\"margin: 0 auto;\">\n";
+		    	htmlData += text.substring(7);
 		    }
 		    else if(type.equals("paging")){
 		    	htmlData += "<div style=\"page-break-before:left\"></div>";

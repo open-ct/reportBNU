@@ -1,21 +1,16 @@
 package com.key.report.action;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -24,18 +19,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import com.key.report.service.ReportManager;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.AllowedMethods;
+import org.apache.struts2.convention.annotation.InterceptorRef;
+import org.apache.struts2.convention.annotation.InterceptorRefs;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.itextpdf.text.log.SysoCounter;
 import com.key.common.base.entity.User;
 import com.key.common.base.service.AccountManager;
-import com.key.common.utils.Property;
 import com.key.common.utils.JspToHtml;
+import com.key.common.utils.Property;
 import com.key.common.utils.web.Struts2Utils;
 import com.key.report.entity.Report;
+import com.key.report.service.ReportManager;
 import com.opensymphony.xwork2.ActionSupport;
 
 
@@ -107,7 +106,9 @@ public class MyReportDesignAction extends ActionSupport{
 		User user= accountManager.getCurUser();
 		if(user!=null){
 			String userId=user.getId();
-			Report Report=ReportManager.getReportByUser(reportId, userId);
+			Report Report = null;
+			if(user.getRoleType() == 2) Report=ReportManager.getReportByUser(reportId, userId);
+			else Report=ReportManager.getReport(reportId);
 			if(Report!=null){
 				ReportManager.save(Report);
 				String data = null;
