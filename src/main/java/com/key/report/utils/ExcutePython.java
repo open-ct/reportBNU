@@ -23,7 +23,7 @@ public class ExcutePython {
 		File file2 = new File(filePath);
 		if (!file2.exists() || !file2.isDirectory()) file2.mkdirs();
 		String filename = "\"" + filePath + reportId + ".pdf\"";
-		String cmd = "C:/Workspace/PythonProject/report/wkhtmltopdf/bin/wkhtmltopdf " + url + " " + filename;
+		String cmd = "C:/Workspace/PythonProject/report/wkhtmltopdf/bin/wkhtmltopdf --disable-smart-shrinking --margin-bottom 0 --margin-left 0 --margin-right 0 --margin-top 0 " + url + " " + filename;
 		Process process = Runtime.getRuntime().exec(cmd);
 		process.waitFor();
 		return reportId + ".pdf";
