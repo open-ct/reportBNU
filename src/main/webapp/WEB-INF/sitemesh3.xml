@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemesh>
  	<mapping path="/*" decorator="/WEB-INF/page/layouts/default.jsp"/>
- 	<mapping path="/design/my-report-design*" exclue="true"/>
  	<mapping path="/survey!*" exclue="true"/>
  	<mapping path="/survey.*" exclue="true"/>
 	<mapping path="/c/survey!infoConfirm.action" decorator="/WEB-INF/page/layouts/default-head.jsp" />
