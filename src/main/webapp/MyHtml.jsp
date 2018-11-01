@@ -164,7 +164,6 @@
     			else if(jsonData[i]["type"]=="table"){
    					var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
-		    		divnew.id = new Date().getTime();
 		    		divnew.innerHTML = `
 		                            <div class="row">
 		                            <div class="sixteen wide column">
@@ -254,17 +253,18 @@
 		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
 		                        </div>
 		    		`;
+		    		var newid=new Date().getTime();
+		    		divnew.children[0].children[0].children[0].children[2].id=newid;
 		    		fa.appendChild(divnew);
 		    		var divscript = document.createElement("script");
-		    		divscript.id='container'+divnew.id;
+		    		divscript.id='container'+newid;
 		    		divscript.type="text/plain";
 		    		fa.lastElementChild.children[0].children[0].children[0].children[2].appendChild(divscript);
-		    		var ue = UE.getEditor('container'+divnew.id,{
+		    		var ue = UE.getEditor('container'+newid,{
 		    			toolbars:[
 		    			['mergecells','source']
 		    			]
 		    		});
-		    		console.log(jsonData[i]["text"]);
 		    		ue.addListener("ready", function () {
 						ue.setContent(jsonData[i]["text"],false);
 					});
@@ -638,13 +638,13 @@
     	function gettable(obj){
     		var divnew = document.createElement("div");
     		divnew.className = "ui segment";
-    		divnew.id = new Date().getTime();
+    		var newid = new Date().getTime();
+    		divnew.id = newid;
     		var divnow = document.createElement("div");
     		divnow.className = "mktable";
     		divnow.display = "none";
     		divnew.appendChild(divnow);
     		var contain = document.createElement("script");
-    		var newid = new Date().getTime();
     		contain.id = 'container'+newid;
     		contain.type = "text/plain";
     		divnew.appendChild(contain);
@@ -665,8 +665,62 @@
 			});
     	}
     	
+    	function filltablebymark(mark){
+    		var path = "";
+    		$.ajax({
+	            type:"post",
+	            url:"${ctx}/draw-graph.action",
+	            data:{"data":mark},
+	            async: false,
+	            success:function(msg) {
+	                path=msg;
+	            },
+	            error:function(msg) {
+	                console.log(msg);
+	            }
+	        });
+	        return path;
+	        //return "[[2.2, 6.9, 14.6], [8.9, 20.3, 39.6], [2.2, 3.8, 6.9], [86.7, 69.0, 38.9]]";
+    	}
+    	
     	function filltable(obj){
-    		
+    		var bro=obj.previousElementSibling;
+    		var tt=bro.value;
+    		var fillstr=filltablebymark(tt);
+    		var fillarr = eval(fillstr);
+    		var fa=obj.parentNode;
+    		fa=fa.parentNode;
+    		var uncle=fa.nextElementSibling;
+    		var uid=uncle.id;
+    		var ue=UE.getEditor('container'+uid);
+    		ue.execCommand('insertHTML','sprsmthrfkr');
+    		var inframe=uncle.children[1].children[0].children[1].children[0];
+    		var tbody=window.frames[inframe.id].contentDocument.body.children[0].children[0];
+    		var mkx=0;
+    		var mky=0;
+    		for(var i=0;i<tbody.childElementCount;i++){
+    			for(var j=0;j<tbody.children[i].childElementCount;j++){
+    				if(tbody.children[i].children[j].innerHTML=='sprsmthrfkr'){
+    					mkx=i;
+    					mky=j;
+    				}
+    			}
+    		}
+    		if(typeof(fillarr)=="object"){
+	    		for(var i=0;i<fillarr.length;i++){
+	    			if(typeof(fillarr[i])=="object"){
+		    			for(var j=0;j<fillarr[i].length;j++){
+		    				tbody.children[mkx+i].children[mky+j].innerHTML=fillarr[i][j];
+		    			}
+	    			}
+	    			else{
+	    				tbody.children[mkx].children[mky+i].innerHTML=fillarr[i];
+	    			}
+	    		}
+    		}
+    		else{
+    			tbody.children[mkx].children[mky].innerHTML=fillarr;
+    		}
     	}
     	
     	function paging(obj){
