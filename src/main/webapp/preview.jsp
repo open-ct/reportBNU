@@ -35,10 +35,11 @@
                 			<div class="ui segments"  id="paper">
                 				<div class="ui segment" id="father" style="word-wrap:break-word">
                 				</div>
-                				<div class="ui teal labeled icon button" onclick="getHtml()">
-                        				生成HTML
-                                     <i class="add icon"></i>
-                        		</div>
+                				<div style="text-align: center">
+                				<a class="ui green button" href="${ctx }/design/my-report.action" style="margin: 0 auto">
+                        				确定
+                        		</a>
+                				</div>
                 			</div>
                 		</div>
                 	</div>
