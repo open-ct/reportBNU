@@ -47,7 +47,7 @@ public abstract class CrudActionSupport<T extends IdEntity,ID extends Serializab
 	 * 建议return SUCCESS.
 	 */
 //	public abstract String list() throws Exception;
-	public String list() throws Exception{return SUCCESS;};
+	public String list() throws Exception{return SUCCESS;}
 
 	/**
 	 * Action函数,显示新增或修改Entity界面.
@@ -55,21 +55,21 @@ public abstract class CrudActionSupport<T extends IdEntity,ID extends Serializab
 	 */
 	@Override
 //	public abstract String input() throws Exception;
-	public String input() throws Exception{return INPUT;};
+	public String input() throws Exception{return INPUT;}
 
 	/**
 	 * Action函数,新增或修改Entity. 
 	 * 建议return RELOAD.
 	 */
 //	public abstract String save() throws Exception;
-	public String save() throws Exception{return RELOAD;};
+	public String save() throws Exception{return RELOAD;}
 
 	/**
 	 * Action函数,删除Entity.
 	 * 建议return RELOAD.
 	 */
 //	public abstract String delete() throws Exception;
-	public String delete() throws Exception{return RELOAD;};
+	public String delete() throws Exception{return RELOAD;}
 
 	//-- Preparable函数 --//
 	/**

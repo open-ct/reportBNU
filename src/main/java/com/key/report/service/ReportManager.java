@@ -1,5 +1,6 @@
 package com.key.report.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.key.common.plugs.page.Page;
@@ -73,4 +74,13 @@ public interface ReportManager extends BaseService<Report, String>{
 	public Report createByReport(String fromBankId, String reportName,
 										  String tag);
 
+	public String readData(String reportId) throws IOException;
+
+	public void saveData(String data, String reportId) throws IOException;
+
+	public void saveFile(String data, String fileName, String filePath) throws IOException;
+
+	public void saveHtml(String data, String fileName, String filePath) throws IOException;
+
+	public void buildData(String data, String areaCode, String areaLevel) throws IOException;
 }

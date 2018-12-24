@@ -28,6 +28,8 @@ public interface AreaManager extends BaseService<Area, String>{
 	public List<Area> findChildren(String areaCode);
 
 	public List<Area> findSibling(String areaCode);
+
+	public List<Area> getAreasByLevel(String areaLevel);
 	
 	public Page<Area> findByGroup(String groupId1,String groupId2,Page<Area> page);
 

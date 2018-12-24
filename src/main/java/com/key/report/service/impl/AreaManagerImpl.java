@@ -67,7 +67,7 @@ public class AreaManagerImpl extends BaseServiceImpl<Area, String> implements Ar
 			criterions.add(cri1_2);
 		}
 		
-	    return AreaDao.findPage(page,criterions.toArray(new Criterion[criterions.size()]) );
+	    return AreaDao.findPage(page, criterions.toArray(new Criterion[criterions.size()]));
 	}
 	
 	public List<Area> findChildren(String areaCode) {
@@ -89,5 +89,13 @@ public class AreaManagerImpl extends BaseServiceImpl<Area, String> implements Ar
 			}
 		}
 		return null;
+	}
+
+	public List<Area> getAreasByLevel(String areaLevel) {
+		if(areaLevel == null || "".equals(areaLevel)) return null;
+		Page<Area> page=new Page<Area>();
+		List<PropertyFilter> filters=new ArrayList<PropertyFilter>();
+		filters.add(new PropertyFilter("EQS_areaLevel", areaLevel));
+		return findAll(page, filters);
 	}
 }

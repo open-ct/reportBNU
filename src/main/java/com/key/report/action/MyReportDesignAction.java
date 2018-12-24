@@ -60,7 +60,7 @@ public class MyReportDesignAction extends ActionSupport{
 	protected final static String RELOADDESIGN="reloadDesign";
 	
 	@Autowired
-	private ReportManager ReportManager;
+	private ReportManager reportManager;
 	@Autowired
 	private AccountManager accountManager;
 
@@ -78,7 +78,7 @@ public class MyReportDesignAction extends ActionSupport{
 	}
 	
 	public String devReport() throws Exception {
-		Report report=ReportManager.get(reportId);
+		Report report=reportManager.get(reportId);
 		Date createDate=report.getCreateDate();
 		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd/");
 		try{
@@ -94,7 +94,7 @@ public class MyReportDesignAction extends ActionSupport{
 			new JspToHtml().postJspToHtml(url, filePath, fileName);
 
 			report.setReportState(1);
-			ReportManager.save(report);
+			reportManager.save(report);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,13 +107,13 @@ public class MyReportDesignAction extends ActionSupport{
 		if(user!=null){
 			String userId=user.getId();
 			Report Report = null;
-			if(user.getRoleType() == 2) Report=ReportManager.getReportByUser(reportId, userId);
-			else Report=ReportManager.getReport(reportId);
+			if(user.getRoleType() == 2) Report=reportManager.getReportByUser(reportId, userId);
+			else Report=reportManager.getReport(reportId);
 			if(Report!=null){
-				ReportManager.save(Report);
+				reportManager.save(Report);
 				String data = null;
 				try {
-					data = readData(reportId);
+					data = reportManager.readData(reportId);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -127,30 +127,13 @@ public class MyReportDesignAction extends ActionSupport{
 			Struts2Utils.setReqAttribute("msg", "未登录或没有相应数据权限");
 		}
 	}
-	
-	private String readData(String reportId) throws IOException {
-		String filePath = "files/reportHtml/";
-		filePath = filePath.replace("/", File.separator);
-		filePath = filePath.replace("\\", File.separator);
-		String fileName = reportId + ".data";
-		ServletContext sc = ServletActionContext.getServletContext();
-		filePath = sc.getRealPath("/") + filePath;
-		File file2 = new File(filePath);
-		if (!file2.exists() || !file2.isDirectory()) return null;
-		File file = new File(filePath + fileName);
-		if (!file.exists()) return null;
-		BufferedReader in=new BufferedReader(new FileReader(file));
-		String data = in.readLine();
-		in.close();
-		return data;
-	}
 
 	public String ajaxSave() throws Exception {
 		HttpServletRequest request=Struts2Utils.getRequest();
 		HttpServletResponse response=Struts2Utils.getResponse();
 		String svyName=request.getParameter("svyName");
 		
-		Report report=ReportManager.getReport(reportId);
+		Report report=reportManager.getReport(reportId);
 		User user= accountManager.getCurUser();
 		if(user!=null && report!=null){
 			String userId=user.getId();
@@ -159,7 +142,7 @@ public class MyReportDesignAction extends ActionSupport{
 					svyName=URLDecoder.decode(svyName,"utf-8");
 					report.setReportName(svyName);
 				}
-				ReportManager.save(report);
+				reportManager.save(report);
 
 				response.getWriter().write("true");
 				
@@ -186,7 +169,7 @@ public class MyReportDesignAction extends ActionSupport{
 		reportName=URLDecoder.decode(reportName,"utf-8");
 		String tag=request.getParameter("tag");
 		tag="2";
-		Report directory=ReportManager.createByReport(fromBankId,reportName,tag);
+		Report directory=reportManager.createByReport(fromBankId,reportName,tag);
 		reportId=directory.getId();
 		return RELOADDESIGN;
 	}

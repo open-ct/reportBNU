@@ -3,6 +3,8 @@ package com.key.report.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.key.report.entity.Area;
+import com.key.report.service.AreaManager;
 import org.apache.struts2.convention.annotation.AllowedMethods;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.InterceptorRefs;
@@ -21,6 +23,8 @@ import com.key.report.service.ReportManager;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
+import java.util.List;
+
 /**
  * 我的问卷 action
  *
@@ -32,11 +36,13 @@ import net.sf.json.JsonConfig;
     @Result(name=MyReportAction.SUCCESS,location="/WEB-INF/page/content/diaowen-design/list.jsp",type=Struts2Utils.DISPATCHER),
     @Result(name="design",location="/design/my-report-design.action?reportId=${id}",type=Struts2Utils.REDIRECT),
 })
-@AllowedMethods({"reportState","attrs"})
+@AllowedMethods({"reportState","attrs","autoBuild"})
 public class MyReportAction extends CrudActionSupport<Report, String>{
 	
 	@Autowired
 	private ReportManager reportManager;
+	@Autowired
+	private AreaManager areaManager;
 	@Autowired
 	private AccountManager accountManager;
 
@@ -97,8 +103,6 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 		resp.getWriter().write(result);
 		return null;
 	}
-	
-
 
 	public String attrs() throws Exception {
 		HttpServletRequest request=Struts2Utils.getRequest();
@@ -107,14 +111,31 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 			Report report=reportManager.getReport(id);
 			JsonConfig cfg = new JsonConfig();
 			cfg.setExcludes(new String[]{"handler","hibernateLazyInitializer"});
-			JSONObject jsonObject=JSONObject.fromObject(report,cfg);
+			JSONObject jsonObject=JSONObject.fromObject(report, cfg);
 			response.getWriter().write(jsonObject.toString());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
+	public String autoBuild() throws Exception {
+		HttpServletRequest request=Struts2Utils.getRequest();
+		HttpServletResponse response=Struts2Utils.getResponse();
+		try{
+			String areaLevel = request.getParameter("areaLevel");
+			List<Area> areaList = areaManager.getAreasByLevel(areaLevel);
+			String data = reportManager.readData(id);
+			for(Area area: areaList) {
+				System.out.println("Building for area " + area.getAreaName());
+				reportManager.buildData(data, area.getAreaCode(), areaLevel);
+			}
+			response.getWriter().write("");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@Override
 	protected void prepareModel() throws Exception {

@@ -38,7 +38,7 @@ public class Report extends IdEntity{
 	//报告所属层级
 	private Integer reportLevel;//1 学生 2家长 3老师 4校长
 	//报告所属区域ID
-	private Integer areaId;//1 学生 2家长 3老师 4校长
+	private String areaId;//1 学生 2家长 3老师 4校长
 	
 	//静态HTML保存路径
 	private String htmlPath;
@@ -154,11 +154,11 @@ public class Report extends IdEntity{
 		this.reportLevel = reportLevel;
 	}
 
-	public Integer getAreaId() {
+	public String getAreaId() {
 		return areaId;
 	}
 
-	public void setAreaId(Integer areaId) {
+	public void setAreaId(String areaId) {
 		this.areaId = areaId;
 	}
 

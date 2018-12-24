@@ -1,9 +1,13 @@
 package com.key.report.service.impl;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,8 @@ import com.key.report.dao.ReportDao;
 import com.key.report.entity.Report;
 import com.key.report.service.ReportManager;
 import com.key.report.service.UserManager;
+
+import javax.servlet.ServletContext;
 
 
 /**
@@ -382,7 +388,7 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 			criterions.add(cri1);
 		}
 		if(reportName!=null && !"".equals(reportName)){
-			Criterion cri1=Restrictions.like("reportName", "%"+reportName+"%");
+			Criterion cri1=Restrictions.like("reportName", "%" + reportName + "%");
 			criterions.add(cri1);
 		}
 	    Criterion cri2=Restrictions.eq("visibility", 1);
@@ -391,7 +397,7 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 	    criterions.add(cri4);
 	    page.setOrderBy("createDate");
 		page.setOrderDir("desc");
-	    return ReportDao.findPageList(page,criterions);
+	    return ReportDao.findPageList(page, criterions);
 	}
 	
 	@Override
@@ -438,5 +444,104 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 		Report directory=getReport(fromBankId);
 		super.save(directory);
 		return Report;
+	}
+
+	public String readData(String reportId) throws IOException {
+		String filePath = "files/reportHtml/";
+		filePath = filePath.replace("/", File.separator);
+		filePath = filePath.replace("\\", File.separator);
+		String fileName = reportId + ".data";
+		ServletContext sc = ServletActionContext.getServletContext();
+		filePath = sc.getRealPath("/") + filePath;
+		File file2 = new File(filePath);
+		if (!file2.exists() || !file2.isDirectory()) return null;
+		File file = new File(filePath + fileName);
+		if (!file.exists()) return null;
+		BufferedReader in=new BufferedReader(new FileReader(file));
+		String data = in.readLine();
+		in.close();
+		return data;
+	}
+
+	public void saveData(String data, String reportId) throws IOException{
+		String filePath = "files/reportHtml/";
+		filePath = filePath.replace("/", File.separator);
+		filePath = filePath.replace("\\", File.separator);
+		ServletContext sc = ServletActionContext.getServletContext();
+		String fileRealPath = sc.getRealPath("/") + filePath;
+		saveFile(data, reportId + ".data", fileRealPath);
+		saveHtml(data, reportId + ".html", fileRealPath);
+	}
+
+	public void saveFile(String data, String fileName, String filePath) throws IOException {
+		File file2 = new File(filePath);
+		if (!file2.exists() || !file2.isDirectory()) file2.mkdirs();
+		File file = new File(filePath + fileName);
+		if (!file.exists()) file.createNewFile();
+		BufferedWriter out = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (file, false),"UTF-8"));
+		out.write(data);
+		out.close();
+	}
+
+	public void saveHtml(String data, String fileName, String filePath) throws IOException {
+		String htmlData = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
+				+ "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
+				+ "<meta charset=\"utf-8\" /><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /><meta name=viewport content=\"width=device-width, initial-scale=1\" />"
+				+ "<link href=\"/report/semantic/dist/semantic.min.css\" rel=\"stylesheet\" /><link href=\"/report/css/main.css\" rel=\"stylesheet\" /><link href=\"/report/css/predisplay.css\" rel=\"stylesheet\" />"
+				+ "<style id=\"tablesort\">table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;   background-image:url(https://ueditor.baidu.com/ueditor/themes/default/images/sortable.png);}</style><style id=\"table\">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{padding: 5px 10px;border: 1px solid #DDD;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>"
+				+ "<style>@font-face {font-family: 'Fang';src: url(../../file/Fonts/simfang.ttf) format('truetype');}td { font-family: '华文仿宋'; }</style>"
+				+ "</head><body><div class=\"ui segments\"  id=\"paper\" style=\"border:0; width:790px\"><div class=\"ui segment\" id=\"father\" style=\"word-wrap:break-word\">";
+		StringBuilder sb=new StringBuilder();
+		for(String s:data.split(","))
+			sb.append((char)Integer.parseInt(s));
+		data=sb.toString();
+		JSONObject jsonData = JSONObject.fromObject(data);
+		Iterator iterator = jsonData.keys();
+		while(iterator.hasNext()){
+			String key = (String) iterator.next();
+			JSONObject value = jsonData.getJSONObject(key);
+			String type = value.getString("type");
+			String text = value.getString("text");
+			if(type.equals("graph")){
+				htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
+				htmlData +=	"<img src=\"../" + text + "\">\n</p>\n";
+			}
+			else if(type.equals("table")){
+				htmlData += "<table class=\"" + type + "\" style=\"margin: 0 auto;\">\n";
+				htmlData += text.substring(7);
+			}
+			else if(type.equals("paging")){
+				htmlData += "<div style=\"page-break-before:left\"></div>";
+			}
+			else{
+				String style = "";
+				if(type.equals("texttitle1")) style="text-align: center; font-family: SimHei; font-size: 18pt;";
+				else if(type.equals("texttitle2")) style="text-align: left; font-family: SimHei; font-size: 16pt;";
+				else if(type.equals("texttitle3")) style="text-align: left; font-family: SimHei; font-size: 14pt;";
+				else if(type.equals("texttitle4")) style="text-align: left; font-family: SimHei; font-size: 12pt;";
+				else if(type.equals("textbody")) style="text-indent: 24pt; text-align: left; font-family: 华文仿宋; font-size: 12pt;";
+				else if(type.equals("textnote")) style="text-align: left; font-family: KaiTi; font-size: 10.5pt;";
+				else if(type.equals("imagetitle")) style="text-align: center; font-family: STXinwei; font-size: 12pt;";
+				htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + text + "</p>\n";
+			}
+		}
+		htmlData += "</div>\n</div>\n</body>\n</html>\n";
+		saveFile(htmlData, fileName, filePath);
+	}
+
+	public void buildData(String data, String areaCode, String areaLevel) throws IOException {
+		StringBuilder sb=new StringBuilder();
+		for(String s:data.split(","))
+			sb.append((char)Integer.parseInt(s));
+		data=sb.toString();
+		JSONObject jsonData = JSONObject.fromObject(data);
+		Iterator iterator = jsonData.keys();
+		while(iterator.hasNext()) {
+			String key = (String) iterator.next();
+			JSONObject value = jsonData.getJSONObject(key);
+			String type = value.getString("type");
+			String text = value.getString("text");
+			//todo
+		}
 	}
 }

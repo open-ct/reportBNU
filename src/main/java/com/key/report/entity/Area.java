@@ -20,7 +20,7 @@ public class Area extends IdEntity{
 	private String areaCode;
 	private String areaName;
 	private String parentCode;
-	private Integer areaLevel;
+	private String areaLevel;
 	
 	public String groupName;
 	@Transient
@@ -48,11 +48,11 @@ public class Area extends IdEntity{
 		this.areaName = areaName;
 	}
 
-	public Integer getAreaLevel() {
+	public String getAreaLevel() {
 		return areaLevel;
 	}
 
-	public void setAreaLevel(Integer areaLevel) {
+	public void setAreaLevel(String areaLevel) {
 		this.areaLevel = areaLevel;
 	}
 
