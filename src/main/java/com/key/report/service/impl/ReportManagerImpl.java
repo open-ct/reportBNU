@@ -23,6 +23,7 @@ import com.key.report.dao.ReportDao;
 import com.key.report.entity.Report;
 import com.key.report.service.ReportManager;
 import com.key.report.service.UserManager;
+import com.key.report.utils.ExcutePython;
 
 import javax.servlet.ServletContext;
 
@@ -529,7 +530,7 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 		saveFile(htmlData, fileName, filePath);
 	}
 
-	public void buildData(String data, String areaCode, String areaLevel) throws IOException {
+	public void buildData(String data, String areaCode, String areaLevel) throws IOException ,InterruptedException{
 		StringBuilder sb=new StringBuilder();
 		for(String s:data.split(","))
 			sb.append((char)Integer.parseInt(s));
@@ -541,7 +542,21 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 			JSONObject value = jsonData.getJSONObject(key);
 			String type = value.getString("type");
 			String text = value.getString("text");
-			//todo
+			String bookmark = value.getString("bookmark");
+			if(bookmark != null && !"".equals(bookmark)) {
+				String newmark = "";
+				int num = 0;
+				for (String s : bookmark.split("_")) {
+					if (num == 0) {
+						newmark += areaCode;
+					} else if (num == 1) {
+						newmark += "_" + areaLevel + s.substring(1);
+					} else {
+						newmark += "_" + s;
+					}
+				}
+				String result = ExcutePython.drawGraph(newmark);
+			}
 		}
 	}
 }

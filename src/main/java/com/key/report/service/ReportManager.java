@@ -82,5 +82,5 @@ public interface ReportManager extends BaseService<Report, String>{
 
 	public void saveHtml(String data, String fileName, String filePath) throws IOException;
 
-	public void buildData(String data, String areaCode, String areaLevel) throws IOException;
+	public void buildData(String data, String areaCode, String areaLevel) throws IOException, InterruptedException;
 }
