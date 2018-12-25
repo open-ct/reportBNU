@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import com.key.report.utils.DataProcesser;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.AllowedMethods;
 import org.apache.struts2.convention.annotation.InterceptorRef;
@@ -113,7 +114,7 @@ public class MyReportDesignAction extends ActionSupport{
 				reportManager.save(Report);
 				String data = null;
 				try {
-					data = reportManager.readData(reportId);
+					data = DataProcesser.readData(reportId);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

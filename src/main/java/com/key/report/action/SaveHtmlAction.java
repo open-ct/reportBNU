@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.key.report.utils.DataProcesser;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.AllowedMethods;
 import org.apache.struts2.convention.annotation.InterceptorRef;
@@ -67,7 +68,7 @@ public class SaveHtmlAction extends ActionSupport {
 		Struts2Utils.setReqAttribute("data", data);
 		Struts2Utils.setReqAttribute("report", report);
 		Struts2Utils.setReqAttribute("prevHost", Property.STORAGE_URL_PREFIX);
-		reportManager.saveData(data, reportId);
+		DataProcesser.saveData(data, reportId);
 		return SUCCESS;
 	}
 	

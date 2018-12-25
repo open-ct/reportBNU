@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.key.report.entity.Area;
 import com.key.report.service.AreaManager;
+import com.key.report.utils.DataProcesser;
 import org.apache.struts2.convention.annotation.AllowedMethods;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.InterceptorRefs;
@@ -125,10 +126,10 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 		try{
 			String areaLevel = request.getParameter("areaLevel");
 			List<Area> areaList = areaManager.getAreasByLevel(areaLevel);
-			String data = reportManager.readData(id);
+			String data = DataProcesser.readData(id);
 			for(Area area: areaList) {
 				System.out.println("Building for area " + area.getAreaName());
-				reportManager.buildData(data, area.getAreaCode(), areaLevel);
+				DataProcesser.buildData(data, area.getAreaCode(), areaLevel);
 			}
 			response.getWriter().write("");
 		}catch(Exception e){
