@@ -95,11 +95,12 @@ public class DataProcesser {
         saveFile(htmlData, fileName, filePath);
     }
 
-    public static void buildData(String data, String areaCode, String areaLevel) throws IOException ,InterruptedException{
+    public static void buildData(String data, String reportId, String areaCode, String areaLevel) throws IOException ,InterruptedException{
         StringBuilder sb=new StringBuilder();
         for(String s:data.split(","))
             sb.append((char)Integer.parseInt(s));
         data=sb.toString();
+        String newData = "";
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
         while(iterator.hasNext()) {
@@ -132,8 +133,9 @@ public class DataProcesser {
             } else {
                 //todo
             }
-
+            newData += value.toString();
         }
+        saveData(newData, reportId);
     }
 
     public static ArrayList<ArrayList<String>> parsePythonTable(String result) {
@@ -150,7 +152,7 @@ public class DataProcesser {
         ArrayList<String> list = new ArrayList<String>();
         int length = arrayString.length();
         if(arrayString.charAt(0) == '[' && arrayString.charAt(length-1) == ']') {
-            arrayString = arrayString.substring(1, length-1);
+            arrayString = arrayString.substring(1, length - 1);
         }
         int inBracket = 0;
         int inQuote = 0;

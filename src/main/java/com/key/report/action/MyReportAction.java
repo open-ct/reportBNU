@@ -127,11 +127,22 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 			String areaLevel = request.getParameter("areaLevel");
 			List<Area> areaList = areaManager.getAreasByLevel(areaLevel);
 			String data = DataProcesser.readData(id);
+			Report originalReport = reportManager.getReport(id);
+			String name = originalReport.getReportName();
+			int state = originalReport.getReportState();
+			int tag = originalReport.getReportTag();
+			int type = originalReport.getReportType();
 			for(Area area: areaList) {
 				System.out.println("Building for area " + area.getAreaName());
-				DataProcesser.buildData(data, area.getAreaCode(), areaLevel);
+				Report report = new Report();
+				report.setReportName(name + "_" + area.getAreaName());
+				report.setReportState(state);
+				report.setReportTag(tag);
+				report.setReportType(type);
+				reportManager.save(report);
+				String reportId = report.getId();
+				DataProcesser.buildData(data, reportId, area.getAreaCode(), areaLevel);
 			}
-			response.getWriter().write("");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
