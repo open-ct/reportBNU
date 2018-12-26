@@ -136,9 +136,13 @@ public class DataProcesser {
                                       ArrayList<ArrayList<String>> result) {
         int delta = startRow + result.size() - list.size();
         for (int i = 0; i < delta; i++) list.add(new ArrayList<String>());
-        for (int i = 1; i < result.size(); i++) {
-            delta = list.get(startRow + i - 1).size() - list.get(startRow + i).size();
-            for (int j = 0; j < delta; j++) list.get(startRow + i).add("");
+        int maxStart = 0;
+        for (int i = 0; i < result.size(); i++)
+            maxStart = Math.max(list.get(startRow + i).size(), maxStart);
+        for (int i = 0; i < result.size(); i++) {
+            ArrayList<String> l = list.get(startRow + i);
+            delta = maxStart - l.size();
+            for (int j = 0; j < delta; j++) l.add("");
         }
         int row = startRow;
         for (ArrayList<String> res : result) {
