@@ -23,13 +23,13 @@ public class DataProcesser {
         if (!file2.exists() || !file2.isDirectory()) return null;
         File file = new File(filePath + fileName);
         if (!file.exists()) return null;
-        BufferedReader in=new BufferedReader(new FileReader(file));
+        BufferedReader in = new BufferedReader(new FileReader(file));
         String data = in.readLine();
         in.close();
         return data;
     }
 
-    public static void saveData(String data, String reportId) throws IOException{
+    public static void saveData(String data, String reportId) throws IOException {
         String filePath = "files/reportHtml/";
         filePath = filePath.replace("/", File.separator);
         filePath = filePath.replace("\\", File.separator);
@@ -44,7 +44,7 @@ public class DataProcesser {
         if (!file2.exists() || !file2.isDirectory()) file2.mkdirs();
         File file = new File(filePath + fileName);
         if (!file.exists()) file.createNewFile();
-        BufferedWriter out = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (file, false),"UTF-8"));
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8"));
         out.write(data);
         out.close();
     }
@@ -57,37 +57,36 @@ public class DataProcesser {
                 + "<style id=\"tablesort\">table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;   background-image:url(https://ueditor.baidu.com/ueditor/themes/default/images/sortable.png);}</style><style id=\"table\">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{padding: 5px 10px;border: 1px solid #DDD;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>"
                 + "<style>@font-face {font-family: 'Fang';src: url(../../file/Fonts/simfang.ttf) format('truetype');}td { font-family: '华文仿宋'; }</style>"
                 + "</head><body><div class=\"ui segments\"  id=\"paper\" style=\"border:0; width:790px\"><div class=\"ui segment\" id=\"father\" style=\"word-wrap:break-word\">";
-        StringBuilder sb=new StringBuilder();
-        for(String s:data.split(","))
-            sb.append((char)Integer.parseInt(s));
-        data=sb.toString();
+        StringBuilder sb = new StringBuilder();
+        for (String s : data.split(","))
+            sb.append((char) Integer.parseInt(s));
+        data = sb.toString();
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             String key = (String) iterator.next();
             JSONObject value = jsonData.getJSONObject(key);
             String type = value.getString("type");
             String text = value.getString("text");
-            if(type.equals("graph")){
+            if (type.equals("graph")) {
                 htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
-                htmlData +=	"<img src=\"../" + text + "\">\n</p>\n";
-            }
-            else if(type.equals("table")){
+                htmlData += "<img src=\"../" + text + "\">\n</p>\n";
+            } else if (type.equals("table")) {
                 htmlData += "<table class=\"" + type + "\" style=\"margin: 0 auto;\">\n";
                 htmlData += text.substring(7);
-            }
-            else if(type.equals("paging")){
+            } else if (type.equals("paging")) {
                 htmlData += "<div style=\"page-break-before:left\"></div>";
-            }
-            else{
+            } else {
                 String style = "";
-                if(type.equals("texttitle1")) style="text-align: center; font-family: SimHei; font-size: 18pt;";
-                else if(type.equals("texttitle2")) style="text-align: left; font-family: SimHei; font-size: 16pt;";
-                else if(type.equals("texttitle3")) style="text-align: left; font-family: SimHei; font-size: 14pt;";
-                else if(type.equals("texttitle4")) style="text-align: left; font-family: SimHei; font-size: 12pt;";
-                else if(type.equals("textbody")) style="text-indent: 24pt; text-align: left; font-family: 华文仿宋; font-size: 12pt;";
-                else if(type.equals("textnote")) style="text-align: left; font-family: KaiTi; font-size: 10.5pt;";
-                else if(type.equals("imagetitle")) style="text-align: center; font-family: STXinwei; font-size: 12pt;";
+                if (type.equals("texttitle1")) style = "text-align: center; font-family: SimHei; font-size: 18pt;";
+                else if (type.equals("texttitle2")) style = "text-align: left; font-family: SimHei; font-size: 16pt;";
+                else if (type.equals("texttitle3")) style = "text-align: left; font-family: SimHei; font-size: 14pt;";
+                else if (type.equals("texttitle4")) style = "text-align: left; font-family: SimHei; font-size: 12pt;";
+                else if (type.equals("textbody"))
+                    style = "text-indent: 24pt; text-align: left; font-family: 华文仿宋; font-size: 12pt;";
+                else if (type.equals("textnote")) style = "text-align: left; font-family: KaiTi; font-size: 10.5pt;";
+                else if (type.equals("imagetitle"))
+                    style = "text-align: center; font-family: STXinwei; font-size: 12pt;";
                 htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + text + "</p>\n";
             }
         }
@@ -95,21 +94,21 @@ public class DataProcesser {
         saveFile(htmlData, fileName, filePath);
     }
 
-    public static void buildData(String data, String reportId, String areaCode, String areaLevel) throws IOException ,InterruptedException{
-        StringBuilder sb=new StringBuilder();
-        for(String s:data.split(","))
-            sb.append((char)Integer.parseInt(s));
-        data=sb.toString();
+    public static void buildData(String data, String reportId, String areaCode, String areaLevel) throws IOException, InterruptedException {
+        StringBuilder sb = new StringBuilder();
+        for (String s : data.split(","))
+            sb.append((char) Integer.parseInt(s));
+        data = sb.toString();
         String newData = "";
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String key = (String) iterator.next();
             JSONObject value = jsonData.getJSONObject(key);
             String type = value.getString("type");
             String text = value.getString("text");
             String bookmark = value.getString("bookmark");
-            if(bookmark != null && !"".equals(bookmark)) {
+            if (bookmark != null && !"".equals(bookmark)) {
                 String newmark = "";
                 int num = 0;
                 for (String s : bookmark.split("_")) {
@@ -122,9 +121,9 @@ public class DataProcesser {
                     }
                 }
                 String result = ExcutePython.drawGraph(newmark);
-                if(type.equals("graph")) {
+                if (type.equals("graph")) {
 
-                } else if(type.equals("table")) {
+                } else if (type.equals("table")) {
 
                 }
                 value.put("text", result);
@@ -138,10 +137,22 @@ public class DataProcesser {
         saveData(newData, reportId);
     }
 
+    public static void buildTableList(ArrayList<ArrayList<String>> list, int startRow,
+                                      ArrayList<ArrayList<String>> result) {
+        int delta = startRow + result.size() - list.size();
+        for (int i = 0; i < delta; i++) list.add(new ArrayList<String>());
+        int row = startRow;
+        for (ArrayList<String> res : result) {
+            ArrayList<String> l = list.get(row);
+            for (String s : res) l.add(s);
+            row++;
+        }
+    }
+
     public static ArrayList<ArrayList<String>> parsePythonTable(String result) {
         ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
         ArrayList<String> firstDimension = parsePythonArray(result);
-        for(String fir: firstDimension) {
+        for (String fir : firstDimension) {
             ArrayList<String> secondDimension = parsePythonArray(fir);
             list.add(secondDimension);
         }
@@ -151,19 +162,22 @@ public class DataProcesser {
     public static ArrayList<String> parsePythonArray(String arrayString) {
         ArrayList<String> list = new ArrayList<String>();
         int length = arrayString.length();
-        if(arrayString.charAt(0) == '[' && arrayString.charAt(length-1) == ']') {
+        if (arrayString.charAt(0) == '[' && arrayString.charAt(length - 1) == ']') {
             arrayString = arrayString.substring(1, length - 1);
         }
         int inBracket = 0;
         int inQuote = 0;
         String tmp = "";
-        for(char c: arrayString.toCharArray()) {
-            if(c == '[') inBracket++;
-            if(c == ']') inBracket--;
-            if(c == '\"') inQuote = 1 - inQuote;
-            if(c == ',' && inBracket == 0 && inQuote == 0) list.add(tmp);
-            else tmp += c;
+        for (char c : arrayString.toCharArray()) {
+            if (c == '[') inBracket++;
+            if (c == ']') inBracket--;
+            if (c == '\"') inQuote = 1 - inQuote;
+            if (c == ',' && inBracket == 0 && inQuote == 0) {
+                list.add(tmp);
+                tmp = "";
+            } else tmp += c;
         }
+        if (tmp != "") list.add(tmp);
         return list;
     }
 }
