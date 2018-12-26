@@ -57,10 +57,7 @@ public class DataProcesser {
                 + "<style id=\"tablesort\">table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;   background-image:url(https://ueditor.baidu.com/ueditor/themes/default/images/sortable.png);}</style><style id=\"table\">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{padding: 5px 10px;border: 1px solid #DDD;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>"
                 + "<style>@font-face {font-family: 'Fang';src: url(../../file/Fonts/simfang.ttf) format('truetype');}td { font-family: '华文仿宋'; }</style>"
                 + "</head><body><div class=\"ui segments\"  id=\"paper\" style=\"border:0; width:790px\"><div class=\"ui segment\" id=\"father\" style=\"word-wrap:break-word\">";
-        StringBuilder sb = new StringBuilder();
-        for (String s : data.split(","))
-            sb.append((char) Integer.parseInt(s));
-        data = sb.toString();
+        data = CodeToChar(data);
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
         while (iterator.hasNext()) {
@@ -94,11 +91,9 @@ public class DataProcesser {
         saveFile(htmlData, fileName, filePath);
     }
 
-    public static void buildData(String data, String reportId, String areaCode, String areaLevel) throws IOException, InterruptedException {
-        StringBuilder sb = new StringBuilder();
-        for (String s : data.split(","))
-            sb.append((char) Integer.parseInt(s));
-        data = sb.toString();
+    public static void buildData(String data, String reportId, String areaCode, String areaLevel)
+            throws IOException, InterruptedException {
+        data = CodeToChar(data);
         String newData = "";
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
@@ -183,5 +178,19 @@ public class DataProcesser {
         }
         if (tmp != "") list.add(tmp);
         return list;
+    }
+
+    public static String CharToCode(String data) {
+        String res = "";
+        for (int i = 0; i < data.length(); i++)
+            res += (int) data.charAt(i) + ",";
+        return res;
+    }
+
+    public static String CodeToChar(String data) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : data.split(","))
+            sb.append((char) Integer.parseInt(s));
+        return sb.toString();
     }
 }
