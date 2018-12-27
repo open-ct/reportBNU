@@ -1,11 +1,13 @@
 package com.key.report.utils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -196,5 +198,19 @@ public class DataProcesser {
         for (String s : data.split(","))
             sb.append((char) Integer.parseInt(s));
         return sb.toString();
+    }
+
+    public static JSONArray SortTableJson(String jsonString) {
+        ArrayList<JSONObject> result = new ArrayList<JSONObject>();
+        JSONArray.fromObject(jsonString).forEach(bookmark -> result.add((JSONObject) bookmark));
+        Collections.sort(result, (JSONObject x, JSONObject y) -> {
+            String colX = x.getString("col"), colY = y.getString("col");
+            if (colX.equals(colY)) {
+                String rowX = x.getString("row"), rowY = y.getString("row");
+                return rowX.compareTo(rowY);
+            }
+            return colX.compareTo(colY);
+        });
+        return JSONArray.fromObject(result);
     }
 }
