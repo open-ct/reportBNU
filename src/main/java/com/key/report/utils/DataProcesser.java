@@ -105,33 +105,35 @@ public class DataProcesser {
             String type = value.getString("type");
             String text = value.getString("text");
             String bookmark = value.getString("bookmark");
-            if (bookmark != null && !"".equals(bookmark)) {
-                String newmark = "";
-                int num = 0;
-                for (String s : bookmark.split("_")) {
-                    if (num == 0) {
-                        newmark += areaCode;
-                    } else if (num == 1) {
-                        newmark += "_" + areaLevel + s.substring(1);
-                    } else {
-                        newmark += "_" + s;
-                    }
-                }
+            if (type.equals("graph")) {
+                String newmark = buildBookmark(bookmark, areaCode, areaLevel);
                 String result = ExcutePython.drawGraph(newmark);
-                if (type.equals("graph")) {
-
-                } else if (type.equals("table")) {
-
-                }
                 value.put("text", result);
                 value.put("bookmark", newmark);
+            } else if (type.equals("table")) {
                 //todo
             } else {
                 //todo
             }
             newData += value.toString();
         }
-        saveData(newData, reportId);
+        saveData(CharToCode(newData), reportId);
+    }
+
+    public static String buildBookmark(String bookmark, String areaCode, String areaLevel) {
+        String newmark = "";
+        int num = 0;
+        for (String s : bookmark.split("_")) {
+            if (num == 0) {
+                newmark += areaCode;
+            } else if (num == 1) {
+                newmark += "_" + areaLevel + s.substring(1);
+            } else {
+                newmark += "_" + s;
+            }
+            num++;
+        }
+        return newmark;
     }
 
     public static void buildTableList(ArrayList<ArrayList<String>> list, int startRow,
