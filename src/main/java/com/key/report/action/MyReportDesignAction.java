@@ -112,12 +112,7 @@ public class MyReportDesignAction extends ActionSupport{
 			else Report=reportManager.getReport(reportId);
 			if(Report!=null){
 				reportManager.save(Report);
-				String data = null;
-				try {
-					data = DataProcesser.readData(reportId);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				String data = DataProcesser.readData(reportId);
 				Struts2Utils.setReqAttribute("data", data);
 				Struts2Utils.setReqAttribute("report", Report);
 				Struts2Utils.setReqAttribute("prevHost", Property.STORAGE_URL_PREFIX);

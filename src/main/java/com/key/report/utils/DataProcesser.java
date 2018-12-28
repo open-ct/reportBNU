@@ -3,6 +3,8 @@ package com.key.report.utils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import java.io.*;
@@ -14,7 +16,9 @@ import java.util.Iterator;
  * Created by heweiqiang on 2018/12/25.
  */
 public class DataProcesser {
-    public static String readData(String reportId) throws IOException {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataProcesser.class);
+
+    public static String readData(String reportId) {
         String filePath = "files/reportHtml/";
         filePath = filePath.replace("/", File.separator);
         filePath = filePath.replace("\\", File.separator);
@@ -25,13 +29,18 @@ public class DataProcesser {
         if (!file2.exists() || !file2.isDirectory()) return null;
         File file = new File(filePath + fileName);
         if (!file.exists()) return null;
-        BufferedReader in = new BufferedReader(new FileReader(file));
-        String data = in.readLine();
-        in.close();
+        String data = "";
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            data = in.readLine();
+            in.close();
+        } catch (IOException e) {
+            LOGGER.error("Read data error!");
+        }
         return data;
     }
 
-    public static void saveData(String data, String reportId) throws IOException {
+    public static void saveData(String data, String reportId) {
         String filePath = "files/reportHtml/";
         filePath = filePath.replace("/", File.separator);
         filePath = filePath.replace("\\", File.separator);
@@ -41,17 +50,21 @@ public class DataProcesser {
         saveHtml(data, reportId + ".html", fileRealPath);
     }
 
-    public static void saveFile(String data, String fileName, String filePath) throws IOException {
+    public static void saveFile(String data, String fileName, String filePath) {
         File file2 = new File(filePath);
         if (!file2.exists() || !file2.isDirectory()) file2.mkdirs();
         File file = new File(filePath + fileName);
-        if (!file.exists()) file.createNewFile();
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8"));
-        out.write(data);
-        out.close();
+        try {
+            if (!file.exists()) file.createNewFile();
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8"));
+            out.write(data);
+            out.close();
+        } catch (IOException e) {
+            LOGGER.error("Save file error!");
+        }
     }
 
-    public static void saveHtml(String data, String fileName, String filePath) throws IOException {
+    public static void saveHtml(String data, String fileName, String filePath) {
         String htmlData = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
                 + "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
                 + "<meta charset=\"utf-8\" /><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /><meta name=viewport content=\"width=device-width, initial-scale=1\" />"
@@ -93,8 +106,7 @@ public class DataProcesser {
         saveFile(htmlData, fileName, filePath);
     }
 
-    public static void buildData(String data, String reportId, String areaCode, String areaLevel)
-            throws IOException, InterruptedException {
+    public static void buildData(String data, String reportId, String areaCode, String areaLevel) {
         data = CodeToChar(data);
         String newData = "";
         JSONObject jsonData = JSONObject.fromObject(data);
@@ -106,14 +118,11 @@ public class DataProcesser {
             String text = value.getString("text");
             String bookmark = value.getString("bookmark");
             if (type.equals("graph")) {
-                String newmark = buildBookmark(bookmark, areaCode, areaLevel);
-                String result = ExcutePython.drawGraph(newmark);
-                value.put("text", result);
-                value.put("bookmark", newmark);
+                buildGraphResult(value, bookmark, areaCode, areaLevel);
             } else if (type.equals("table")) {
-                //todo
+                buildTableResult(value, bookmark, areaCode, areaLevel);
             } else {
-                //todo
+                buildTextResult(value, bookmark, areaCode, areaLevel);
             }
             newData += value.toString();
         }
@@ -121,25 +130,70 @@ public class DataProcesser {
     }
 
     public static String buildBookmark(String bookmark, String areaCode, String areaLevel) {
-        String newmark = "";
+        String mark = "";
         int num = 0;
         for (String s : bookmark.split("_")) {
             if (num == 0) {
-                newmark += areaCode;
+                mark += areaCode;
             } else if (num == 1) {
-                newmark += "_" + areaLevel + s.substring(1);
+                mark += "_" + areaLevel + s.substring(1);
             } else {
-                newmark += "_" + s;
+                mark += "_" + s;
             }
             num++;
         }
-        return newmark;
+        return mark;
+    }
+
+    public static void buildGraphResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
+        String mark = buildBookmark(bookmark, areaCode, areaLevel);
+        String result = ExecutePython.drawGraph(mark);
+        value.put("text", result);
+        value.put("bookmark", mark);
+    }
+
+    public static void buildTableResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
+        JSONArray jsonArray = SortTableJson(bookmark);
+        int lastCol = 0, lastRow = 0;
+        for (Object o : jsonArray) {
+            JSONObject jsonObject = (JSONObject) o;
+            String type = jsonObject.getString("type");
+            String text = jsonObject.getString("text");
+            int row = jsonObject.getInt("row");
+            int col = jsonObject.getInt("col");
+            if (lastCol >= col) lastRow = row;
+            lastCol = col;
+            jsonObject.put("row", lastRow);
+            jsonObject.put("col", lastCol);
+            if ("bookmark".equals(type)) {
+                String mark = buildBookmark(text, areaCode, areaLevel);
+                jsonObject.put("text", mark);
+                ArrayList<ArrayList<String>> result = parsePythonTable(ExecutePython.drawGraph(mark));
+                buildTableList(list, lastRow, result);
+                lastRow += result.size();
+            } else {
+                ArrayList<ArrayList<String>> result = new ArrayList<>();
+                ArrayList<String> content = new ArrayList<>();
+                content.add(text);
+                result.add(content);
+                buildTableList(list, lastRow, result);
+                lastRow++;
+            }
+        }
+        //todo
+        value.put("text", "");
+        value.put("bookmark", jsonArray.toString());
+    }
+
+    public static void buildTextResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
+        //todo
     }
 
     public static void buildTableList(ArrayList<ArrayList<String>> list, int startRow,
                                       ArrayList<ArrayList<String>> result) {
         int delta = startRow + result.size() - list.size();
-        for (int i = 0; i < delta; i++) list.add(new ArrayList<String>());
+        for (int i = 0; i < delta; i++) list.add(new ArrayList<>());
         int maxStart = 0;
         for (int i = 0; i < result.size(); i++)
             maxStart = Math.max(list.get(startRow + i).size(), maxStart);
@@ -157,7 +211,7 @@ public class DataProcesser {
     }
 
     public static ArrayList<ArrayList<String>> parsePythonTable(String result) {
-        ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
         ArrayList<String> firstDimension = parsePythonArray(result);
         for (String fir : firstDimension) {
             ArrayList<String> secondDimension = parsePythonArray(fir);
@@ -167,7 +221,7 @@ public class DataProcesser {
     }
 
     public static ArrayList<String> parsePythonArray(String arrayString) {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         int length = arrayString.length();
         if (arrayString.charAt(0) == '[' && arrayString.charAt(length - 1) == ']') {
             arrayString = arrayString.substring(1, length - 1);
@@ -184,7 +238,7 @@ public class DataProcesser {
                 tmp = "";
             } else tmp += c;
         }
-        if (tmp != "") list.add(tmp);
+        if (!"".equals(tmp)) list.add(tmp);
         return list;
     }
 
@@ -203,7 +257,7 @@ public class DataProcesser {
     }
 
     public static JSONArray SortTableJson(String jsonString) {
-        ArrayList<JSONObject> result = new ArrayList<JSONObject>();
+        ArrayList<JSONObject> result = new ArrayList<>();
         JSONArray.fromObject(jsonString).forEach(bookmark -> result.add((JSONObject) bookmark));
         Collections.sort(result, (JSONObject x, JSONObject y) -> {
             String colX = x.getString("col"), colY = y.getString("col");

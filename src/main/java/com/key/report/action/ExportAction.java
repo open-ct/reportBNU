@@ -15,7 +15,7 @@ import com.key.common.base.service.AccountManager;
 import com.key.common.utils.web.Struts2Utils;
 import com.key.report.entity.Report;
 import com.key.report.service.ReportManager;
-import com.key.report.utils.ExcutePython;
+import com.key.report.utils.ExecutePython;
 import com.opensymphony.xwork2.ActionSupport;
 
 
@@ -37,7 +37,7 @@ public class ExportAction extends ActionSupport {
 		Report report=reportManager.getReport(reportId);
 		User user= accountManager.getCurUser();
 		if(user!=null && report!=null){
-			String fileName = ExcutePython.htmlToPDF(reportId);
+			String fileName = ExecutePython.htmlToPDF(reportId);
 			response.sendRedirect(request.getContextPath() + "/files/reportPDF/" + fileName);
 		}else{
 			Struts2Utils.setReqAttribute("msg", "未登录或没有相应数据权限");

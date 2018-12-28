@@ -12,7 +12,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Results;
 
 import com.key.common.utils.web.Struts2Utils;
-import com.key.report.utils.ExcutePython;
+import com.key.report.utils.ExecutePython;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/")
@@ -28,7 +28,7 @@ public class DrawGraphAction extends ActionSupport {
 		PrintWriter out = response.getWriter();
 		//String bookmark = "13102_区依附各区单科得分盒式图_01_4";
 		String bookmark = request.getParameter("data");
-		String line = ExcutePython.drawGraph(bookmark);
+		String line = ExecutePython.drawGraph(bookmark);
 	    out.write(line);
     	out.flush();
     	out.close();
