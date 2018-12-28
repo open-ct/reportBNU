@@ -162,7 +162,7 @@ public class DataProcesser {
             String text = jsonObject.getString("text");
             int row = jsonObject.getInt("row");
             int col = jsonObject.getInt("col");
-            if (lastCol >= col) lastRow = row;
+            if (lastCol <= col) lastRow = row;
             lastCol = col;
             jsonObject.put("row", lastRow);
             jsonObject.put("col", lastCol);
