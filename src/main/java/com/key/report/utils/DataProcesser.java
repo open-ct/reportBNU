@@ -155,14 +155,14 @@ public class DataProcesser {
     public static void buildTableResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
         JSONArray jsonArray = SortTableJson(bookmark);
-        int lastCol = 0, lastRow = 0;
+        int lastCol = -1, lastRow = 0;
         for (Object o : jsonArray) {
             JSONObject jsonObject = (JSONObject) o;
             String type = jsonObject.getString("type");
             String text = jsonObject.getString("text");
             int row = jsonObject.getInt("row");
             int col = jsonObject.getInt("col");
-            if (lastCol <= col) lastRow = row;
+            if (lastCol < col) lastRow = row;
             lastCol = col;
             jsonObject.put("row", lastRow);
             jsonObject.put("col", lastCol);
