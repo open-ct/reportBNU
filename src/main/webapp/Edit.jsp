@@ -42,7 +42,7 @@
     	书签名称（格式：地区代码_书签）：
 		<div class="ui fluid action input">
 		    <input type="text" placeholder="输入书签" />
-		    <div class="positive ui button" onclick="getgraph(this)">确定</div>
+		    <div class="positive ui button" onclick="settext(this)">确定</div>
 		</div>
 		</div>
 		<div class="ui segment">这是文本</div>
@@ -110,7 +110,7 @@
     	书签名称（格式：地区代码_书签）：
 		<div class="ui fluid action input">
 		    <input type="text" placeholder="输入书签" />
-		    <div class="positive ui button" onclick="getgraph(this)">确定</div>
+		    <div class="positive ui button" onclick="setgraph(this)">确定</div>
 		</div>
 		</div>
 		<div class="ui segment">
@@ -164,6 +164,154 @@
     		
     		console.log(ue.getContent());
     		
+    	}
+    	
+    	function gettextbymark(mark){
+    		return "这才是文本";
+    	}
+    	
+    	function settext(obj){
+    		var fa=obj.parentNode;
+    		var fafa=fa.parentNode;
+    		var textSeg=fafa.nextElementSibling;
+    		var bro=obj.previousElementSibling;
+    		var tt=bro.value;
+    		var text=gettextbymark(tt);
+    		textSeg.innerHTML=text;
+    	}
+    	
+    	function createtablebysize(sizerow,sizecol){
+    		var rowhtml="<tr>";
+    		for(var i=0;i<sizecol;i++)rowhtml+=`<td style="border: 1px solid windowtext;"></td>`;
+    		rowhtml+="</tr>";
+    		var tbhtml="<table><tbody>";
+    		for(var i=0;i<sizerow;i++)tbhtml+=rowhtml;
+    		tbhtml+="</tbody></table>";
+    		return tbhtml;
+    	}
+    	
+    	function gettable(obj){
+    		var fa=obj.parentNode;
+    		var fafa=fa.parentNode;
+    		while(fa.nextSibling!=null){
+    			fafa.removeChild(fa.nextSibling);
+    		}
+    		var divnew = document.createElement("div");
+    		divnew.className = "ui segment";
+    		var newid = new Date().getTime();
+    		divnew.id = newid;
+    		var divnow = document.createElement("div");
+    		divnow.className = "mktable";
+    		divnow.display = "none";
+    		divnew.appendChild(divnow);
+    		var contain = document.createElement("script");
+    		contain.id = 'container'+newid;
+    		contain.type = "text/plain";
+    		divnew.appendChild(contain);
+    		var fa=obj.parentNode;
+    		fa.after(divnew);
+    		var bro = obj.previousElementSibling;
+    		var bbro = bro.previousElementSibling;
+    		var r = bbro.value;
+    		var c = bro.value;
+    		var tablehtml = createtablebysize(r,c);
+    		var ue = UE.getEditor('container'+newid,{
+    			toolbars:[
+    			['mergecells','source']
+    			]
+    		});
+    		ue.addListener("ready", function () {
+				ue.setContent(tablehtml,false);
+			});
+    	}
+    	
+    	function filltablebymark(mark){
+    		return "[[2.2, 6.9, 14.6], [8.9, 20.3, 39.6], [2.2, 3.8, 6.9], [86.7, 69.0, 38.9]]";
+    		var path = "";
+    		$.ajax({
+	            type:"post",
+	            url:"${ctx}/draw-graph.action",
+	            data:{"data":mark},
+	            async: false,
+	            success:function(msg) {
+	                path=msg;
+	            },
+	            error:function(msg) {
+	                console.log(msg);
+	            }
+	        });
+	        return path;
+    	}
+    	
+    	function filltable(obj){
+    		var bro=obj.previousElementSibling;
+    		var tt=bro.value;
+    		var fillstr=filltablebymark(tt);
+    		var fillarr = eval(fillstr);
+    		var fa=obj.parentNode;
+    		fa=fa.parentNode;
+    		var uncle=fa.nextElementSibling;
+    		var uid=uncle.id;
+    		var ue=UE.getEditor('container'+uid);
+    		ue.execCommand('insertHTML','undefined');
+    		var inframe=uncle.children[1].children[0].children[1].children[0];
+    		var tbody=window.frames[inframe.id].contentDocument.body.children[0].children[0];
+    		var mkx=0;
+    		var mky=0;
+    		for(var i=0;i<tbody.childElementCount;i++){//定位光标
+    			for(var j=0;j<tbody.children[i].childElementCount;j++){
+    				if(tbody.children[i].children[j].innerHTML=='undefined'){
+    					mkx=i;
+    					mky=j;
+    				}
+    			}
+    		}
+    		//填充表格
+    		if(typeof(fillarr)=="object"){
+	    		for(var i=0;i<fillarr.length;i++){
+	    			if(typeof(fillarr[i])=="object"){
+		    			for(var j=0;j<fillarr[i].length;j++){
+		    				tbody.children[mkx+i].children[mky+j].innerHTML=fillarr[i][j];
+		    			}
+	    			}
+	    			else{
+	    				tbody.children[mkx].children[mky+i].innerHTML=fillarr[i];
+	    			}
+	    		}
+    		}
+    		else{
+    			tbody.children[mkx].children[mky].innerHTML=fillarr;
+    		}
+    	}
+    	
+    	function getgraphbymark(mark){
+    		return "http://files.57gif.com/webgif/0/4/84/bcd4b2814bbf8341e94a71ef35593.gif";
+    		var path = "";
+    		$.ajax({
+	            type:"post",
+	            url:"${ctx}/draw-graph.action",
+	            data:{"data":mark},
+	            async: false,
+	            success:function(msg) {
+	                data=msg.split('&');
+	                path="files/graph/"+data[0]+".png";
+	            },
+	            error:function(msg) {
+	                console.log(msg);
+	            }
+	        });
+	        return path;
+    	}
+    	
+    	function setgraph(obj){
+    		var fa=obj.parentNode;
+    		var fafa=fa.parentNode;
+    		var imgSeg=fafa.nextElementSibling;
+    		var imgdiv=imgSeg.firstElementChild;
+    		var bro=obj.previousElementSibling;
+    		var tt=bro.value;
+    		var imlink=getgraphbymark(tt);
+    		imgdiv.src=imlink;
     	}
     </script>
 </body>
