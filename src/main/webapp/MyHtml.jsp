@@ -693,19 +693,20 @@
     		var uncle=fa.nextElementSibling;
     		var uid=uncle.id;
     		var ue=UE.getEditor('container'+uid);
-    		ue.execCommand('insertHTML','sprsmthrfkr');
+    		ue.execCommand('insertHTML','undefined');
     		var inframe=uncle.children[1].children[0].children[1].children[0];
     		var tbody=window.frames[inframe.id].contentDocument.body.children[0].children[0];
     		var mkx=0;
     		var mky=0;
-    		for(var i=0;i<tbody.childElementCount;i++){
+    		for(var i=0;i<tbody.childElementCount;i++){//定位光标
     			for(var j=0;j<tbody.children[i].childElementCount;j++){
-    				if(tbody.children[i].children[j].innerHTML=='sprsmthrfkr'){
+    				if(tbody.children[i].children[j].innerHTML=='undefined'){
     					mkx=i;
     					mky=j;
     				}
     			}
     		}
+    		//填充表格
     		if(typeof(fillarr)=="object"){
 	    		for(var i=0;i<fillarr.length;i++){
 	    			if(typeof(fillarr[i])=="object"){
