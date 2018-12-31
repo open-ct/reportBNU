@@ -665,9 +665,24 @@
     		ue.addListener("ready", function () {
 				ue.setContent(tablehtml,false);
 			});
+			
+			
+			//在configseg中记录单元格坐标信息
+			var configtable=fa.children[4];
+			for(var i=0;i<r;i++){
+				var divtr=document.createElement("div");
+				for(var j=0;j<c;j++){
+					var divtd=document.createElement("div");
+					divtd.innerHTML="clear";
+					divtr.appendChild(divtd);
+				}
+				configtable.appendChild(divtr);
+			}
+			
     	}
     	
     	function filltablebymark(mark){
+    		return "[[2.2, 6.9, 14.6], [8.9, 20.3, 39.6], [2.2, 3.8, 6.9], [86.7, 69.0, 38.9]]";
     		var path = "";
     		$.ajax({
 	            type:"post",
@@ -682,7 +697,6 @@
 	            }
 	        });
 	        return path;
-	        //return "[[2.2, 6.9, 14.6], [8.9, 20.3, 39.6], [2.2, 3.8, 6.9], [86.7, 69.0, 38.9]]";
     	}
     	
     	function filltable(obj){
@@ -700,30 +714,40 @@
     		var tbody=window.frames[inframe.id].contentDocument.body.children[0].children[0];
     		var mkx=0;
     		var mky=0;
+    		var configtable=obj.parentNode.nextElementSibling;
+    		//var r=configtable.childElementCount;
+    		//var c=configtable.children[0].childElementCount;
     		for(var i=0;i<tbody.childElementCount;i++){//定位光标
     			for(var j=0;j<tbody.children[i].childElementCount;j++){
+    				//var rspan=tbody.children[i].children[j].getAttribute("rowspan");
+    				//var cspan=tbody.children[i].children[j].getAttribute("colspan");
     				if(tbody.children[i].children[j].innerHTML=='undefined'){
     					mkx=i;
     					mky=j;
     				}
     			}
     		}
+    		
     		//填充表格
     		if(typeof(fillarr)=="object"){
 	    		for(var i=0;i<fillarr.length;i++){
 	    			if(typeof(fillarr[i])=="object"){
 		    			for(var j=0;j<fillarr[i].length;j++){
 		    				tbody.children[mkx+i].children[mky+j].innerHTML=fillarr[i][j];
+		    				configtable.children[mkx+i].children[mky+j].innerHTML="filled";
 		    			}
 	    			}
 	    			else{
 	    				tbody.children[mkx].children[mky+i].innerHTML=fillarr[i];
+	    				configtable.children[mkx].children[mky+j].innerHTML="filled";
 	    			}
 	    		}
     		}
     		else{
     			tbody.children[mkx].children[mky].innerHTML=fillarr;
+    			configtable.children[mkx].children[mky].innerHTML="filled";
     		}
+    		configtable.children[mkx].children[mky].innerHTML=tt;
     	}
     	
     	function paging(obj){
@@ -862,8 +886,36 @@
     				_list[len].type="table";
     				var inhtml = contentseg.children[1].children[0].children[1].children[0];
     				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
-    				var bkmk=configseg.children[2].innerHTML;
-    				
+    				var tbody=window.frames[inhtml.id].contentDocument.body.children[0].children[0];
+    				var configtable=configseg.children[4];
+    				var __list={};
+    				var __len=0;
+    				for(var r=0;r<tbody.childElementCount;r++){
+    					for(var c=0;c<tbody.children[r].childElementCount;c++){
+    						var td=tbody.children[r].children[c];
+    						var configtd=configtable.children[r].children[c].innerHTML;
+    						__list[__len]=new Object();
+    						__list[__len].row=r;
+    						__list[__len].col=c;
+    						if(configtd=="clear"){
+    							var rspan=td.getAttribute("rowspan");
+    							if(rspan==null)rspan="1";
+    							var cspan=td.getAttribute("colspan");
+    							if(cspan==null)cspan="1";
+    							__list[__len].type=rspan+"*"+cspan;
+    							__list[__len].text=td.innerHTML;
+    						}
+    						else if(configtd=="filled"){
+    							;
+    						}
+    						else{
+    							__list[__len].type="bookmark";
+    							__list[__len].text=configtd;
+    						}
+    						__len++;
+    					}
+    				}
+    				_list[len].bookmark=JSON.stringify(__list);
     				len++;
     			}
     			else if(mark.className=="pageBreak"){
