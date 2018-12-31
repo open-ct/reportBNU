@@ -894,6 +894,7 @@
     					for(var c=0;c<tbody.children[r].childElementCount;c++){
     						var td=tbody.children[r].children[c];
     						var configtd=configtable.children[r].children[c].innerHTML;
+    						if(configtd=="filled")continue;
     						__list[__len]=new Object();
     						__list[__len].row=r;
     						__list[__len].col=c;
@@ -904,9 +905,6 @@
     							if(cspan==null)cspan="1";
     							__list[__len].type=rspan+"*"+cspan;
     							__list[__len].text=td.innerHTML;
-    						}
-    						else if(configtd=="filled"){
-    							;
     						}
     						else{
     							__list[__len].type="bookmark";
