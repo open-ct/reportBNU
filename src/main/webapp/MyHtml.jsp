@@ -226,6 +226,7 @@
 		                                    		<input type="text" placeholder="输入书签" />
 		                                    		<div class="positive ui button" onclick="filltable(this)">填入数据</div>
 		                                    	</div>
+		                                    	<div style="display:none"></div>
 		                                    </div>
 		                                    <div class="ui segment">
 		                                    	<div class="mktable" display="none"></div>
@@ -596,6 +597,7 @@
                                     		<input type="text" placeholder="输入书签" />
                                     		<div class="positive ui button" onclick="filltable(this)">填入数据</div>
                                     	</div>
+                                    	<div style="display:none"></div>
                                     </div>
                                 </div>
                             </div>
@@ -844,13 +846,15 @@
     				var index=sele.selectedIndex;
     				_list[len]=new Object();
     				_list[len].text=contentseg.children[1].children[0].children[0].value;
-    				_list[len].type=sele.options[index].value
+    				_list[len].type=sele.options[index].value;
+    				//_list[len].bookmark=
     				len++;
     			}
     			else if(mark.className=="mkgraph"){
     				_list[len]=new Object();
     				_list[len].type="graph";
     				_list[len].text=contentseg.children[1].getAttribute("src");
+    				_list[len].bookmark=configseg.children[0].children[0].value;
     				len++;
     			}
     			else if(mark.className=="mktable"){
@@ -858,6 +862,8 @@
     				_list[len].type="table";
     				var inhtml = contentseg.children[1].children[0].children[1].children[0];
     				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
+    				var bkmk=configseg.children[2].innerHTML;
+    				
     				len++;
     			}
     			else if(mark.className=="pageBreak"){

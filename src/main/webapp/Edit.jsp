@@ -122,7 +122,7 @@
     <div id="paper">
         <script id="editor" type="text/plain" ></script>
     </div>
-    <div class="ui segments">
+    <div style="text-align:center">
         <div class="positive ui button" onclick="download()">导出</div>
     </div>
     </div>
@@ -313,6 +313,7 @@
     		var imlink=getgraphbymark(tt);
     		imgdiv.src=imlink;
     	}
+
     </script>
 </body>
 
