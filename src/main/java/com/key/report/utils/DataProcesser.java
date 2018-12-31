@@ -1,16 +1,25 @@
 package com.key.report.utils;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+
+import javax.servlet.ServletContext;
+
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletContext;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * Created by heweiqiang on 2018/12/25.
@@ -193,7 +202,7 @@ public class DataProcesser {
     public static void buildTableList(ArrayList<ArrayList<String>> list, int startRow,
                                       ArrayList<ArrayList<String>> result) {
         int delta = startRow + result.size() - list.size();
-        for (int i = 0; i < delta; i++) list.add(new ArrayList<>());
+        for (int i = 0; i < delta; i++) list.add(new ArrayList<String>());
         int maxStart = 0;
         for (int i = 0; i < result.size(); i++)
             maxStart = Math.max(list.get(startRow + i).size(), maxStart);
@@ -258,14 +267,19 @@ public class DataProcesser {
 
     public static JSONArray SortTableJson(String jsonString) {
         ArrayList<JSONObject> result = new ArrayList<>();
-        JSONArray.fromObject(jsonString).forEach(bookmark -> result.add((JSONObject) bookmark));
-        Collections.sort(result, (JSONObject x, JSONObject y) -> {
-            String colX = x.getString("col"), colY = y.getString("col");
-            if (colX.equals(colY)) {
-                String rowX = x.getString("row"), rowY = y.getString("row");
-                return rowX.compareTo(rowY);
-            }
-            return colX.compareTo(colY);
+        for(Object o : JSONArray.fromObject(jsonString)) {
+        	result.add((JSONObject) o);
+        }
+        Collections.sort(result, new Comparator<JSONObject>() {
+	        @Override
+	        public int compare(JSONObject x, JSONObject y) {
+	            int colX = x.getInt("col"), colY = y.getInt("col");
+	            if (colX == colY) {
+	            	int rowX = x.getInt("row"), rowY = y.getInt("row");
+	                return rowX - rowY;
+	            }
+	            return colX - colY;
+	        }
         });
         return JSONArray.fromObject(result);
     }
