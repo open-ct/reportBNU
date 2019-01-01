@@ -493,7 +493,6 @@ $(".updateState").click(function(){
 });
 
 $(".massReport").click(function(){
-	alert("QAQ");
 	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
 	var reportLevel = $(this).parents("tr").find("input[name='reportLevel']");
 	var reportLevelValue=$(this).parents("tr").find("input[name='reportLevel']").val();
@@ -504,7 +503,6 @@ $(".massReport").click(function(){
 
 	var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
 	var orderbyNumValue = orderbyNum.val();
-	alert("QAQ");
 	$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
 			"<div style='margin-top: 12px;'>报告层级：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
 			"<option value='1'>省报告</option>" +
