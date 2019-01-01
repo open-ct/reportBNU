@@ -371,7 +371,6 @@ $(".attrSurvey").click(function(){
 	var titleValue=$(this).parents("tr").find(".titleTag").text();
 	var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
 	var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
-
 	var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
 	var orderbyNumValue = orderbyNum.val();
 
@@ -500,15 +499,14 @@ $(".massReport").click(function(){
 	var titleValue=$(this).parents("tr").find(".titleTag").text();
 	var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
 	var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
-
 	var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
 	var orderbyNumValue = orderbyNum.val();
 	$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
 			"<div style='margin-top: 12px;'>报告层级：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
-			"<option value='1'>省报告</option>" +
-			"<option value='2'>市报告</option>" +
-			"<option value='3'>区报告</option>" +
-			"<option value='4'>校报告</option>" +
+			"<option value='省'>省报告</option>" +
+			"<option value='市'>市报告</option>" +
+			"<option value='区'>区报告</option>" +
+			"<option value='校'>校报告</option>" +
 			"</select></div>"+
 			"<div>此操作需要较长时间，请耐心等待</div>"+
 			"</div></div>");
@@ -519,7 +517,7 @@ $(".massReport").click(function(){
 		autoOpen: true,
 		modal:true,
 		position:["center","center"],
-		title:"选择报告层级",
+		title:"批量生成报告",
 		resizable:false,
 		draggable:false,
 		closeOnEscape:false,
@@ -530,34 +528,25 @@ $(".massReport").click(function(){
 				text: "确认",
 				addClass:'dialogMessageButton dialogBtn1',
 				click: function() {
-					//执行发布
-					var reportName=$("#surTitleTemp").val();
-					reportName=optionValue=escape(encodeURIComponent(reportName));
-					var reportLevelTemp = $("#reportLevelTemp").val();
-					var orderbyNumTemp = $("#orderbyNumTemp").val();
+					var reportLevelTemp = $("#reportLevelTemp").val();	
 					if(reportLevelTemp!=null && reportLevelTemp!=""){
-						var params="reportName="+reportName;
-						params+="&reportLevel="+reportLevelTemp;
-						params+="&orderbyNum="+orderbyNumTemp;
+						var params="areaLevel="+reportLevelTemp;
 						params+="&id="+reportId;
-						var url = "${ctx}/c/report!save.action";
+						var url = "${ctx}/design/my-report!autoBuild.action";
 						$.ajax({
 							url:url,
 							data:params,
 							type:"post",
 							success:function(msg){
 								if(msg=="true"){
-									reportLevel.val(reportLevelTemp);
-									orderbyNum.val(orderbyNumTemp);
-									title.text($("#surTitleTemp").val());
 									$( "#myDialogRoot" ).dialog( "close" );
 								}else{
-									alert("保存失败！");
+									alert("生成失败！");
 								}
 							}
 						});
 					}else{
-						alert("请选择分类");
+						alert("请选择层级");
 					}
 				}
 			},
