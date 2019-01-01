@@ -114,7 +114,7 @@ button {
 										<th align="left" width="100">创建者</th>
 										<th align="left" width="200">创建时间</th>
 										<th align="left" width="200">状态</th>
-										<th align="center" width="350" style="padding-left: 10px;">操作</th>
+										<th align="center" width="400" style="padding-left: 10px;">操作</th>
 									</tr>
 									<c:choose>
 									<c:when test="${page.totalItems > 0}">
@@ -143,6 +143,9 @@ button {
 											  <c:if test="${roleType == 0 or roleType == 2}">
 											  <a class="btn btn-default updateState" href="#${en.id}" title="提交审核" data-toggle="tooltip" data-placement="top" value="1"><i class="fa fa-upload" aria-hidden="true"></i></a>
 											　</c:if>
+											<c:if test="${roleType == 0 or roleType == 2}">
+											<a class="btn btn-default massReport" href="#${en.id}" title="批量生成" data-toggle="tooltip" data-placement="top" ><i class="fa fa-database" aria-hidden="true"></i></a>
+											</c:if>
 											  <c:if test="${roleType == 0 or roleType == 1}">
 											  <a class="btn btn-default updateState" href="#${en.id}" title="审核不通过" data-toggle="tooltip" data-placement="top" value="2"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
 											  <a class="btn btn-default updateState" href="#${en.id}" title="审核通过" data-toggle="tooltip" data-placement="top" value="3"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
@@ -488,6 +491,98 @@ $(".updateState").click(function(){
 	return false;
 		
 });
+
+$(".attrSurvey").click(function(){
+
+	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
+	var reportLevel = $(this).parents("tr").find("input[name='reportLevel']");
+	var reportLevelValue=$(this).parents("tr").find("input[name='reportLevel']").val();
+	var title=$(this).parents("tr").find(".titleTag");
+	var titleValue=$(this).parents("tr").find(".titleTag").text();
+	var model_groupId1=$(this).parents("tr").find("input[name='groupId1']").val();
+	var model_groupId2=$(this).parents("tr").find("input[name='groupId2']").val();
+
+	var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
+	var orderbyNumValue = orderbyNum.val();
+
+	$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
+			"<div style='margin-top: 12px;'>报告层级：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
+			"<option value='1'>省报告</option>" +
+			"<option value='2'>市报告</option>" +
+			"<option value='3'>区报告</option>" +
+			"<option value='4'>校报告</option>" +
+			"</select></div>"+
+			"<div>此操作需要较长时间，请耐心等待</div>"
+			"</div></div>");
+
+	var myDialog=$( "#myDialogRoot" ).dialog({
+		width:500,
+		height:260,
+		autoOpen: true,
+		modal:true,
+		position:["center","center"],
+		title:"选择报告层级",
+		resizable:false,
+		draggable:false,
+		closeOnEscape:false,
+		show: {effect:"blind",direction:"up",duration: 500},
+		hide: {effect:"blind",direction:"left",duration: 200},
+		buttons: {
+			"OK":{
+				text: "确认",
+				addClass:'dialogMessageButton dialogBtn1',
+				click: function() {
+					//执行发布
+					var reportName=$("#surTitleTemp").val();
+					reportName=optionValue=escape(encodeURIComponent(reportName));
+					var reportLevelTemp = $("#reportLevelTemp").val();
+					var orderbyNumTemp = $("#orderbyNumTemp").val();
+					if(reportLevelTemp!=null && reportLevelTemp!=""){
+						var params="reportName="+reportName;
+						params+="&reportLevel="+reportLevelTemp;
+						params+="&orderbyNum="+orderbyNumTemp;
+						params+="&id="+reportId;
+						var url = "${ctx}/c/report!save.action";
+						$.ajax({
+							url:url,
+							data:params,
+							type:"post",
+							success:function(msg){
+								if(msg=="true"){
+									reportLevel.val(reportLevelTemp);
+									orderbyNum.val(orderbyNumTemp);
+									title.text($("#surTitleTemp").val());
+									$( "#myDialogRoot" ).dialog( "close" );
+								}else{
+									alert("保存失败！");
+								}
+							}
+						});
+					}else{
+						alert("请选择分类");
+					}
+				}
+			},
+			"CENCEL":{
+				text: "取消",
+				addClass:"dialogBtn1 dialogBtn1Cencel",
+				click: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		},
+		open:function(event,ui){
+			$(".ui-dialog-titlebar-close").hide();
+			$("#surTitleTemp").val(titleValue);
+			$("#reportLevelTemp").val(reportLevelValue);
+			$("#orderbyNumTemp").val(orderbyNumValue);
+		},
+		close:function(event,ui){
+			$("#myDialogRoot").remove();
+		}
+	});
+});
+
 
 function setSelectText(el) {
     try {
