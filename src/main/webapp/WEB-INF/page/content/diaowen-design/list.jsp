@@ -139,7 +139,7 @@ button {
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
 											  <a class="btn btn-default" href="${ctx }/design/my-report-design!previewDev.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
 											  <a class="btn btn-default" href="${ctx }/export!exportPDF.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
-											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属生设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
+											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属性设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
 											  <c:if test="${roleType == 0 or roleType == 2}">
 											  <a class="btn btn-default updateState" href="#${en.id}" title="提交审核" data-toggle="tooltip" data-placement="top" value="1"><i class="fa fa-upload" aria-hidden="true"></i></a>
 											　</c:if>
@@ -492,8 +492,8 @@ $(".updateState").click(function(){
 		
 });
 
-$(".attrSurvey").click(function(){
-
+$(".massReport").click(function(){
+	alert("QAQ");
 	var reportId=$(this).parents("tr").find("input[name='reportId']").val();
 	var reportLevel = $(this).parents("tr").find("input[name='reportLevel']");
 	var reportLevelValue=$(this).parents("tr").find("input[name='reportLevel']").val();
@@ -504,7 +504,7 @@ $(".attrSurvey").click(function(){
 
 	var orderbyNum = $(this).parents("tr").find("input[name='orderbyNum']");
 	var orderbyNumValue = orderbyNum.val();
-
+	alert("QAQ");
 	$("body").append("<div id=\"myDialogRoot\"><div class='dialogMessage' style='padding-top:40px;margin-left:20px;padding-bottom:0px;'>"+
 			"<div style='margin-top: 12px;'>报告层级：<select id='reportLevelTemp'> <option>-请选择报告层级-</option>" +
 			"<option value='1'>省报告</option>" +
@@ -512,7 +512,7 @@ $(".attrSurvey").click(function(){
 			"<option value='3'>区报告</option>" +
 			"<option value='4'>校报告</option>" +
 			"</select></div>"+
-			"<div>此操作需要较长时间，请耐心等待</div>"
+			"<div>此操作需要较长时间，请耐心等待</div>"+
 			"</div></div>");
 
 	var myDialog=$( "#myDialogRoot" ).dialog({
