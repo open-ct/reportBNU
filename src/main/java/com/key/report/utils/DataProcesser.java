@@ -117,6 +117,7 @@ public class DataProcesser {
 
     public static void buildData(String data, String reportId, String areaCode, String areaLevel) {
         data = CodeToChar(data);
+        LOGGER.info(data);
         String newData = "";
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
@@ -190,8 +191,7 @@ public class DataProcesser {
                 lastRow++;
             }
         }
-        //todo
-        value.put("text", "");
+        value.put("text", buildTableHtml(list));
         value.put("bookmark", jsonArray.toString());
     }
 
@@ -282,5 +282,21 @@ public class DataProcesser {
 	        }
         });
         return JSONArray.fromObject(result);
+    }
+    
+    public static String buildTableHtml(ArrayList<ArrayList<String>> list) {
+    	String html = "<table class=\"table\" style=\"margin: 0 auto;\"><tbody>";
+    	for(ArrayList<String> l : list) {
+    		html += "<tr>";
+    		for(String s : l) {
+    			html += "<td style=\"border: 1px solid windowtext;\">";
+    			html += s;
+    			html += "</td>";
+    		}
+    		html += "</tr>";
+    	}
+    	
+    	html += "</tbody></table>";
+    	return html;
     }
 }

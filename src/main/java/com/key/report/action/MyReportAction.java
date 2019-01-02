@@ -1,11 +1,10 @@
 package com.key.report.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.key.report.entity.Area;
-import com.key.report.service.AreaManager;
-import com.key.report.utils.DataProcesser;
 import org.apache.struts2.convention.annotation.AllowedMethods;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.InterceptorRefs;
@@ -18,13 +17,14 @@ import com.key.common.base.action.CrudActionSupport;
 import com.key.common.base.entity.User;
 import com.key.common.base.service.AccountManager;
 import com.key.common.utils.web.Struts2Utils;
+import com.key.report.entity.Area;
 import com.key.report.entity.Report;
+import com.key.report.service.AreaManager;
 import com.key.report.service.ReportManager;
+import com.key.report.utils.DataProcesser;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
-
-import java.util.List;
 
 /**
  * 我的问卷 action
@@ -123,6 +123,7 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 	public String autoBuild() throws Exception {
 		HttpServletRequest request=Struts2Utils.getRequest();
 		HttpServletResponse response=Struts2Utils.getResponse();
+		String result = "";
 		try{
 			String areaLevel = request.getParameter("areaLevel");
 			List<Area> areaList = areaManager.getAreasByLevel(areaLevel);
@@ -131,21 +132,24 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 			String name = originalReport.getReportName();
 			int state = originalReport.getReportState();
 			int tag = originalReport.getReportTag();
-			int type = originalReport.getReportType();
+			//int type = originalReport.getReportType();
 			for(Area area: areaList) {
 				System.out.println("Building for area " + area.getAreaName());
 				Report report = new Report();
 				report.setReportName(name + "_" + area.getAreaName());
 				report.setReportState(state);
 				report.setReportTag(tag);
-				report.setReportType(type);
+				//report.setReportType(type);
 				reportManager.save(report);
 				String reportId = report.getId();
 				DataProcesser.buildData(data, reportId, area.getAreaCode(), areaLevel);
 			}
+			result = "true";
 		}catch(Exception e){
 			e.printStackTrace();
+			result="error";
 		}
+		response.getWriter().write(result);
 		return null;
 	}
 	
