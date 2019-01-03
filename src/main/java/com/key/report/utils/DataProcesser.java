@@ -118,25 +118,22 @@ public class DataProcesser {
     public static void buildData(String data, String reportId, String areaCode, String areaLevel) {
         data = CodeToChar(data);
         LOGGER.info(data);
-        String newData = "";
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
         while (iterator.hasNext()) {
             String key = (String) iterator.next();
             JSONObject value = jsonData.getJSONObject(key);
             String type = value.getString("type");
-            String text = value.getString("text");
-            String bookmark = value.getString("bookmark");
             if (type.equals("graph")) {
-                buildGraphResult(value, bookmark, areaCode, areaLevel);
+                buildGraphResult(value, areaCode, areaLevel);
             } else if (type.equals("table")) {
-                buildTableResult(value, bookmark, areaCode, areaLevel);
+                buildTableResult(value, areaCode, areaLevel);
             } else {
-                buildTextResult(value, bookmark, areaCode, areaLevel);
+                //buildTextResult(value, areaCode, areaLevel);
             }
-            newData += value.toString();
         }
-        saveData(CharToCode(newData), reportId);
+        LOGGER.info(jsonData.toString());
+        saveData(CharToCode(jsonData.toString()), reportId);
     }
 
     public static String buildBookmark(String bookmark, String areaCode, String areaLevel) {
@@ -155,19 +152,41 @@ public class DataProcesser {
         return mark;
     }
 
-    public static void buildGraphResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
+    public static void buildGraphResult(JSONObject graphObject, String areaCode, String areaLevel) {
+    	String bookmark = graphObject.getString("bookmerk");
         String mark = buildBookmark(bookmark, areaCode, areaLevel);
         String result = ExecutePython.drawGraph(mark);
-        value.put("text", result);
-        value.put("bookmark", mark);
+        String[] results = result.split("&");
+        graphObject.put("text", "../files/graph/" + results[0] + ".png");
+        graphObject.put("bookmark", mark);
     }
 
-    public static void buildTableResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
+    public static void buildTableResult(JSONObject tableObject, String areaCode, String areaLevel) {
+    	String bookmark = tableObject.getString("bookmerk");
+    	LOGGER.info("table before: " + bookmark);
         ArrayList<ArrayList<String>> list = new ArrayList<>();
-        JSONArray jsonArray = SortTableJson(bookmark);
-        int lastCol = -1, lastRow = 0;
-        for (Object o : jsonArray) {
-            JSONObject jsonObject = (JSONObject) o;
+        JSONObject jsonData = JSONObject.fromObject(bookmark);
+        Iterator iterator = jsonData.keys();
+        ArrayList<JSONObject> sortedList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            String key = (String) iterator.next();
+            JSONObject value = jsonData.getJSONObject(key);
+            sortedList.add(value);
+        }
+        Collections.sort(sortedList, new Comparator<JSONObject>() {
+	        @Override
+	        public int compare(JSONObject x, JSONObject y) {
+	            int colX = x.getInt("col"), colY = y.getInt("col");
+	            if (colX == colY) {
+	            	int rowX = x.getInt("row"), rowY = y.getInt("row");
+	                return rowX - rowY;
+	            }
+	            return colX - colY;
+	        }
+        });
+        int lastCol = -1, lastRow = 0, index = 0;
+        JSONObject newData = new JSONObject();
+        for (JSONObject jsonObject : sortedList) {
             String type = jsonObject.getString("type");
             String text = jsonObject.getString("text");
             int row = jsonObject.getInt("row");
@@ -190,12 +209,14 @@ public class DataProcesser {
                 buildTableList(list, lastRow, result);
                 lastRow++;
             }
+            newData.put(index, jsonObject);
         }
-        value.put("text", buildTableHtml(list));
-        value.put("bookmark", jsonArray.toString());
+        LOGGER.info("table after : " + newData.toString());
+        tableObject.put("text", buildTableHtml(list));
+        tableObject.put("bookmark", newData);
     }
 
-    public static void buildTextResult(JSONObject value, String bookmark, String areaCode, String areaLevel) {
+    public static void buildTextResult(JSONObject textObject, String areaCode, String areaLevel) {
         //todo
     }
 
@@ -267,6 +288,7 @@ public class DataProcesser {
 
     public static JSONArray SortTableJson(String jsonString) {
         ArrayList<JSONObject> result = new ArrayList<>();
+        JSONObject jsonObject = JSONObject.fromObject(jsonString);
         for(Object o : JSONArray.fromObject(jsonString)) {
         	result.add((JSONObject) o);
         }
@@ -285,7 +307,7 @@ public class DataProcesser {
     }
     
     public static String buildTableHtml(ArrayList<ArrayList<String>> list) {
-    	String html = "<table class=\"table\" style=\"margin: 0 auto;\"><tbody>";
+    	String html = "<table><tbody>";
     	for(ArrayList<String> l : list) {
     		html += "<tr>";
     		for(String s : l) {

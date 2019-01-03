@@ -132,6 +132,7 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 			String name = originalReport.getReportName();
 			int state = originalReport.getReportState();
 			int tag = originalReport.getReportTag();
+			int visibility = originalReport.getVisibility();
 			//int type = originalReport.getReportType();
 			for(Area area: areaList) {
 				System.out.println("Building for area " + area.getAreaName());
@@ -139,6 +140,7 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 				report.setReportName(name + "_" + area.getAreaName());
 				report.setReportState(state);
 				report.setReportTag(tag);
+				report.setVisibility(visibility);
 				//report.setReportType(type);
 				reportManager.save(report);
 				String reportId = report.getId();

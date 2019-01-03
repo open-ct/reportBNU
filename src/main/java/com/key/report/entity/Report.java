@@ -1,7 +1,6 @@
 package com.key.report.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -36,7 +35,7 @@ public class Report extends IdEntity{
 	private Integer reportType;//1 学生 2家长 3老师 4校长
 	
 	//报告所属层级
-	private Integer reportLevel;//1 学生 2家长 3老师 4校长
+	private String reportLevel;//1 学生 2家长 3老师 4校长
 	//报告所属区域ID
 	private String areaId;//1 学生 2家长 3老师 4校长
 	
@@ -146,11 +145,11 @@ public class Report extends IdEntity{
 		this.userName = userName;
 	}
 
-	public Integer getReportLevel() {
+	public String getReportLevel() {
 		return reportLevel;
 	}
 
-	public void setReportLevel(Integer reportLevel) {
+	public void setReportLevel(String reportLevel) {
 		this.reportLevel = reportLevel;
 	}
 
