@@ -578,7 +578,7 @@
     	}
     	
     	function getgraphbymark(mark){
-    		return "http://files.57gif.com/webgif/0/4/84/bcd4b2814bbf8341e94a71ef35593.gif";
+    		//return "http://files.57gif.com/webgif/0/4/84/bcd4b2814bbf8341e94a71ef35593.gif";
     		var path = "";
     		$.ajax({
 	            type:"post",
@@ -790,7 +790,7 @@
     	}
     	
     	function filltablebymark(mark){
-    		return "[[2.2, 6.9, 14.6], [8.9, 20.3, 39.6], [2.2, 3.8, 6.9], [86.7, 69.0, 38.9]]";
+    		//return "[[2.2, 6.9, 14.6], [8.9, 20.3, 39.6], [2.2, 3.8, 6.9], [86.7, 69.0, 38.9]]";
     		var path = "";
     		$.ajax({
 	            type:"post",
