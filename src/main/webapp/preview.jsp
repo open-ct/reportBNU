@@ -81,7 +81,6 @@
     		var data="${data}".split(',');
     		var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
-    		console.log(jsonData);
     		jsonData=JSON.parse(jsonData);
     		//var faza=document.getElementById("father");
     		for(i in jsonData){
