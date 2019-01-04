@@ -173,9 +173,11 @@
 		    			['source']
 		    			]
 		    		});
-		    		ue.addListener("ready", function () {
-						ue.setContent(jsonData[i]["text"],false);
-					});
+		    		//ue.addListener("ready", function () {
+					//	ue.setContent(jsonData[i]["text"],false);
+					//});
+					var inhtml=document.getElementById('container'+newid).children[0].children[1].children[0];
+					window.frames[inhtml.id].contentDocument.body.innerHTML=jsonData[i]["text"];
     			}
     			else if(jsonData[i]["type"]=="table"){
    					var divnew = document.createElement("div");
@@ -272,6 +274,7 @@
 		    		`;
 		    		var newid=new Date().getTime();
 		    		divnew.children[0].children[0].children[0].children[2].id=newid;
+		    		divnew.children[0].children[0].children[0].children[1].children[4].innerHTML=jsonData[i]["config"];
 		    		fa.appendChild(divnew);
 		    		var divscript = document.createElement("script");
 		    		divscript.id='container'+newid;
@@ -282,12 +285,13 @@
 		    			['mergecells','source']
 		    			]
 		    		});
-		    		ue.addListener("ready", function () {
-						ue.setContent(jsonData[i]["text"],false);
-					});
+		    		//ue.addListener("ready", function () {
+					//	ue.setContent(jsonData[i]["text"],false);
+					//});
+					var inhtml=document.getElementById('container'+newid).children[0].children[1].children[0];
+					window.frames[inhtml.id].contentDocument.body.innerHTML=jsonData[i]["text"];
     			}
     			else if(jsonData[i]["type"]=="paging"){
-    				alert(jsonData[i]["text"]);
     				var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
 		    		divnew.id = new Date().getTime();
@@ -958,6 +962,7 @@
     				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
     				var tbody=window.frames[inhtml.id].contentDocument.body.children[0].children[0];
     				var configtable=configseg.children[4];
+    				_list[len].config=configtable.innerHTML;
     				var __list={};
     				var __len=0;
     				for(var r=0;r<tbody.childElementCount;r++){
