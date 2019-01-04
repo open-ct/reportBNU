@@ -83,75 +83,75 @@
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
     		console.log(jsonData);
     		jsonData=JSON.parse(jsonData);
-    		var faza=document.getElementById("father");
+    		//var faza=document.getElementById("father");
     		for(i in jsonData){
-    			if(jsonData[i]["type"]=="graph"){
-    				var imghtml=jsonData[i]["text"];
-    				var divnew=document.createElement("p");
-    				divnew.className="preimage";
+    			$("#father").append(jsonData[i]["text"]);
+    			//if(jsonData[i]["type"]=="graph"){
+    				//var imghtml=jsonData[i]["text"];
+    				//var divnew=document.createElement("p");
+    				//divnew.className="preimage";
     				//divnew.id=new Date().getTime();
-    				divnew.innerHTML='<img src='+imghtml+'>';
-    				divnew.style.textAlign="center";
+    				//divnew.innerHTML=imghtml;
+    				//divnew.style.textAlign="center";
     				
-    				faza.appendChild(divnew);
-    			}
-    			else if(jsonData[i]["type"]=="paging"){
-    				var divnew=document.createElement("p");
-    				divnew.className="pageBreak";
-    				divnew.style.pageBreakBefore="left";
-    				divnew.innerHTML='----分页符----';
-    				divnew.style.textAlign="center";
-    				faza.appendChild(divnew);
-    			}
-    			else if(jsonData[i]["type"]=="table"){
-    				var divnew=document.createElement("table");
-    				divnew.className="table";
-    				divnew.style.margin="0 auto";
-    				divnew.innerHTML=jsonData[i]["text"];
-    				faza.appendChild(divnew);
-    			}
-    			else{
-    				var textcontent=jsonData[i]["text"];
-    				var texttype=jsonData[i]["type"];
-    				var divnew=document.createElement("p");
-    				divnew.className=texttype;
-    				if(texttype=="texttitle1"){
-    					divnew.style.textAlign="center";
-    					divnew.style.fontFamily="SimHei";
-    					divnew.style.fontSize="18pt";
-    				}
-    				if(texttype=="texttitle2"){
-    					divnew.style.textAlign="left";
-    					divnew.style.fontFamily="SimHei";
-    					divnew.style.fontSize="16pt";
-    				}
-    				if(texttype=="texttitle3"){
-    					divnew.style.fontFamily="SimHei";
-    					divnew.style.fontSize="14pt";
-    				}
-    				if(texttype=="texttitle4"){
-    					divnew.style.fontFamily="SimHei";
-    					divnew.style.fontSize="12pt";
-    				}
-    				if(texttype=="textbody"){
-    					divnew.style.textIndent="24pt";
-    					divnew.style.fontFamily="FangSong";
-    					divnew.style.fontSize="12pt";
-    				}
-    				if(texttype=="textnote"){
-    					divnew.style.fontFamily="KaiTi";
-    					divnew.style.fontSize="10.5pt";
-    				}
-    				if(texttype=="imagetitle"){
-    					divnew.style.textAlign="center";
-    					divnew.style.fontFamily="STXinwei";
-    					divnew.style.fontSize="12pt";
-    				}
+    				//faza.appendChild(divnew);
+    			//}
+    			//else if(jsonData[i]["type"]=="paging"){
+    				//var divnew=document.createElement("p");
+    				//divnew.className="pageBreak";
+    				//divnew.style.pageBreakBefore="left";
+    				//divnew.innerHTML='----分页符----';
+    				//divnew.style.textAlign="center";
+    				//faza.appendChild(divnew);
+    			//}
+    			//else if(jsonData[i]["type"]=="table"){
+    				//var divnew=document.createElement("table");
+    				//divnew.className="table";
+    				//divnew.style.margin="0 auto";
+    				//divnew.innerHTML=jsonData[i]["text"];
+    				//faza.appendChild(divnew);
+    			//}
+    			//else{
+    				//var textcontent=jsonData[i]["text"];
+    				//var texttype=jsonData[i]["type"];
+    				//var divnew=document.createElement("p");
+    				//divnew.className=texttype;
+    				//if(texttype=="texttitle1"){
+    					//divnew.style.textAlign="center";
+    					//divnew.style.fontFamily="SimHei";
+    					//divnew.style.fontSize="18pt";
+    				//}
+    				//if(texttype=="texttitle2"){
+    					//divnew.style.fontFamily="SimHei";
+    					//divnew.style.fontSize="16pt";
+    				//}
+    				//if(texttype=="texttitle3"){
+    					//divnew.style.fontFamily="SimHei";
+    					//divnew.style.fontSize="14pt";
+    				//}
+    				//if(texttype=="texttitle4"){
+    					//divnew.style.fontFamily="SimHei";
+    					//divnew.style.fontSize="12pt";
+    				//}
+    				//if(texttype=="textbody"){
+    					//divnew.style.textIndent="24pt";
+    					//divnew.style.fontFamily="FangSong";
+    					//divnew.style.fontSize="12pt";
+    				//}
+    				//if(texttype=="textnote"){
+    					//divnew.style.fontFamily="KaiTi";
+    					//divnew.style.fontSize="10.5pt";
+    				//}
+    				//if(texttype=="imagetitle"){
+    					//divnew.style.textAlign="center";
+    					//divnew.style.fontFamily="STXinwei";
+    					//divnew.style.fontSize="12pt";
+    				//}
     				
     				//divnew.id=new Date().getTime();
-    				divnew.innerHTML=textcontent;
-    				faza.appendChild(divnew);
-    			}
+    				//divnew.innerHTML=textcontent;
+    				//faza.appendChild(divnew);
+    			//}
     		}
     		
     		
