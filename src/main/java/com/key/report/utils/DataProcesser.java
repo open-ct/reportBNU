@@ -108,7 +108,27 @@ public class DataProcesser {
                 else if (type.equals("textnote")) style = "text-align: left; font-family: KaiTi; font-size: 10.5pt;";
                 else if (type.equals("imagetitle"))
                     style = "text-align: center; font-family: STXinwei; font-size: 12pt;";
-                htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + text + "</p>\n";
+                String newText = "";
+                int last = 0;
+                while(true)
+                {
+                	int start = text.indexOf("@@", last);
+                	if(start == -1) {
+                		newText += text.substring(last);
+                		break;
+                	}
+                	int end = text.indexOf("@@", start + 2);
+                	if(end == -1) {
+                		LOGGER.error("@@ not match!");
+                		break;
+                	}
+                	String bookmark = text.substring(start + 2, end);
+                	LOGGER.info(bookmark);
+                	newText += text.substring(last, start);
+                	newText += ExecutePython.drawGraph(bookmark);
+                	last = end + 2;
+                }
+                htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + newText + "</p>\n";
             }
         }
         htmlData += "</div>\n</div>\n</body>\n</html>\n";
@@ -129,7 +149,7 @@ public class DataProcesser {
             } else if (type.equals("table")) {
                 buildTableResult(value, areaCode, areaLevel);
             } else {
-                //buildTextResult(value, areaCode, areaLevel);
+                buildTextResult(value, areaCode, areaLevel);
             }
         }
         LOGGER.info(jsonData.toString());
@@ -203,9 +223,18 @@ public class DataProcesser {
                 lastRow += result.size();
             } else {
                 ArrayList<ArrayList<String>> result = new ArrayList<>();
-                ArrayList<String> content = new ArrayList<>();
-                content.add(text);
-                result.add(content);
+                int numRow = Integer.parseInt(jsonObject.getString("text").split("*")[0]), numCol = Integer.parseInt(jsonObject.getString("text").split("*")[1]);
+                for(int i = 0; i < numRow; i++) {
+                	ArrayList<String> content = new ArrayList<>();
+                	for(int j = 0; j < numCol; j++) {
+                		if(i == 0 && j == 0) {
+                			content.add(text);
+                		} else {
+                			content.add("");
+                		}
+                	}
+                	result.add(content);
+                }
                 buildTableList(list, lastRow, result);
                 lastRow++;
             }
@@ -217,7 +246,28 @@ public class DataProcesser {
     }
 
     public static void buildTextResult(JSONObject textObject, String areaCode, String areaLevel) {
-        //todo
+        String text = textObject.getString("text");
+        String newText = "";
+        int last = 0;
+        while(true)
+        {
+        	int start = text.indexOf("@@", last);
+        	if(start == -1) {
+        		newText += text.substring(last);
+        		break;
+        	}
+        	int end = text.indexOf("@@", start + 2);
+        	if(end == -1) {
+        		LOGGER.error("@@ not match!");
+        		break;
+        	}
+        	String bookmark = text.substring(start + 2, end);
+        	LOGGER.info(bookmark);
+        	newText += text.substring(last, start);
+        	newText += "@@" + buildBookmark(bookmark, areaCode, areaLevel) + "@@";
+        	last = end + 2;
+        }
+        textObject.put("text", newText);
     }
 
     public static void buildTableList(ArrayList<ArrayList<String>> list, int startRow,
