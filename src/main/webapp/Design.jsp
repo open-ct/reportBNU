@@ -597,14 +597,14 @@
 	                console.log(msg);
 	            }
 	        });
-	        return path;
+	        return "../"+path;
     	}
     	
     	function getgraph(obj){
     		var bro=obj.previousElementSibling;
     		var tt=bro.value;
     		var imlink=getgraphbymark(tt);
-    		var imghtml="<p><img src=../"+imlink+"></p>";
+    		var imghtml="<p><img src="+imlink+"></p>";
     		//var divnew=document.createElement("div");
     		//divnew.className="ui segment";
     		//divnew.innerHTML=`
@@ -949,9 +949,9 @@
     			else if(mark.className=="mkgraph"){
     				_list[len]=new Object();
     				_list[len].type="graph";
-    				_list[len].text=contentseg.children[1].getAttribute("src");
-    				//var inhtml = contentseg.children[1].children[0].children[1].children[0];
-    				//_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
+    				//_list[len].text=contentseg.children[1].getAttribute("src");
+    				var inhtml = contentseg.children[1].children[0].children[1].children[0];
+    				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
     				_list[len].bookmark=configseg.children[0].children[0].value;
     				len++;
     			}

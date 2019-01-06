@@ -84,18 +84,18 @@
     		jsonData=JSON.parse(jsonData);
     		var faza=document.getElementById("father");
     		for(i in jsonData){
-    			if(jsonData[i]["type"]=="graph"){
-    				var imghtml=`
-    				<img src="`+jsonData[i]["text"]+`"/>`;
-    				var divnew=document.createElement("p");
-    				divnew.className="preimage";
-    				divnew.id=new Date().getTime();
-    				divnew.innerHTML=imghtml;
-    				divnew.style.textAlign="center";
-    				
-    				faza.appendChild(divnew);
-    				continue;
-    			}
+    			//if(jsonData[i]["type"]=="graph"){
+    			//	var imghtml=`
+    			//	<img src="`+jsonData[i]["text"]+`"/>`;
+    			//	var divnew=document.createElement("p");
+    			//	divnew.className="preimage";
+    			//	divnew.id=new Date().getTime();
+    			//	divnew.innerHTML=imghtml;
+    			//	divnew.style.textAlign="center";
+    			//	
+    			//	faza.appendChild(divnew);
+    			//	continue;
+    			//}
     			//else if(jsonData[i]["type"]=="paging"){
     				//var divnew=document.createElement("p");
     				//divnew.className="pageBreak";
