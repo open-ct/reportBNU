@@ -851,7 +851,7 @@
 	    			}
 	    			else{
 	    				tbody.children[mkx].children[mky+i].innerHTML=fillarr[i];
-	    				configtable.children[mkx].children[mky+j].innerHTML="filled";
+	    				configtable.children[mkx].children[mky+i].innerHTML="filled";
 	    			}
 	    		}
     		}
