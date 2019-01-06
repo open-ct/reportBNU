@@ -302,20 +302,29 @@ public class DataProcesser {
     }
 
     public static ArrayList<ArrayList<String>> parsePythonTable(String result) {
+    	LOGGER.info("python table result: " + result);
         ArrayList<ArrayList<String>> list = new ArrayList<>();
-        ArrayList<String> firstDimension = parsePythonArray(result);
+        ArrayList<String> firstDimension = parsePythonArray(result, 1);
         for (String fir : firstDimension) {
-            ArrayList<String> secondDimension = parsePythonArray(fir);
+            ArrayList<String> secondDimension = parsePythonArray(fir, 0);
             list.add(secondDimension);
         }
         return list;
     }
 
-    public static ArrayList<String> parsePythonArray(String arrayString) {
+    public static ArrayList<String> parsePythonArray(String arrayString, int pos) {
         ArrayList<String> list = new ArrayList<>();
         int length = arrayString.length();
-        if (arrayString.charAt(0) == '[' && arrayString.charAt(length - 1) == ']') {
-            arrayString = arrayString.substring(1, length - 1);
+        if (length > 0 && arrayString.charAt(0) == '[' && arrayString.charAt(length - 1) == ']') {
+        	if(pos == 1 && (length < 2 || arrayString.charAt(1) != '[' || arrayString.charAt(length - 2) != ']')) {
+        		list.add(arrayString);
+        		return list;
+        	}
+        	arrayString = arrayString.substring(1, length - 1);
+            
+        } else {
+        	list.add(arrayString);
+        	return list;
         }
         int inBracket = 0;
         int inQuote = 0;
@@ -325,11 +334,17 @@ public class DataProcesser {
             if (c == ']') inBracket--;
             if (c == '\"') inQuote = 1 - inQuote;
             if (c == ',' && inBracket == 0 && inQuote == 0) {
+            	tmp = tmp.trim();
+            	if(tmp.length() > 0 && tmp.charAt(0) == '\'' && tmp.charAt(tmp.length() - 1) == '\'') tmp = tmp.substring(1, tmp.length() - 1);
                 list.add(tmp);
                 tmp = "";
             } else tmp += c;
         }
-        if (!"".equals(tmp)) list.add(tmp);
+        if (!"".equals(tmp)) {
+        	tmp = tmp.trim();
+        	if(tmp.length() > 0 && tmp.charAt(0) == '\'' && tmp.charAt(tmp.length() - 1) == '\'') tmp = tmp.substring(1, tmp.length() - 1);
+        	list.add(tmp);
+        }
         return list;
     }
 
