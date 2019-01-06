@@ -33,7 +33,7 @@
 <body>
 
             <!--maincontent-->
-            <div class="mainWrap navslide">
+            
             <div id="father">
             <div class="ui equal width left aligned padded grid stackable">
                 <!--Site Content-->
@@ -66,7 +66,7 @@
         		</div>
         	</div>
         	</div>
-        	</div>
+        	
         
            
 
@@ -940,61 +940,86 @@
     				var index=sele.selectedIndex;
     				_list[len]=new Object();
     				//_list[len].text=contentseg.children[1].children[0].children[0].value;
-    				var inhtml = contentseg.children[1].children[0].children[1].children[0];
-    				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
-    				_list[len].type=sele.options[index].value;
-    				//_list[len].bookmark=
-    				len++;
+    				var editor_parts=contentseg.children[1].children[0].children;
+    				var mk=0;
+    				for(var j=0;j<editor_parts.length;j++){
+    					if(editor_parts[j].className=="");
+    					else mk++;
+    					if(mk==2){
+    						var inhtml = editor_parts[j].children[0];
+    						_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
+    						_list[len].type=sele.options[index].value;
+    						len++;
+    					}
+    				}
     			}
     			else if(mark.className=="mkgraph"){
     				_list[len]=new Object();
     				_list[len].type="graph";
     				//_list[len].text=contentseg.children[1].getAttribute("src");
-    				var inhtml = contentseg.children[1].children[0].children[1].children[0];
-    				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
-    				_list[len].bookmark=configseg.children[0].children[0].value;
-    				len++;
+    				var editor_parts=contentseg.children[1].children[0].children;
+    				var mk=0;
+    				for(var j=0;j<editor_parts.length;j++){
+    					if(editor_parts[j].className=="");
+    					else mk++;
+    					if(mk==2){
+    						var inhtml = editor_parts[j].children[0];
+    						_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
+    						_list[len].bookmark=configseg.children[0].children[0].value;
+    						len++;
+    					}
+    				}
     			}
     			else if(mark.className=="mktable"){
     				_list[len]=new Object();
     				_list[len].type="table";
-    				var inhtml = contentseg.children[1].children[0].children[1].children[0];
-    				_list[len].text=window.frames[inhtml.id].contentDocument.body.innerHTML;
-    				var tbody=window.frames[inhtml.id].contentDocument.body.children[0].children[0];
-    				var configtable=configseg.children[4];
-    				_list[len].config=configtable.innerHTML;
-    				var __list={};
-    				var __len=0;
-    				for(var r=0;r<tbody.childElementCount;r++){
-    					for(var c=0;c<tbody.children[r].childElementCount;c++){
-    						var td=tbody.children[r].children[c];
-    						var configtd=configtable.children[r].children[c].innerHTML;
-    						if(configtd=="filled")continue;
-    						__list[__len]=new Object();
-    						__list[__len].row=r;
-    						__list[__len].col=c;
-    						if(configtd=="clear"){
-    							var rspan=td.getAttribute("rowspan");
-    							if(rspan==null||rspan=="")rspan="1";
-    							var cspan=td.getAttribute("colspan");
-    							if(cspan==null||cspan=="")cspan="1";
-    							__list[__len].type=rspan+"*"+cspan;
-    							__list[__len].text=td.innerHTML;
+    				var editor_parts=contentseg.children[1].children[0].children;
+    				var mk=0;
+    				for (var j = 0; j < editor_parts.length; j++) {
+    					if (editor_parts[j].className == "")
+    						;
+    					else mk++;
+    					if (mk == 2) {
+    						var inhtml = editor_parts[j].children[0];
+    						_list[len].text = window.frames[inhtml.id].contentDocument.body.innerHTML;
+    						var tbody = window.frames[inhtml.id].contentDocument.body.children[0].children[0];
+    						var configtable = configseg.children[4];
+    						_list[len].config = configtable.innerHTML;
+    						var __list = {};
+    						var __len = 0;
+    						for (var r = 0; r < tbody.childElementCount; r++) {
+    							for (var c = 0; c < tbody.children[r].childElementCount; c++) {
+    								var td = tbody.children[r].children[c];
+    								var configtd = configtable.children[r].children[c].innerHTML;
+    								if (configtd == "filled") continue;
+    								__list[__len] = new Object();
+    								__list[__len].row = r;
+    								__list[__len].col = c;
+    								if (configtd == "clear") {
+    									var rspan = td.getAttribute("rowspan");
+    									if (rspan == null || rspan == "")
+    										rspan = "1";
+    									var cspan = td.getAttribute("colspan");
+    									if (cspan == null || cspan == "")
+    										cspan = "1";
+    									__list[__len].type = rspan + "*" + cspan;
+    									__list[__len].text = td.innerHTML;
+    								} else {
+    									__list[__len].type = "bookmark";
+    									__list[__len].text = configtd;
+    								}
+    								__len++;
+    							}
     						}
-    						else{
-    							__list[__len].type="bookmark";
-    							__list[__len].text=configtd;
-    						}
-    						__len++;
+    						_list[len].bookmark = JSON.stringify(__list);
+    						len++;
     					}
     				}
-    				_list[len].bookmark=JSON.stringify(__list);
-    				len++;
     			}
     			else if(mark.className=="pageBreak"){
     				_list[len]=new Object();
     				_list[len].type="paging";
-    				_list[len].text=`<p style="pageBreakBefore:left;text-align:center">
+    				_list[len].text=`<p style="page-break-before:left;text-align:center">
     				----分页符----
     				</p>`;
     				len++;
