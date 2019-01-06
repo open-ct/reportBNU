@@ -597,14 +597,14 @@
 	                console.log(msg);
 	            }
 	        });
-	        return "../"+path;
+	        return path;
     	}
     	
     	function getgraph(obj){
     		var bro=obj.previousElementSibling;
     		var tt=bro.value;
     		var imlink=getgraphbymark(tt);
-    		var imghtml="<p><img src="+imlink+"></p>";
+    		var imghtml="<p><img src=../"+imlink+"></p>";
     		//var divnew=document.createElement("div");
     		//divnew.className="ui segment";
     		//divnew.innerHTML=`
