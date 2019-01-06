@@ -34,7 +34,7 @@
 
             <!--maincontent-->
             
-            <div id="father">
+            <div id="father" style="overflow:auto">
             <div class="ui equal width left aligned padded grid stackable">
                 <!--Site Content-->
 
@@ -59,12 +59,10 @@
             </div>
                 <!--Site Content-->
         	</div>
-        	<div>
-        	<div class="ui equal width left aligned padded grid stackable">
+        	<div id="savediv" class="ui equal width left aligned padded grid stackable">
         		<div>
         			<button class="ui primary button saving" onclick="savereport()" >保存</button>
         		</div>
-        	</div>
         	</div>
         	
         
@@ -104,11 +102,15 @@
     
     <script type="text/javascript">
     	window.onload=function(){
+    		var fa = document.getElementById("father");
+    		var height_tmp=window.innerHeight-$("#header").height()-$("#savediv").height()-$(".dw_foot").height()-30;
+    		$("#father").height(height_tmp);
     		var data="${data}".split(',');
     		var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
     		jsonData=JSON.parse(jsonData);
-    		var fa = document.getElementById("father");
+    		
+    		
     		//var texttmp={};
     		//var textcnt=0;
     		for(i in jsonData){
