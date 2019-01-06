@@ -82,6 +82,7 @@ public class DataProcesser {
                 + "<style>@font-face {font-family: 'Fang';src: url(../../file/Fonts/simfang.ttf) format('truetype');}td { font-family: '华文仿宋'; }</style>"
                 + "</head><body><div class=\"ui segments\"  id=\"paper\" style=\"border:0; width:790px\"><div class=\"ui segment\" id=\"father\" style=\"word-wrap:break-word\">";
         data = CodeToChar(data);
+        LOGGER.info(data);
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
         while (iterator.hasNext()) {
@@ -92,6 +93,8 @@ public class DataProcesser {
             if (type.equals("graph")) {
                 //htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
                 //htmlData += "<img src=\"../" + text + "\">\n</p>\n";
+            	int pos = text.indexOf("files");
+            	text = text.substring(0, pos) + "../" + text.substring(pos);
             	htmlData += text;
             } else if (type.equals("table")) {
                 //htmlData += "<table class=\"" + type + "\" style=\"margin: 0 auto;\">\n";
@@ -177,16 +180,19 @@ public class DataProcesser {
     }
 
     public static void buildGraphResult(JSONObject graphObject, String areaCode, String areaLevel) {
-    	String bookmark = graphObject.getString("bookmerk");
+    	String bookmark = graphObject.getString("bookmark");
+    	String text = graphObject.getString("text");
         String mark = buildBookmark(bookmark, areaCode, areaLevel);
         String result = ExecutePython.drawGraph(mark);
         String[] results = result.split("&");
-        graphObject.put("text", "../files/graph/" + results[0] + ".png");
+        int posL = text.indexOf("graph/");
+        int posR = text.indexOf(".png");
+        graphObject.put("text", text.substring(0, posL + 6) + results[0] + text.substring(posR));
         graphObject.put("bookmark", mark);
     }
 
     public static void buildTableResult(JSONObject tableObject, String areaCode, String areaLevel) {
-    	String bookmark = tableObject.getString("bookmerk");
+    	String bookmark = tableObject.getString("bookmark");
     	LOGGER.info("table before: " + bookmark);
         ArrayList<ArrayList<String>> list = new ArrayList<>();
         JSONObject jsonData = JSONObject.fromObject(bookmark);
@@ -227,14 +233,15 @@ public class DataProcesser {
                 lastRow += result.size();
             } else {
                 ArrayList<ArrayList<String>> result = new ArrayList<>();
-                int numRow = Integer.parseInt(jsonObject.getString("text").split("*")[0]), numCol = Integer.parseInt(jsonObject.getString("text").split("*")[1]);
+                String elementSize = jsonObject.getString("type");
+                int numRow = Integer.parseInt(elementSize.split("\\*")[0]), numCol = Integer.parseInt(elementSize.split("\\*")[1]);
                 for(int i = 0; i < numRow; i++) {
                 	ArrayList<String> content = new ArrayList<>();
                 	for(int j = 0; j < numCol; j++) {
                 		if(i == 0 && j == 0) {
-                			content.add(text);
+                			content.add(text + "&&&" + elementSize);
                 		} else {
-                			content.add("");
+                			content.add("SPAN_ELEMENT");
                 		}
                 	}
                 	result.add(content);
@@ -365,8 +372,17 @@ public class DataProcesser {
     	for(ArrayList<String> l : list) {
     		html += "<tr>";
     		for(String s : l) {
-    			html += "<td style=\"border: 1px solid windowtext;\">";
-    			html += s;
+    			if("SPAN_ELEMENT".equals(s)) continue;
+    			String style = "style=\"border: 1px solid windowtext;\"";
+    			String span = "";
+    			String[] text = s.split("&&&");
+    			if(text.length > 1) {
+    				String elementSize = text[1];
+                    String numRow = elementSize.split("\\*")[0], numCol = elementSize.split("\\*")[1];
+                    span = "rowspan=\"" + numRow + "\" colspan=\"" + numCol + "\"";
+    			}
+    			html += "<td " + style + " " + span + ">";
+    			html += text[0];
     			html += "</td>";
     		}
     		html += "</tr>";
