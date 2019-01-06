@@ -90,24 +90,27 @@ public class DataProcesser {
             String type = value.getString("type");
             String text = value.getString("text");
             if (type.equals("graph")) {
-                htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
-                htmlData += "<img src=\"../" + text + "\">\n</p>\n";
+                //htmlData += "<p class=\"" + type + "\" style=\"text-align: center;\">\n";
+                //htmlData += "<img src=\"../" + text + "\">\n</p>\n";
+            	htmlData += text;
             } else if (type.equals("table")) {
-                htmlData += "<table class=\"" + type + "\" style=\"margin: 0 auto;\">\n";
-                htmlData += text.substring(7);
+                //htmlData += "<table class=\"" + type + "\" style=\"margin: 0 auto;\">\n";
+                htmlData += text;
+                //htmlData += text.substring(7);
             } else if (type.equals("paging")) {
-                htmlData += "<div style=\"page-break-before:left\"></div>";
+                //htmlData += "<div style=\"page-break-before:left\"></div>";
+            	htmlData += text;
             } else {
-                String style = "";
-                if (type.equals("texttitle1")) style = "text-align: center; font-family: SimHei; font-size: 18pt;";
-                else if (type.equals("texttitle2")) style = "text-align: left; font-family: SimHei; font-size: 16pt;";
-                else if (type.equals("texttitle3")) style = "text-align: left; font-family: SimHei; font-size: 14pt;";
-                else if (type.equals("texttitle4")) style = "text-align: left; font-family: SimHei; font-size: 12pt;";
-                else if (type.equals("textbody"))
-                    style = "text-indent: 24pt; text-align: left; font-family: 华文仿宋; font-size: 12pt;";
-                else if (type.equals("textnote")) style = "text-align: left; font-family: KaiTi; font-size: 10.5pt;";
-                else if (type.equals("imagetitle"))
-                    style = "text-align: center; font-family: STXinwei; font-size: 12pt;";
+//                String style = "";
+//                if (type.equals("texttitle1")) style = "text-align: center; font-family: SimHei; font-size: 18pt;";
+//                else if (type.equals("texttitle2")) style = "text-align: left; font-family: SimHei; font-size: 16pt;";
+//                else if (type.equals("texttitle3")) style = "text-align: left; font-family: SimHei; font-size: 14pt;";
+//                else if (type.equals("texttitle4")) style = "text-align: left; font-family: SimHei; font-size: 12pt;";
+//                else if (type.equals("textbody"))
+//                    style = "text-indent: 24pt; text-align: left; font-family: 华文仿宋; font-size: 12pt;";
+//                else if (type.equals("textnote")) style = "text-align: left; font-family: KaiTi; font-size: 10.5pt;";
+//                else if (type.equals("imagetitle"))
+//                    style = "text-align: center; font-family: STXinwei; font-size: 12pt;";
                 String newText = "";
                 int last = 0;
                 while(true)
@@ -128,7 +131,8 @@ public class DataProcesser {
                 	newText += ExecutePython.drawGraph(bookmark);
                 	last = end + 2;
                 }
-                htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + newText + "</p>\n";
+                //htmlData += "<p class=\"" + type + "\" style=\"" + style + "\">" + newText + "</p>\n";
+                htmlData += newText;
             }
         }
         htmlData += "</div>\n</div>\n</body>\n</html>\n";
