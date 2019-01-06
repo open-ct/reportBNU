@@ -516,7 +516,7 @@
 					ue.execCommand('fontsize', '12pt');
 				}
 				else if(texttype=="textbody"){
-					ue.execCommand('fontfamily', 'FangSong');
+					ue.execCommand('fontfamily', '华文仿宋');
 					ue.execCommand('fontsize', '12pt');
 				}
 				else if(texttype=="imagetitle"){
