@@ -82,7 +82,7 @@ public class DataProcesser {
                 + "<style>@font-face {font-family: 'Fang';src: url(../../file/Fonts/simfang.ttf) format('truetype');}td { font-family: '华文仿宋'; }</style>"
                 + "</head><body><div class=\"ui segments\"  id=\"paper\" style=\"border:0; width:790px\"><div class=\"ui segment\" id=\"father\" style=\"word-wrap:break-word\">";
         data = CodeToChar(data);
-        LOGGER.info(data);
+        LOGGER.info("data for html: " + data);
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
         while (iterator.hasNext()) {
@@ -129,7 +129,6 @@ public class DataProcesser {
                 		break;
                 	}
                 	String bookmark = text.substring(start + 2, end);
-                	LOGGER.info(bookmark);
                 	newText += text.substring(last, start);
                 	newText += ExecutePython.drawGraph(bookmark);
                 	last = end + 2;
@@ -144,7 +143,7 @@ public class DataProcesser {
 
     public static void buildData(String data, String reportId, String areaCode, String areaLevel) {
         data = CodeToChar(data);
-        LOGGER.info(data);
+        LOGGER.info("data for save: " + data);
         JSONObject jsonData = JSONObject.fromObject(data);
         Iterator iterator = jsonData.keys();
         while (iterator.hasNext()) {
@@ -159,7 +158,7 @@ public class DataProcesser {
                 buildTextResult(value, areaCode, areaLevel);
             }
         }
-        LOGGER.info(jsonData.toString());
+        LOGGER.info("json data: " + jsonData.toString());
         saveData(CharToCode(jsonData.toString()), reportId);
     }
 
@@ -214,23 +213,21 @@ public class DataProcesser {
 	            return colX - colY;
 	        }
         });
-        int lastCol = -1, lastRow = 0, index = 0;
+        int index = 0;
         JSONObject newData = new JSONObject();
         for (JSONObject jsonObject : sortedList) {
             String type = jsonObject.getString("type");
             String text = jsonObject.getString("text");
             int row = jsonObject.getInt("row");
             int col = jsonObject.getInt("col");
-            if (lastCol < col) lastRow = row;
-            lastCol = col;
-            jsonObject.put("row", lastRow);
-            jsonObject.put("col", lastCol);
+            jsonObject.put("row", row);
+            if(row >= list.size()) jsonObject.put("col", 0);
+            else jsonObject.put("col", list.get(row).size());
             if ("bookmark".equals(type)) {
                 String mark = buildBookmark(text, areaCode, areaLevel);
                 jsonObject.put("text", mark);
                 ArrayList<ArrayList<String>> result = parsePythonTable(ExecutePython.drawGraph(mark));
-                buildTableList(list, lastRow, result);
-                lastRow += result.size();
+                buildTableList(list, row, result);
             } else {
                 ArrayList<ArrayList<String>> result = new ArrayList<>();
                 String elementSize = jsonObject.getString("type");
@@ -246,10 +243,10 @@ public class DataProcesser {
                 	}
                 	result.add(content);
                 }
-                buildTableList(list, lastRow, result);
-                lastRow++;
+                buildTableList(list, row, result);
             }
             newData.put(index, jsonObject);
+            index++;
         }
         LOGGER.info("table after : " + newData.toString());
         tableObject.put("text", buildTableHtml(list));
@@ -273,7 +270,7 @@ public class DataProcesser {
         		break;
         	}
         	String bookmark = text.substring(start + 2, end);
-        	LOGGER.info(bookmark);
+        	LOGGER.info("text: " + bookmark);
         	newText += text.substring(last, start);
         	newText += "@@" + buildBookmark(bookmark, areaCode, areaLevel) + "@@";
         	last = end + 2;
