@@ -132,7 +132,7 @@
 		                                    	书签名称（格式：地区代码_书签）：
 		                                    	<div class="ui fluid action input">
 		                                    		<input type="text" placeholder="输入书签" />
-		                                    		<div class="positive ui button" onclick="getgraph(this)">确定</div>
+		                                    		<div class="positive ui button" onclick="getgraph(this)" style="display:none">确定</div>
 		                                    	</div>
 		                               			
 		                                    </div>
@@ -240,11 +240,11 @@
 													<option value="19">19</option>
 													<option value="20">20</option>
 		                                    	</select>
-		                                    	<button class="positive ui button" onclick="gettable(this)">生成表格</button>
+		                                    	<button class="positive ui button" onclick="gettable(this)" style="display:none">生成表格</button>
 		                                    	书签名称（格式：地区代码_书签）：
 		                                    	<div class="ui fluid action input">
 		                                    		<input type="text" placeholder="输入书签" />
-		                                    		<div class="positive ui button" onclick="filltable(this)">填入数据</div>
+		                                    		<div class="positive ui button" onclick="filltable(this)">填入数据（填入前请确保已完成所有合并单元格操作）</div>
 		                                    	</div>
 		                                    	<div style="display:none"></div>
 		                                    </div>
@@ -362,6 +362,7 @@
 													<option value="imagetitle">图表标题</option>
 													<option value="textnote">注释</option>
 		                                    	</select>
+		                                    	<button class="positive ui button" onclick="gettext(this)" style="display:none">确定</button>
 		                                	</div>
 		                                	<div class="ui segment">
 		                                		<div class="mktext" display='none'></div>
@@ -478,6 +479,7 @@
     	}
     	
     	function gettext(obj){
+    		obj.style.display='none';
     		var bro=obj.previousElementSibling;
     		var texttype=bro.value;
     		var divnew = document.createElement("div");
@@ -603,6 +605,7 @@
     	}
     	
     	function getgraph(obj){
+    		obj.style.display='none';
     		var bro=obj.previousElementSibling;
     		var tt=bro.value;
     		var imlink=getgraphbymark(tt);
@@ -709,7 +712,7 @@
                                     	书签名称（格式：地区代码_书签）：
                                     	<div class="ui fluid action input">
                                     		<input type="text" placeholder="输入书签" />
-                                    		<div class="positive ui button" onclick="filltable(this)">填入数据</div>
+                                    		<div class="positive ui button" onclick="filltable(this)">填入数据（填入前请确保已完成所有合并单元格操作）</div>
                                     	</div>
                                     	<div style="display:none"></div>
                                     </div>
@@ -752,6 +755,7 @@
     	}
     	
     	function gettable(obj){
+    		obj.style.display='none';
     		var divnew = document.createElement("div");
     		divnew.className = "ui segment";
     		var newid = new Date().getTime();
