@@ -244,7 +244,7 @@
 		                                    	书签名称（格式：地区代码_书签）：
 		                                    	<div class="ui fluid action input">
 		                                    		<input type="text" placeholder="输入书签" />
-		                                    		<div class="positive ui button" onclick="filltable(this)">填入数据（填入前请确保已完成所有合并单元格操作）</div>
+		                                    		<div class="positive ui button" onclick="filltable(this)">填入数据（填入后请勿改变表格结构，如合并单元格、增删行列）</div>
 		                                    	</div>
 		                                    	<div style="display:none"></div>
 		                                    </div>
@@ -284,7 +284,7 @@
 		    		fa.lastElementChild.children[0].children[0].children[0].children[2].appendChild(divscript);
 		    		var ue = UE.getEditor('container'+newid,{
 		    			toolbars:[
-		    			['mergecells','source']
+		    			['mergecells','bold','italic','underline','fontfamily','fontsize','justifyleft','justifycenter','justifyright','strikethrough','fontborder','insertrow','insertcol','deleterow','deletecol','splittocells','source']
 		    			]
 		    		});
 		    		//ue.addListener("ready", function () {
@@ -712,7 +712,7 @@
                                     	书签名称（格式：地区代码_书签）：
                                     	<div class="ui fluid action input">
                                     		<input type="text" placeholder="输入书签" />
-                                    		<div class="positive ui button" onclick="filltable(this)">填入数据（填入前请确保已完成所有合并单元格操作）</div>
+                                    		<div class="positive ui button" onclick="filltable(this)">填入数据（填入后请勿改变表格结构，如合并单元格、增删行列）</div>
                                     	</div>
                                     	<div style="display:none"></div>
                                     </div>
@@ -777,7 +777,7 @@
     		var tablehtml = createtablebysize(r,c);
     		var ue = UE.getEditor('container'+newid,{
     			toolbars:[
-    			['mergecells','source']
+    			['mergecells','bold','italic','underline','fontfamily','fontsize','justifyleft','justifycenter','justifyright','strikethrough','fontborder','insertrow','insertcol','deleterow','deletecol','splittocells','source']
     			]
     		});
     		ue.addListener("ready", function () {
