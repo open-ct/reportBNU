@@ -102,6 +102,8 @@ public class DataProcesser {
                 //htmlData += text.substring(7);
             } else if (type.equals("paging")) {
                 //htmlData += "<div style=\"page-break-before:left\"></div>";
+            	int pos = text.indexOf("----分页符----");
+            	text = text.substring(0, pos) + text.substring(pos + 11);
             	htmlData += text;
             } else {
 //                String style = "";
