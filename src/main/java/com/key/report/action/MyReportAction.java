@@ -141,6 +141,8 @@ public class MyReportAction extends CrudActionSupport<Report, String>{
 				report.setReportState(state);
 				report.setReportTag(tag);
 				report.setVisibility(visibility);
+				report.setReportLevel(areaLevel);
+				report.setAreaId(area.getAreaCode());
 				//report.setReportType(type);
 				reportManager.save(report);
 				String reportId = report.getId();

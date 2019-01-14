@@ -136,23 +136,27 @@ button {
 										<td align="left">
 											&nbsp;
 											<div class="btn-group reportLeftBtnGroup">
-											  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/design/my-report-design!previewDev.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
-											  <a class="btn btn-default" href="${ctx }/export!exportPDF.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
-											  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属性设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
-											  <c:if test="${roleType == 0 or roleType == 2}">
-											  <a class="btn btn-default updateState" href="#${en.id}" title="提交审核" data-toggle="tooltip" data-placement="top" value="1"><i class="fa fa-upload" aria-hidden="true"></i></a>
-											　</c:if>
-											<c:if test="${roleType == 0 or roleType == 2}">
-											<a class="btn btn-default massReport" href="#${en.id}" title="批量生成" data-toggle="tooltip" data-placement="top" ><i class="fa fa-database" aria-hidden="true"></i></a>
-											</c:if>
-											  <c:if test="${roleType == 0 or roleType == 1}">
-											  <a class="btn btn-default updateState" href="#${en.id}" title="审核不通过" data-toggle="tooltip" data-placement="top" value="2"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
-											  <a class="btn btn-default updateState" href="#${en.id}" title="审核通过" data-toggle="tooltip" data-placement="top" value="3"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-											  </c:if>
-											  <c:if test="${roleType == 0 or roleType == 2}">
-											  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
-											  </c:if>
+												<c:if test="${roleType != 3}">
+												  <a class="btn btn-default" href="${ctx }/design/my-report-design.action?reportId=${en.id}" title="设计"data-toggle="tooltip" data-placement="top" ><i class="fa fa-pencil-square-o"></i></a>
+												  <a class="btn btn-default" href="${ctx }/design/my-report-design!previewDev.action?reportId=${en.id}" title="预览" data-toggle="tooltip" data-placement="top" ><i class="fa fa-comments-o"></i></a>
+												</c:if>
+												  <a class="btn btn-default" href="${ctx }/export!exportPDF.action?reportId=${en.id}" title="导出PDF" data-toggle="tooltip" data-placement="top" ><i class="fa fa-line-chart"></i></a>
+												<c:if test="${roleType != 3}">
+												  <a class="btn btn-default attrSurvey" href="#${en.id}" title="属性设置" data-toggle="tooltip" data-placement="top" ><i class="fa fa-cog" aria-hidden="true"></i></a>
+												</c:if>
+												<c:if test="${roleType == 0 or roleType == 2}">
+												  <a class="btn btn-default updateState" href="#${en.id}" title="提交审核" data-toggle="tooltip" data-placement="top" value="1"><i class="fa fa-upload" aria-hidden="true"></i></a>
+												</c:if>
+												<c:if test="${roleType == 0 or roleType == 2}">
+												  <a class="btn btn-default massReport" href="#${en.id}" title="批量生成" data-toggle="tooltip" data-placement="top" ><i class="fa fa-database" aria-hidden="true"></i></a>
+												</c:if>
+												<c:if test="${roleType == 0 or roleType == 1}">
+												  <a class="btn btn-default updateState" href="#${en.id}" title="审核不通过" data-toggle="tooltip" data-placement="top" value="2"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+												  <a class="btn btn-default updateState" href="#${en.id}" title="审核通过" data-toggle="tooltip" data-placement="top" value="3"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+												</c:if>
+												<c:if test="${roleType == 0 or roleType == 2}">
+												  <a class="btn btn-default deleteSurvey" href="${ctx}/design/my-report!delete.action?id=${en.id}" title="删除报告" data-toggle="tooltip" data-placement="top" ><i class="fa fa-trash-o fa-fw"></i></a>
+												</c:if>
 											</div>&nbsp;
 											<div class="btn-group" style="display: none;">
 												<!-- <a class="btn btn-default" href="#"><i class="fa fa-eye"></i></a> -->

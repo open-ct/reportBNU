@@ -18,16 +18,6 @@
  */
 package com.key.common.plugs.security;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.key.common.base.entity.User;
-import com.key.common.base.service.AccountManager;
-import com.key.common.utils.security.DigestUtils;
-import com.octo.captcha.service.image.ImageCaptchaService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -40,6 +30,9 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.key.common.base.entity.User;
+import com.key.common.base.service.AccountManager;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
@@ -92,7 +85,12 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			info.addRole("editor");
 			System.out.println("info:info_editor");
 			return info;
-		}else{
+		} else if(user !=null && 3 == user.getRoleType().intValue()) {
+			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+			info.addRole("user");
+			System.out.println("info:user");
+			return info;
+		} else{
 			return null;
 		}
 	}

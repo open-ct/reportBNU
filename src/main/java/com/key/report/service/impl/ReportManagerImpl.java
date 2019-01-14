@@ -319,6 +319,10 @@ public class ReportManagerImpl extends BaseServiceImpl<Report, String> implement
 	    	List<Criterion> criterions=new ArrayList<Criterion>();
 	    	if(user.getRoleType() == 2){
 	    		criterions.add(Restrictions.eq("userId", user.getId()));
+	    	} else if(user.getRoleType() == 3) {
+	    		criterions.add(Restrictions.eq("reportLevel", user.getLevel()));
+	    		criterions.add(Restrictions.eq("areaId", user.getAreaId()));
+	    		criterions.add(Restrictions.eq("reportState", 3));
 	    	}
 			criterions.add(Restrictions.eq("visibility", 1));
 			Integer reportState = null;
