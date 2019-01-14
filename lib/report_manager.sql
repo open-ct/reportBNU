@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.53)
-# Date: 2019-01-14 15:44:55
+# Date: 2019-01-14 17:01:01
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -72,7 +72,7 @@ CREATE TABLE `t_user` (
 # Data for table "t_user"
 #
 
-INSERT INTO `t_user` VALUES ('1',NULL,'report_admin','超级管理员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,0),('2',NULL,'editor','编辑','63057fcb4533306749a859df34309572ea42b553',NULL,NULL,2),('3',NULL,'reviewer','审核员','63057fcb4533306749a859df34309572ea42b553',NULL,NULL,1),('4',NULL,'130100','石家庄市','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3);
+INSERT INTO `t_user` VALUES ('1',NULL,'report_admin','超级管理员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,0),('2',NULL,'editor','编辑','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('3',NULL,'reviewer','审核员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1),('4',NULL,'130100','石家庄市','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3);
 
 #
 # Structure for table "tracker"
