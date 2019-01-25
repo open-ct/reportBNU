@@ -2,13 +2,17 @@
 
 
 #paper{
-	width: 594pt;
+	width: 1200pt;
 	margin:auto;
 	
 }
 
 #father{
-	padding: 72pt 90pt 72pt 90pt;
+	padding: 0pt 0pt 0pt 0pt;
+}
+
+.tc{
+	vertical-align:bottom;
 }
 
 .texttitle1{
@@ -42,6 +46,10 @@
 .textnote{
 	font-family: KaiTi;
 	font-size: 10.5pt;
+}
+
+.tl{
+	vertical-align:bottom;
 }
 
 .imagetitle{

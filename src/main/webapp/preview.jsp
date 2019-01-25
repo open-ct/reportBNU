@@ -22,8 +22,8 @@
     <link rel="shortcut icon" href="${ctx }/img/favicon.ico" />
     
     <style id="tablesort">table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;   background-image:url(https://ueditor.baidu.com/ueditor/themes/default/images/sortable.png);}</style>
-	<style id="table">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{padding: 5px 10px;border: 1px solid #DDD;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>
-	
+	<style id="table">.selectTdClass{background-color:#edf5fa !important}table.noBorderTable td,table.noBorderTable th,table.noBorderTable caption{border:1px dashed #ddd !important}table{margin-bottom:10px;border-collapse:collapse;display:table;}td,th{min-width:18px;}caption{border:1px dashed #DDD;border-bottom:0;padding:3px;text-align:center;}th{border-top:1px solid #BBB;background-color:#F7F7F7;}table tr.firstRow th{border-top-width:2px;}.ue-table-interlace-color-single{ background-color: #fcfcfc; } .ue-table-interlace-color-double{ background-color: #f7faff; }td p{margin:0;padding:0;}</style>
+	<link href="${ctx }/js/plugs/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 </head>
 
 <body>
@@ -33,10 +33,11 @@
                 	<div class="row">
                     	<div class="sixteen wide column">
                 			<div class="ui segments"  id="paper">
-                				<div class="ui segment" id="father" style="word-wrap:break-word">
-                				</div>
+                				<table class="ui segment" id="father" style="word-wrap:break-word" border="0">
+                					<tr style="height:72pt"><td style="width:90pt;" border="0"></td><td style="width:414pt" border="0"></td><td style="width:60pt" border="0"></td><td style="width:500pt" border="0"></td><td style="width:90pt;" border="0"></td></tr>
+                				</table>
                 				<div style="text-align: center">
-                				<a class="ui green button" href="${ctx }/design/my-report.action" style="margin: 0 auto">
+                				<a class="ui green button" onclick="saveComment()" style="margin: 0 auto">
                         				确定
                         		</a>
                 				</div>
@@ -77,13 +78,17 @@
     <script src="${ctx }/js/main.js"></script>
     
     <script type="text/javascript">
+    	var jsonData="";
+    
     	window.onload=function(){
     		var data="${data}".split(',');
-    		var jsonData="";
+    		//var jsonData="";
     		for(var i=0;i<data.length-1;i++) jsonData+=String.fromCharCode(data[i]);
     		jsonData=JSON.parse(jsonData);
     		var faza=document.getElementById("father");
+    		var cnt=0;
     		for(i in jsonData){
+    			cnt++;
     			//if(jsonData[i]["type"]=="graph"){
     			//	var imghtml=`
     			//	<img src="`+jsonData[i]["text"]+`"/>`;
@@ -152,15 +157,67 @@
     				//divnew.innerHTML=textcontent;
     				//faza.appendChild(divnew);
     			//}
-    			$("#father").append(jsonData[i]["text"]);
+    			
+    			
+    			//insert cells
+    			var nrow=faza.insertRow(cnt);
+    			var tfst=nrow.insertCell(0);
+    			tfst.setAttribute("border","0");
+    			var tcontent=nrow.insertCell(1);
+    			tcontent.setAttribute("border","0");
+    			var tlamp=nrow.insertCell(2);
+    			tlamp.setAttribute("border","0");
+    			var tcomment=nrow.insertCell(3);
+    			tcomment.setAttribute("border","0");
+    			var tbound=nrow.insertCell(4);
+    			tbound.setAttribute("border","0");
+    			
+    			//set class(to get css)
+    			tcomment.className="tc";
+    			
+    			//set innerHTML
+    			tcontent.innerHTML=jsonData[i]["text"];
+    			tcomment.innerHTML=`
+    			<div class="ui fluid input"><input type="text" placeholder="输入修改意见"></div>
+    			`;
+    			
+    			
+    			
+    			//$("#father").append(jsonData[i]["text"]);
     		}
-    		
-    		
+    		cnt++;
+    		var lstrow=faza.insertRow(cnt);
+    		lstrow.style.height="72pt";
+    	}
+    	// href="${ctx }/design/my-report.action"
+    	function saveComment(){
+    		var paper=document.getElementById("father");
+    		var rows=paper.children;
+    		if(rows.length==1){
+    			rows=rows[0].children;
+    		}
+    		for(var i=1;i<rows.length-1;i++){
+    			var comment_cell=rows[i].children[3];
+    			var comment_content=comment_cell.children[0].children[0].value;
+    			jsonData[i-1].comment=comment_content;
+    		}
+    		var tmp=JSON.stringify(jsonData);
+    		var res="";
+    		for(var i=0;i<tmp.length;i++)
+    			res+=tmp.charCodeAt(i)+",";
+    		var temp = document.createElement("form");
+		    temp.action = "${ctx }/design/my-report.action";
+		    temp.method = "post";
+		    temp.style.display = "none";
+		    var opt = document.createElement("textarea");
+		    opt.name = "data";
+		    opt.value = res;
+		    temp.appendChild(opt);
+		    document.body.appendChild(temp);
+		    temp.submit();
+		    return temp;
     	}
     	
-    	function getHtml(){
-    		window.open('output.html');
-    	}
     </script>
 </body>
 
