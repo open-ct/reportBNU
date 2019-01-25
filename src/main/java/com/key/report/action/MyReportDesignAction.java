@@ -1,6 +1,7 @@
 package com.key.report.action;
 
 import java.io.BufferedReader;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import com.key.report.utils.DataProcesser;
+import com.key.report.utils.ExecutePython;
+
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.AllowedMethods;
 import org.apache.struts2.convention.annotation.InterceptorRef;
@@ -27,6 +30,8 @@ import org.apache.struts2.convention.annotation.InterceptorRefs;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.key.common.base.entity.User;
@@ -34,9 +39,13 @@ import com.key.common.base.service.AccountManager;
 import com.key.common.utils.JspToHtml;
 import com.key.common.utils.Property;
 import com.key.common.utils.web.Struts2Utils;
+import com.key.common.plugs.page.Page;
 import com.key.report.entity.Report;
 import com.key.report.service.ReportManager;
 import com.opensymphony.xwork2.ActionSupport;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 
 /**
@@ -51,14 +60,18 @@ import com.opensymphony.xwork2.ActionSupport;
 	@Result(name=ActionSupport.SUCCESS,location="/Design.jsp",type=Struts2Utils.DISPATCHER),
 	@Result(name=MyReportDesignAction.PREVIEWDEV,location="/preview.jsp",type=Struts2Utils.DISPATCHER),
 	@Result(name=MyReportDesignAction.COLLECTSURVEY,location="my-collect.action?reportId=${reportId}",type=Struts2Utils.REDIRECT),
-	@Result(name=MyReportDesignAction.RELOADDESIGN,location="/design/my-report-design.action?reportId=${reportId}",type=Struts2Utils.REDIRECT)
+	@Result(name=MyReportDesignAction.RELOADDESIGN,location="/design/my-report-design.action?reportId=${reportId}",type=Struts2Utils.REDIRECT),
+	@Result(name=MyReportDesignAction.REVIEWREPORT,location="/design/my-report.action",type=Struts2Utils.REDIRECT),
 })
-@AllowedMethods({"previewDev","devReport","ajaxSave","copyReport"})
+@AllowedMethods({"previewDev","devReport","ajaxSave","copyReport","reviewReport", "listReport", "importReport"})
 public class MyReportDesignAction extends ActionSupport{
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MyReportDesignAction.class);
 	//发布设置
 	protected final static String PREVIEWDEV="previewDev";
 	protected final static String COLLECTSURVEY="collectReport";
 	protected final static String RELOADDESIGN="reloadDesign";
+	protected final static String REVIEWREPORT="reviewReport";
 	
 	@Autowired
 	private ReportManager reportManager;
@@ -170,58 +183,55 @@ public class MyReportDesignAction extends ActionSupport{
 		return RELOADDESIGN;
 	}
 	
-	private void buildReportHtml() throws Exception{
+	public String reviewReport() {
+		HttpServletRequest request=Struts2Utils.getRequest();
+		String data = request.getParameter("data");
+		DataProcesser.saveData(data, reportId);
+		return REVIEWREPORT;
+	}
+	
+	
+	public String listReport() throws Exception {
 		HttpServletRequest request=Struts2Utils.getRequest();
 		HttpServletResponse response=Struts2Utils.getResponse();
-		String url = "";
-		String name = "";
-		ServletContext sc = ServletActionContext.getServletContext();
-
-		String file_name = request.getParameter("file_name");
-		url = "/design/my-collect.action?reportId=402880ea4675ac62014675ac7b3a0000";
-		// 这是生成的html文件名,如index.htm.
-		name = "/report.htm";
-		name = sc.getRealPath(name);
-		
-		RequestDispatcher rd = sc.getRequestDispatcher(url);
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-		final ServletOutputStream stream = new ServletOutputStream() {
-			public void write(byte[] data, int offset, int length) {
-				os.write(data, offset, length);
+		PrintWriter out = response.getWriter();
+		User user= accountManager.getCurUser();
+		if(user != null){
+			Page<Report> page = new Page();
+			Report report = new Report();
+			page=reportManager.findByUser(page, report);
+			JSONArray jsonArray = new JSONArray();
+			for(Report r : page) {
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("id", report.getId());
+				jsonObject.put("name", report.getReportName());
+				jsonArray.add(jsonObject);
 			}
-
-			public void write(int b) throws IOException {
-				os.write(b);
-			}
-		};
-		
-		final PrintWriter pw = new PrintWriter(new OutputStreamWriter(os,"utf-8"));
-
-		HttpServletResponse rep = new HttpServletResponseWrapper(response) {
-			public ServletOutputStream getOutputStream() {
-				return stream;
-			}
-
-			public PrintWriter getWriter() {
-				return pw;
-			}
-		};
-
-//		rd.include(request, rep);
-		rd.forward(request,rep);
-		pw.flush();
-		
-		// 把jsp输出的内容写到xxx.htm
-		File file = new File(name);
-		if (!file.exists()) {
-			file.createNewFile();
+			LOGGER.info(jsonArray.toString());
+			out.write(jsonArray.toString());
+		} else {
+			out.write("未登录或没有相应数据权限");
 		}
-		FileOutputStream fos = new FileOutputStream(file);
-		
-		os.writeTo(fos);
-		fos.close();
+    	out.flush();
+    	out.close();
+		return NONE;
 	}
-
+	
+	public String importReport() throws Exception {
+		HttpServletRequest request=Struts2Utils.getRequest();
+		HttpServletResponse response=Struts2Utils.getResponse();
+		PrintWriter out = response.getWriter();
+		String id = request.getParameter("id");
+		if(id != null){
+			String data = DataProcesser.readData(id);
+			LOGGER.info(data);
+			out.write(data);
+		} else {
+			out.write("未选择报告");
+		}
+    	out.flush();
+    	out.close();
+		return NONE;
+	}
 	
 }
