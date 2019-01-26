@@ -206,7 +206,7 @@
     		for(var i=0;i<tmp.length;i++)
     			res+=tmp.charCodeAt(i)+",";
     		var temp = document.createElement("form");
-		    temp.action = "${ctx }/design/my-report.action";
+		    temp.action = "${ctx }/design/my-report-design!reviewReport.action?reportId=${reportId}";
 		    temp.method = "post";
 		    temp.style.display = "none";
 		    var opt = document.createElement("textarea");

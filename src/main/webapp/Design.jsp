@@ -35,10 +35,9 @@
             <!--maincontent-->
             
             <div id="father" style="overflow:auto">
-            <div class="ui equal width left aligned padded grid stackable">
-                <!--Site Content-->
+            	<div class="ui equal width left aligned padded grid stackable">
 
-                        <div>
+                <div>
                         <div class="ui teal labeled icon button" onclick="addtext(this)" >
                         		添加文字
                                             <i class="add icon"></i>
@@ -55,9 +54,8 @@
                         		分页
                                             <i class="add icon"></i>
                         </div>
-                        </div>
-            </div>
-                <!--Site Content-->
+                </div>
+            	</div>
         	</div>
         	<div id="savediv" class="ui equal width left aligned padded grid stackable">
         		<div>
@@ -114,9 +112,9 @@
     		//var texttmp={};
     		//var textcnt=0;
     		for(i in jsonData){
+    			var divnew = document.createElement("div");
     			if(jsonData[i]["type"]=="graph"){
     				var imghtml=jsonData[i]["text"];
-    				var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
 		    		divnew.id = new Date().getTime();
 		    		divnew.innerHTML = `
@@ -182,7 +180,6 @@
 					window.frames[inhtml.id].contentDocument.body.innerHTML=jsonData[i]["text"];
     			}
     			else if(jsonData[i]["type"]=="table"){
-   					var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
 		    		divnew.innerHTML = `
 		                            <div class="row">
@@ -294,7 +291,6 @@
 					window.frames[inhtml.id].contentDocument.body.innerHTML=jsonData[i]["text"];
     			}
     			else if(jsonData[i]["type"]=="paging"){
-    				var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
 		    		divnew.id = new Date().getTime();
 		    		divnew.innerHTML = `
@@ -339,7 +335,6 @@
     			else{
     				var textcontent=jsonData[i]["text"];
     				var texttype=jsonData[i]["type"];
-    				var divnew = document.createElement("div");
 		    		divnew.className = "ui equal width left aligned padded grid stackable";
 		    		divnew.id = new Date().getTime();
 		    		divnew.innerHTML = `
@@ -413,6 +408,14 @@
 					//});
 					var inhtml=document.getElementById('container'+newid).children[0].children[1].children[0];
 					window.frames[inhtml.id].contentDocument.body.innerHTML=jsonData[i]["text"];
+    			}
+    			var comment_content=jsonData[i]["comment"];
+    			if(comment_content!=""&&comment_content!=null&&typeof(comment_content)!=undefined){
+    			var headseg=divnew.getElementsByClassName("ui segment")[0];
+    			var div_comment=document.createElement("div");
+    			div_comment.className="comment_text";
+    			div_comment.innerHTML=comment_content;
+    			headseg.appendChild(div_comment);
     			}
     		}
     		//for(i in texttmp){
