@@ -18,6 +18,7 @@
     <link href="${ctx }/plugins/weather-icons/css/weather-icons.min.css" rel="stylesheet" />
     <link href="${ctx }/plugins/chartist/chartist.min.css" rel="stylesheet" />
     <link href="${ctx }/css/chat-page.css" rel="stylesheet" />
+    <link href="${ctx }/css/design.css" rel="stylesheet" />
     <link rel="shortcut icon" href="img/favicon.ico" />
     
     
@@ -99,6 +100,27 @@
     
     
     <script type="text/javascript">
+    	var addbar=`
+    							<div>
+		                        <div class="ui teal labeled icon button" onclick="addtext(this)" >
+		                        		添加文字
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
+		                        		添加图
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
+		                        		添加表
+		                                            <i class="add icon"></i>
+		                        </div>
+		                        <div class="ui teal labeled icon button" onclick="paging(this)" >
+                        				分页
+                                            		<i class="add icon"></i>
+                        		</div>
+		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
+		                        </div>
+    	`;
     	window.onload=function(){
     		var fa = document.getElementById("father");
     		var height_tmp=window.innerHeight-$("#header").height()-$("#savediv").height()-$(".dw_foot").height()-30;
@@ -141,26 +163,8 @@
 		                                </div>
 		                            </div>
 		                        </div>
-		                        <div>
-		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-		                        		添加文字
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-		                        		添加图
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-		                        		添加表
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="paging(this)" >
-                        				分页
-                                            		<i class="add icon"></i>
-                        		</div>
-		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-		                        </div>
-		    		`;
+		                        
+		    		`+addbar;
 		    		var newid=new Date().getTime();
 		    		divnew.children[0].children[0].children[0].children[2].id=newid;
 		    		fa.appendChild(divnew);
@@ -251,26 +255,7 @@
 		                                </div>
 		                            </div>
 		                        </div>
-		                        <div>
-		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-		                        		添加文字
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-		                        		添加图
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-		                        		添加表
-		                                            <i class="add icon"></i>
-		                        </div>
-				                <div class="ui teal labeled icon button" onclick="paging(this)" >
-		                        		分页
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-		                        </div>
-		    		`;
+		    		`+addbar;
 		    		var newid=new Date().getTime();
 		    		divnew.children[0].children[0].children[0].children[2].id=newid;
 		    		divnew.children[0].children[0].children[0].children[1].children[4].innerHTML=jsonData[i]["config"];
@@ -309,27 +294,7 @@
 		                            	</div>
 		                            </div>
 		                        </div>
-		                        <div>
-		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-		                        		添加文字
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-		                        		添加图
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-		                        		添加表
-		                                            <i class="add icon"></i>
-		                        </div>
-				                <div class="ui teal labeled icon button" onclick="paging(this)" >
-		                        		分页
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-		                        </div>
-		                        
-    				`;
+    				`+addbar;
     				fa.appendChild(divnew);
     			}
     			else{
@@ -366,27 +331,7 @@
 		                            	</div>
 		                            </div>
 		                        </div>
-		                        <div>
-		                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-		                        		添加文字
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-		                        		添加图
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-		                        		添加表
-		                                            <i class="add icon"></i>
-		                        </div>
-		                        <div class="ui teal labeled icon button" onclick="paging(this)" >
-                        				分页
-                                            		<i class="add icon"></i>
-                        		</div>
-		                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-		                        </div>
-		                        
-		    		`;
+		    		`+addbar;
 		    		var newid=new Date().getTime();
 		    		divnew.children[0].children[0].children[0].children[2].id=newid;
 		    		fa.appendChild(divnew);
@@ -455,27 +400,7 @@
                             	</div>
                             </div>
                         </div>
-                        <div>
-                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-                        		添加文字
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-                        		添加图
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-                        		添加表
-                                            <i class="add icon"></i>
-                        </div>
-		                <div class="ui teal labeled icon button" onclick="paging(this)" >
-                        		分页
-                                            <i class="add icon"></i>
-                        </div>
-                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-                        </div>
-                        
-    		`;
+    		`+addbar;
     		var ff=obj.parentNode;
     		var fff=ff.parentNode;
     		fff.after(divnew);
@@ -563,26 +488,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
-                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-                        		添加文字
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-                        		添加图
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-                        		添加表
-                                            <i class="add icon"></i>
-                        </div>
-		                <div class="ui teal labeled icon button" onclick="paging(this)" >
-                   				分页
-                                            <i class="add icon"></i>
-                        </div>
-                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-                        </div>
-    		`;
+    		`+addbar;
     		var ff=obj.parentNode;
     		var fff=ff.parentNode;
     		fff.after(divnew);
@@ -722,26 +628,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
-                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-                        		添加文字
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-                        		添加图
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-                        		添加表
-                                            <i class="add icon"></i>
-                        </div>
-		                <div class="ui teal labeled icon button" onclick="paging(this)" >
-                        		分页
-                                            <i class="add icon"></i>
-                        </div>
-                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-                        </div>
-    		`;
+    		`+addbar;
     		var ff=obj.parentNode;
     		var fff=ff.parentNode;
     		fff.after(divnew);
@@ -891,27 +778,7 @@
                             	</div>
                             </div>
                         </div>
-                        <div>
-                        <div class="ui teal labeled icon button" onclick="addtext(this)" id="0">
-                        		添加文字
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addgraph(this)" >
-                        		添加图
-                                            <i class="add icon"></i>
-                        </div>
-                        <div class="ui teal labeled icon button" onclick="addtable(this)" >
-                        		添加表
-                                            <i class="add icon"></i>
-                        </div>
-		                <div class="ui teal labeled icon button" onclick="paging(this)" >
-                        		分页
-                                            <i class="add icon"></i>
-                        </div>
-                        <button class="negative ui button" onclick="deleteseg(this)">删除</button>
-                        </div>
-                        
-    		`;
+    		`+addbar;
     		var ff=obj.parentNode;
     		var fff=ff.parentNode;
     		fff.after(divnew);
