@@ -203,10 +203,11 @@ public class MyReportDesignAction extends ActionSupport{
 			JSONArray jsonArray = new JSONArray();
 			for(Report r : page) {
 				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("id", report.getId());
-				jsonObject.put("name", report.getReportName());
+				jsonObject.put("id", r.getId());
+				jsonObject.put("name", r.getReportName());
 				jsonArray.add(jsonObject);
 			}
+			System.out.println(jsonArray.size());
 			LOGGER.info(jsonArray.toString());
 			out.write(jsonArray.toString());
 		} else {
