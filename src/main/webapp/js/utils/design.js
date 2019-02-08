@@ -33,10 +33,24 @@ var addbar=`
 		</div>
 `;
 
-function load_text(loc,segdata){
+function load_text(loc,segdata,downgrade){
 	var divnew = document.createElement("div");
 	var textcontent=segdata["text"];
 	var texttype=segdata["type"];
+	if(downgrade){
+		if(texttype=="texttitle1"){
+			texttype="texttitle2";
+		}
+		else if(texttype=="texttitle2"){
+			texttype="texttitle3";
+		}
+		else if(texttype=="texttitle3"){
+			texttype="texttitle4";
+		}
+		else if(texttype=="texttitle4"){
+			texttype="textbody";
+		}
+	}
 	divnew.className = "ui equal width left aligned padded grid stackable";
 	var newid=new Date().getMilliseconds();
 	divnew.id = newid;
@@ -88,7 +102,93 @@ function load_text(loc,segdata){
 		]
 	});
 	var inhtml=document.getElementById('container'+newid).children[0].children[1].children[0];
-	window.frames[inhtml.id].contentDocument.body.innerHTML=segdata["text"];
+	var res=document.createElement("div");
+	res.innerHTML=segdata["text"];
+	var txt=res.innerText;
+	if(texttype=="texttitle1"){
+		txt=`
+		<p style="text-align: center;"><span style="font-family: SimHei; font-size: 18pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	else if(texttype=="texttitle2"){
+		txt=`
+		<p><span style="font-family: SimHei; font-size: 16pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	else if(texttype=="texttitle3"){
+		txt=`
+		<p><span style="font-family: SimHei; font-size: 14pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	else if(texttype=="texttitle4"){
+		txt=`
+		<p><span style="font-family: SimHei; font-size: 12pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	else if(texttype=="textbody"){
+		txt=`
+		<p><span style="font-family: 华文仿宋; font-size: 12pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	else if(texttype=="imagetitle"){
+		txt=`
+		<p style="text-align: center;"><span style="font-family: STXinwei; font-size: 12pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	else if(texttype=="textnote"){
+		txt=`
+		<p><span style="font-family: KaiTi; font-size: 10.5pt;">
+		`+txt+`
+		</span><br/></p>
+		`;
+	}
+	window.frames[inhtml.id].contentDocument.body.innerHTML=txt;
+//	ue.addListener("ready", function () {
+//		ue.execCommand('selectall');
+//		if(texttype=="texttitle1"){
+//			ue.execCommand('justify', 'center');
+//			ue.execCommand('fontfamily', 'SimHei');
+//			ue.execCommand('fontsize', '18pt');
+//		}
+//		else if(texttype=="texttitle2"){
+//			ue.execCommand('fontfamily', 'SimHei');
+//			ue.execCommand('fontsize', '16pt');
+//		}
+//		else if(texttype=="texttitle3"){
+//			ue.execCommand('fontfamily', 'SimHei');
+//			ue.execCommand('fontsize', '14pt');
+//		}
+//		else if(texttype=="texttitle4"){
+//			ue.execCommand('fontfamily', 'SimHei');
+//			ue.execCommand('fontsize', '12pt');
+//		}
+//		else if(texttype=="textbody"){
+//			ue.execCommand('fontfamily', '华文仿宋');
+//			ue.execCommand('fontsize', '12pt');
+//		}
+//		else if(texttype=="imagetitle"){
+//			ue.execCommand('justify', 'center');
+//			ue.execCommand('fontfamily', 'STXinwei');
+//			ue.execCommand('fontsize', '12pt');
+//		}
+//		else if(texttype=="textnote"){
+//			ue.execCommand('fontfamily', 'KaiTi');
+//			ue.execCommand('fontsize', '10.5pt');
+//		}
+//		
+//	});
 }
 
 function load_graph(loc,segdata){

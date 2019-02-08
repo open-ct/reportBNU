@@ -251,7 +251,7 @@
 	    		load_paging(head,_list[i]);
    			}
    			else{
-   				load_text(head,_list[i]);
+   				load_text(head,_list[i],downgrade);
     		}
     	}
     	/* for(i in jsonData){
