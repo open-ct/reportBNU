@@ -1,21 +1,25 @@
-## 安装
+# 区域教育教育质量健康体检项目组报告撰写系统
 
-因为本系统是基于JAVA WEB实现，所以安装与一般的JAVA WEB程序无异，配置好数据库地址就可以正常使用。
+### 项目介绍
+报告撰写系统
 
-### 安装说明
+### 安装教程
 
-	服务器必须安装由 JAVA 1.7、MySQL、Apache Tomcat 构成的环境
-
-	由于引用的外部jar在本地maven仓库中可能没有，这时只要本地有maven环境，执行下bin目录下面的文件就可以自动导入。
-
-## 环境配置说明
-
-    lib目录下的几个jar包可能是中央仓库没有，所以运行时如果提示找不到相关jar
-
-    就请到bin目录下去执行jar导入命命，安装中央仓库缺失jar
-
-    可直接执行 install-lose-jar.bat
-
-### 配置说明、数据初始化
-
-    先在mysql导入/lib目录下的report.sql和report_manager.sql数据库脚本文件
+#### 安装环境
+JAVA 1.7、MySQL、Apache Tomcat、maven
+####配置maven库
+执行bin/install-lose-jar.bat，导入外部依赖jar包
+####配置出图模块DrawGraph
+安装教程见DrawGraph项目
+####导入数据库
+在MySQL中导入lib/report.sql（出图模块DrawGraph使用，如已在出图模块中配置可不用重复导入）和lib/report_manager.sql（报告撰写模块使用）
+####安装字体文件
+安装lib/仿宋_GB2312.ttf字体文件
+####配置项目路径：
+    1. 修改src/main/resources/conf/application.properties中的jdbc到之前导入的本地MySQL数据库
+    2. 修改src/main/java/com/key/report/utils/ReportConfig.java：
+       PYTHON_PATH指向出图模块python/Scripts/python
+       PYTHON_FILE_PATH指向出图模块process.py文件
+       HTML_URL指向报告系统url下files/reportHtml/文件夹
+       PDF_PATH指向本地报告系统部署路径下files/reportPDF/文件夹
+       WK_PATH指向出图模块wkhtmltopdf/bin/wkhtmltopdf文件路径
