@@ -1,13 +1,13 @@
-﻿# Host: localhost  (Version: 5.5.53)
-# Date: 2019-01-14 17:01:01
-# Generator: MySQL-Front 5.3  (Build 4.234)
+﻿# Host: localhost  (Version 5.7.17)
+# Date: 2019-02-18 12:32:05
+# Generator: MySQL-Front 6.1  (Build 1.26)
 
-/*!40101 SET NAMES utf8 */;
 
 #
 # Structure for table "t_area"
 #
 
+DROP TABLE IF EXISTS `t_area`;
 CREATE TABLE `t_area` (
   `Id` varchar(255) NOT NULL DEFAULT '',
   `area_code` varchar(255) DEFAULT NULL,
@@ -21,12 +21,15 @@ CREATE TABLE `t_area` (
 # Data for table "t_area"
 #
 
+/*!40000 ALTER TABLE `t_area` DISABLE KEYS */;
 INSERT INTO `t_area` VALUES ('2c96763e66c3ea6e0166c3ea844f0000','130100','石家庄市','市','1'),('2c96763e66c3ea6e0166c3ea84860001','13102','长安区','区','100'),('2c96763e66c3ea6e0166c3ea84870002','13104','桥西区','区','100'),('2c96763e66c3ea6e0166c3ea84890003','13105','新华区','区','100'),('2c96763e66c3ea6e0166c3ea848c0004','13108','裕华区','区','100'),('2c96763e66c3ea6e0166c3ea848e0005','13124','栾城区','区','100'),('2c96763e66c3ea6e0166c3ea848f0006','13131','平山县','区','100'),('2c96763e66c3ea6e0166c3ea84910007','13182','藁城区','区','100'),('2c96763e66c3ea6e0166c3ea84920008','13185','鹿泉区','区','100');
+/*!40000 ALTER TABLE `t_area` ENABLE KEYS */;
 
 #
 # Structure for table "t_report"
 #
 
+DROP TABLE IF EXISTS `t_report`;
 CREATE TABLE `t_report` (
   `id` varchar(55) NOT NULL,
   `create_date` datetime DEFAULT NULL,
@@ -55,6 +58,7 @@ INSERT INTO `t_report` VALUES ('2c962a6066f762db0166f763aa130000','2018-11-09 15
 # Structure for table "t_user"
 #
 
+DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
   `id` varchar(55) NOT NULL,
   `last_login_time` datetime DEFAULT NULL,
@@ -72,12 +76,13 @@ CREATE TABLE `t_user` (
 # Data for table "t_user"
 #
 
-INSERT INTO `t_user` VALUES ('1',NULL,'report_admin','超级管理员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,0),('2',NULL,'editor','编辑','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('3',NULL,'reviewer','审核员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1),('4',NULL,'130100','石家庄市','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3);
+INSERT INTO `t_user` VALUES ('1',NULL,'report_admin','超级管理员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,0),('10',NULL,'reviewer2','审核员2','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1),('11',NULL,'reviewer3','审核员3','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1),('12',NULL,'reviewer4','审核员4','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1),('13',NULL,'130101','石家庄市1','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3),('14',NULL,'130102','石家庄市2','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3),('15',NULL,'130103','石家庄市3','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3),('16',NULL,'130104','石家庄市4','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3),('2',NULL,'editor','编辑','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('3',NULL,'reviewer','审核员','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1),('4',NULL,'130100','石家庄市','7c4a8d09ca3762af61e59520943dc26494f8941b','市','130100',3),('5',NULL,'editor1','编辑1','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('6',NULL,'editor2','编辑2','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('7',NULL,'editor3','编辑3','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('8',NULL,'editor4','编辑4','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,2),('9',NULL,'reviewer1','审核员1','7c4a8d09ca3762af61e59520943dc26494f8941b',NULL,NULL,1);
 
 #
 # Structure for table "tracker"
 #
 
+DROP TABLE IF EXISTS `tracker`;
 CREATE TABLE `tracker` (
   `id` varchar(55) NOT NULL,
   `data_id` varchar(255) DEFAULT NULL,
