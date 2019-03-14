@@ -21,10 +21,12 @@ JAVA 1.7、MySQL、Apache Tomcat、maven
 安装lib/仿宋_GB2312.ttf字体文件
 
 #### 配置项目路径：
-    1. 修改src/main/resources/conf/application.properties中的jdbc到之前导入的本地MySQL数据库
-    2. 修改src/main/java/com/key/report/utils/ReportConfig.java：
-       PYTHON_PATH指向出图模块python/Scripts/python
-       PYTHON_FILE_PATH指向出图模块process.py文件
-       HTML_URL指向报告系统url下files/reportHtml/文件夹
+    1. 作为maven项目导入myeclipse
+    2. 修改src/main/resources/conf/application.properties中的jdbc到之前导入的本地MySQL数据库
+    3. 修改src/main/java/com/key/report/utils/ReportConfig.java：
+       PYTHON_PATH指向出图模块根路径下python.rar解压后路径下python/Scripts/python
+       PYTHON_FILE_PATH指向出图模块根路径下process.py文件
+       HTML_URL指向报告系统网站uri下files/reportHtml/路径
        PDF_PATH指向本地报告系统部署路径下files/reportPDF/文件夹
-       WK_PATH指向出图模块wkhtmltopdf/bin/wkhtmltopdf文件路径
+       WK_PATH指向出图模块根路径下wkhtmltopdf/bin/wkhtmltopdf
+    4. 启动tomcat，运行项目
