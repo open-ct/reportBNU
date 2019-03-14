@@ -29,4 +29,5 @@ JAVA 1.7、MySQL、Apache Tomcat、maven
        HTML_URL指向报告系统网站uri下files/reportHtml/路径
        PDF_PATH指向本地报告系统部署路径下files/reportPDF/文件夹
        WK_PATH指向出图模块根路径下wkhtmltopdf/bin/wkhtmltopdf
-    4. 启动tomcat，运行项目
+    4. 在src/main/resources/conf/application.properties修改jdbc配置为本地MySQL的URL、用户名、密码、数据库
+    5. 启动tomcat，运行项目
